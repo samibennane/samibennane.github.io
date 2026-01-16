@@ -17,6 +17,7 @@
   <style>
     :root {
       /* Sidebar */
+      --sidebar-bg: #4338ca;
       --sidebar-bg-grad: linear-gradient(180deg, #312e81 0%, #4338ca 100%);
       --sidebar-text: #ffffff;
       
@@ -36,6 +37,9 @@
 
       --sidebar-width: 280px;
       --container-width: 900px;
+      
+      /* Transition Standard */
+      --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -51,7 +55,7 @@
       overflow-x: hidden;
     }
 
-    a { text-decoration: none; color: inherit; transition: 0.2s ease; }
+    a { text-decoration: none; color: inherit; transition: 0.3s var(--ease-out); }
     ul { list-style: none; }
 
     /* === SIDEBAR === */
@@ -69,25 +73,34 @@
     .brand {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       gap: 15px; margin-bottom: 50px; text-align: center;
+      /* Animation entrée */
+      opacity: 0; animation: fadeInDown 0.8s 0.2s forwards;
     }
+    
     .brand-logo { 
       width: 80px; height: 80px; border-radius: 50%; 
       object-fit: cover; background: #fff; padding: 2px;
       box-shadow: 0 0 20px rgba(255,255,255,0.2);
+      transition: transform 0.5s var(--ease-out);
     }
+    .brand:hover .brand-logo { transform: rotate(10deg) scale(1.05); }
+
     .brand-name { font-weight: 700; font-size: 1.25rem; letter-spacing: -0.5px; color: #fff; }
 
-    .nav { display: flex; flex-direction: column; gap: 12px; }
+    .nav { display: flex; flex-direction: column; gap: 12px; opacity: 0; animation: fadeIn 1s 0.4s forwards; }
+    
     .nav-link {
       display: flex; align-items: center; gap: 14px; padding: 12px 16px;
       color: rgba(255, 255, 255, 0.7); border-radius: 12px;
       font-weight: 500; font-size: 0.95rem; transition: 0.3s;
+      position: relative; overflow: hidden;
     }
-    .nav-link:hover { background: rgba(255,255,255,0.15); color: #fff; transform: translateX(4px); }
+    .nav-link:hover { background: rgba(255,255,255,0.15); color: #fff; transform: translateX(5px); }
     .nav-link.active { background: #fff; color: var(--accent); font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-    .nav-link i { font-size: 20px; }
+    .nav-link i { font-size: 20px; transition: 0.3s; }
+    .nav-link:hover i { transform: scale(1.2); }
     
-    .sidebar-footer { margin-top: auto; font-size: 0.8rem; color: rgba(255,255,255,0.4); text-align: center; }
+    .sidebar-footer { margin-top: auto; font-size: 0.8rem; color: rgba(255,255,255,0.4); text-align: center; opacity: 0; animation: fadeIn 1s 0.8s forwards; }
 
     /* === MAIN WRAPPER === */
     main {
@@ -116,6 +129,7 @@
       background-size: 50px 50px;
       mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
       z-index: 1;
+      animation: pulseGrid 10s infinite alternate;
     }
 
     /* GLOBE CSS */
@@ -124,6 +138,8 @@
       top: 50%; left: 50%; transform: translate(-50%, -50%);
       border-radius: 50%; opacity: 0.15; z-index: 0;
       perspective: 1000px; pointer-events: none;
+      /* Entrée zoom */
+      animation: zoomIn 1.5s var(--ease-out);
     }
     .globe-ring {
       position: absolute; border: 1px solid var(--tech-cyan);
@@ -135,10 +151,7 @@
     .ring-3 { width: 60%; height: 60%; top: 20%; left: 20%; animation: rotate1 30s linear infinite; border-style: dashed; }
     .ring-4 { width: 120%; height: 40%; top: 30%; left: -10%; border-color: rgba(255,255,255,0.1); transform: rotate(-45deg); }
 
-    @keyframes rotate1 { 0% { transform: rotateX(60deg) rotateZ(0deg); } 100% { transform: rotateX(60deg) rotateZ(360deg); } }
-    @keyframes rotate2 { 0% { transform: rotateY(60deg) rotateZ(0deg); } 100% { transform: rotateY(60deg) rotateZ(360deg); } }
-
-    /* WIDGETS HUD - Positionnés par rapport à l'écran (gravitation) */
+    /* WIDGETS HUD (Entrée animée) */
     .tech-widget {
       position: absolute;
       background: rgba(15, 23, 42, 0.65);
@@ -151,22 +164,20 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
       z-index: 5; 
       min-width: 140px; text-align: left;
-      /* Animation de flottaison */
-      animation: floatWidget 6s ease-in-out infinite;
+      opacity: 0; /* Caché au début */
     }
 
-    /* Positionnement éloigné de la photo */
     .tw-left { 
-      top: 40%; left: 8%; /* Éloigné à gauche */
-      animation-delay: 0s; 
+      top: 40%; left: 8%; 
       border-left-color: var(--tech-cyan); 
+      animation: slideInLeft 1s 0.8s forwards, floatWidget 6s 1.8s ease-in-out infinite;
     }
     .tw-right { 
-      top: 45%; right: 8%; /* Éloigné à droite */
-      animation-delay: 3s; 
+      top: 45%; right: 8%; 
       border-left: 1px solid rgba(255,255,255,0.1); 
       border-right: 3px solid var(--tech-purple);
       text-align: right; align-items: flex-end;
+      animation: slideInRight 1s 1s forwards, floatWidget 6s 2s ease-in-out infinite;
     }
 
     .tw-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
@@ -180,18 +191,10 @@
 
     .coordinate-text::after { content: " [LOCKED]"; animation: blinkText 2s infinite; color: var(--tech-purple); }
 
-    @keyframes equalize { 0%, 100% { height: 40%; } 50% { height: 100%; } }
-    @keyframes blinkText { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-    @keyframes floatWidget { 
-      0%, 100% { transform: translateY(0); } 
-      50% { transform: translateY(-15px); } 
-    }
-
-    /* Hero Content Centré */
+    /* Hero Content Centré (Entrée animée) */
     .hero-content {
       position: relative; z-index: 10;
       display: flex; flex-direction: column; align-items: center; gap: 20px;
-      /* Pas de largeur fixe pour éviter les collisions */
     }
 
     .hero-avatar {
@@ -202,7 +205,10 @@
       background: rgba(255,255,255,0.05);
       backdrop-filter: blur(10px);
       margin-bottom: 20px;
+      opacity: 0; animation: zoomIn 1s 0.2s forwards;
+      transition: transform 0.3s;
     }
+    .hero-avatar:hover { transform: scale(1.05); border-color: var(--tech-cyan); box-shadow: 0 0 30px rgba(6, 182, 212, 0.3); }
     .hero-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 
     .hero-title {
@@ -210,18 +216,26 @@
       background: linear-gradient(135deg, #fff 30%, #94a3b8 100%);
       -webkit-background-clip: text; color: transparent;
       margin: 0; text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      opacity: 0; animation: fadeInUp 1s 0.4s forwards;
     }
-    .hero-subtitle { font-size: 1.25rem; color: #cbd5e1; font-weight: 300; max-width: 600px; }
+    .hero-subtitle { 
+      font-size: 1.25rem; color: #cbd5e1; font-weight: 300; max-width: 600px; 
+      opacity: 0; animation: fadeInUp 1s 0.6s forwards;
+    }
     
-    .hero-btns { margin-top: 30px; display: flex; gap: 16px; }
+    .hero-btns { 
+      margin-top: 30px; display: flex; gap: 16px; 
+      opacity: 0; animation: fadeInUp 1s 0.8s forwards;
+    }
     .btn-hero {
       padding: 14px 32px; border-radius: 100px; font-weight: 600;
-      transition: 0.3s; display: flex; align-items: center; gap: 8px;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      display: flex; align-items: center; gap: 8px; cursor: pointer;
     }
     .btn-white { background: #fff; color: #000; }
-    .btn-white:hover { box-shadow: 0 0 20px rgba(255,255,255,0.4); transform: translateY(-2px); }
+    .btn-white:hover { box-shadow: 0 0 25px rgba(255,255,255,0.5); transform: translateY(-3px) scale(1.02); }
     .btn-trans { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
-    .btn-trans:hover { background: rgba(255,255,255,0.2); }
+    .btn-trans:hover { background: rgba(255,255,255,0.2); border-color: #fff; transform: translateY(-3px); }
 
     /* === CONTENT AREA === */
     .content-wrapper { padding: 100px 60px; background: var(--main-bg); position: relative; }
@@ -234,49 +248,94 @@
     }
     h2::after { content: ""; flex: 1; height: 1px; background: var(--timeline-line); max-width: 200px; }
 
-    /* Timeline */
+    /* Timeline animée */
     .timeline { position: relative; padding-left: 20px; }
     .timeline::before { content: ''; position: absolute; left: 0; top: 10px; bottom: 0; width: 2px; background: var(--timeline-line); border-radius: 2px; }
-    .timeline-item { position: relative; padding-left: 40px; margin-bottom: 50px; }
+    
+    .timeline-item { 
+      position: relative; padding-left: 40px; margin-bottom: 50px; 
+      opacity: 0; transform: translateX(-20px); transition: all 0.6s var(--ease-out);
+    }
+    .timeline-item.visible { opacity: 1; transform: translateX(0); }
+    
     .timeline-dot {
       position: absolute; left: -5px; top: 8px; width: 12px; height: 12px;
       background: #fff; border: 3px solid var(--accent); border-radius: 50%; z-index: 2; transition: 0.3s;
     }
-    .timeline-item:hover .timeline-dot { background: var(--accent); transform: scale(1.3); }
+    .timeline-item:hover .timeline-dot { background: var(--accent); transform: scale(1.5); box-shadow: 0 0 15px var(--accent); }
+    
     .t-date {
       display: inline-block; font-size: 0.85rem; font-weight: 700;
       color: var(--accent); text-transform: uppercase; margin-bottom: 4px; 
       background: rgba(79, 70, 229, 0.06); padding: 4px 10px; border-radius: 4px;
+      transition: 0.3s;
     }
+    .timeline-item:hover .t-date { background: var(--accent); color: #fff; }
+
     .t-title { font-size: 1.25rem; font-weight: 700; color: var(--text-main); margin-bottom: 2px; }
     .t-company { font-size: 1rem; font-weight: 500; color: #374151; margin-bottom: 8px; }
     .t-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; }
 
-    /* Skills & Projects */
+    /* Skills */
     .lang-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-    .lang-item { display: flex; flex-direction: column; gap: 6px; }
+    .lang-item { 
+      display: flex; flex-direction: column; gap: 6px; 
+      opacity: 0; transform: translateY(20px); transition: all 0.6s var(--ease-out);
+    }
+    .lang-item.visible { opacity: 1; transform: translateY(0); }
+
     .lang-header { display: flex; justify-content: space-between; font-weight: 600; font-size: 0.95rem; }
     .lang-level { color: var(--text-muted); font-size: 0.85rem; font-weight: 400; }
     .progress-track { width: 100%; height: 8px; background: #e2e8f0; border-radius: 10px; overflow: hidden; }
-    .progress-fill { height: 100%; background: var(--accent); border-radius: 10px; width: 0; transition: width 1s ease-out; }
+    .progress-fill { height: 100%; background: var(--accent); border-radius: 10px; width: 0; transition: width 1.5s cubic-bezier(0.65, 0, 0.35, 1); }
 
+    /* Projects */
     .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
     .project-card {
       background: #fff; border: 1px solid var(--timeline-line);
-      border-radius: 16px; padding: 24px; transition: all 0.3s ease; 
+      border-radius: 16px; padding: 24px; transition: all 0.4s var(--ease-out); 
       display: flex; flex-direction: column; gap: 8px;
+      opacity: 0; transform: translateY(30px);
     }
-    .project-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+    .project-card.visible { opacity: 1; transform: translateY(0); }
+
+    .project-card:hover { 
+      transform: translateY(-8px); 
+      border-color: var(--accent); 
+      box-shadow: 0 20px 40px rgba(0,0,0,0.08); 
+    }
 
     /* Contact */
     .btn-contact-primary {
       background: var(--accent); color: #fff; padding: 12px 24px; border-radius: 8px; 
-      display: inline-flex; align-items: center; gap: 8px; font-weight: 600;
+      display: inline-flex; align-items: center; gap: 8px; font-weight: 600; transition: 0.3s;
     }
+    .btn-contact-primary:hover { background: #4338ca; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3); }
+    
     .btn-contact-outline {
       border: 1px solid var(--timeline-line); color: var(--text-main); padding: 12px 24px; border-radius: 8px;
-      display: inline-flex; align-items: center; gap: 8px; font-weight: 600;
+      display: inline-flex; align-items: center; gap: 8px; font-weight: 600; transition: 0.3s;
     }
+    .btn-contact-outline:hover { border-color: var(--text-main); background: #f9fafb; }
+
+    /* === ANIMATION KEYFRAMES === */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes zoomIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes slideInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+    
+    @keyframes rotate1 { 0% { transform: rotateX(60deg) rotateZ(0deg); } 100% { transform: rotateX(60deg) rotateZ(360deg); } }
+    @keyframes rotate2 { 0% { transform: rotateY(60deg) rotateZ(0deg); } 100% { transform: rotateY(60deg) rotateZ(360deg); } }
+    @keyframes pulseGrid { 0% { opacity: 0.5; } 100% { opacity: 1; } }
+    @keyframes floatWidget { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+    @keyframes equalize { 0%, 100% { height: 40%; } 50% { height: 100%; } }
+    @keyframes blinkText { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+    /* Reveal générique pour les titres */
+    .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s var(--ease-out); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
     /* Mobile */
     @media (max-width: 900px) {
@@ -285,7 +344,7 @@
         flex-direction: row; justify-content: space-between; padding: 10px 20px;
       }
       .brand, .sidebar-footer { display: none; }
-      .nav { flex-direction: row; width: 100%; justify-content: space-between; }
+      .nav { flex-direction: row; width: 100%; justify-content: space-between; animation: none; opacity: 1; }
       .nav-link { flex-direction: column; padding: 6px; font-size: 10px; gap: 4px; }
       
       main { margin-left: 0; width: 100%; }
@@ -293,7 +352,7 @@
       .hero-title { font-size: 36px; }
       .geo-globe { width: 300px; height: 300px; }
       
-      /* Sur mobile, on cache ou on réajuste les widgets */
+      /* Sur mobile, on cache les widgets complexes pour la perf */
       .tech-widget { display: none; } 
     }
   </style>
@@ -375,12 +434,12 @@
     <div class="content-wrapper">
       <div class="container">
 
-        <section id="about">
+        <section id="about" class="reveal">
           <h2>About Me</h2>
           <p>I am an engineering student at <strong>Mines Saint-Étienne</strong>, passionate about bridging the gap between hardware and artificial intelligence. My focus is on building scalable embedded systems and secure architectures.</p>
         </section>
 
-        <section id="education">
+        <section id="education" class="reveal">
           <h2><i class="ph ph-graduation-cap" style="color:var(--accent)"></i> Education</h2>
           <div class="timeline">
             <div class="timeline-item">
@@ -390,14 +449,14 @@
               <div class="t-company">Mines Saint-Étienne</div>
               <div class="t-desc">Major in AI, Embedded & Secure Systems. Rank: Top 10% (GPA 3.8/4.0). Focus: IoT, Cryptography.</div>
             </div>
-            <div class="timeline-item">
+            <div class="timeline-item" style="transition-delay: 0.1s;">
               <span class="timeline-dot"></span>
               <span class="t-date">2022 - 2024</span>
               <div class="t-title">CPGE - MPSI / PSI</div>
               <div class="t-company">Lycée Pasteur (Neuilly-sur-Seine)</div>
               <div class="t-desc">Intensive preparatory program for French "Grandes Écoles". Focus on Advanced Mathematics & Physics.</div>
             </div>
-            <div class="timeline-item">
+            <div class="timeline-item" style="transition-delay: 0.2s;">
               <span class="timeline-dot"></span>
               <span class="t-date">2019 - 2022</span>
               <div class="t-title">French Baccalaureate</div>
@@ -407,7 +466,7 @@
           </div>
         </section>
 
-        <section id="experience">
+        <section id="experience" class="reveal">
           <h2><i class="ph ph-briefcase" style="color:var(--accent)"></i> Experience</h2>
           <div class="timeline">
             <div class="timeline-item">
@@ -417,14 +476,14 @@
               <div class="t-company">ECOLE SPORT ENTREPRENDRE</div>
               <div class="t-desc">Math & Physics tutoring for elite athletes (rugby, handball, boxing).</div>
             </div>
-            <div class="timeline-item">
+            <div class="timeline-item" style="transition-delay: 0.1s;">
               <span class="timeline-dot"></span>
               <span class="t-date">Jul 2025 (1 mo)</span>
               <div class="t-title">IT Asset Assistant</div>
               <div class="t-company">Informatique CDC</div>
               <div class="t-desc">Tracking of IT assets and hardware infrastructure monitoring.</div>
             </div>
-            <div class="timeline-item">
+            <div class="timeline-item" style="transition-delay: 0.2s;">
               <span class="timeline-dot"></span>
               <span class="t-date">Jan 2025 (1 mo)</span>
               <div class="t-title">Cloud Intern</div>
@@ -434,7 +493,7 @@
           </div>
         </section>
 
-        <section id="volunteering">
+        <section id="volunteering" class="reveal">
           <h2><i class="ph ph-heart" style="color:var(--accent)"></i> Volunteering</h2>
           <div class="timeline">
             <div class="timeline-item">
@@ -444,14 +503,14 @@
               <div class="t-company">Forum Entreprises Ingénieur</div>
               <div class="t-desc">Outreach and relationship management with companies.</div>
             </div>
-            <div class="timeline-item">
+            <div class="timeline-item" style="transition-delay: 0.1s;">
               <span class="timeline-dot"></span>
               <span class="t-date">Mar 2025 - Present</span>
               <div class="t-title">Football Team Manager</div>
               <div class="t-company">BDS - Mines Saint-Étienne</div>
               <div class="t-desc">Coordinating team activities and fostering cohesion.</div>
             </div>
-            <div class="timeline-item">
+            <div class="timeline-item" style="transition-delay: 0.2s;">
               <span class="timeline-dot"></span>
               <span class="t-date">Feb 2025 - Jun 2025</span>
               <div class="t-title">Volunteer</div>
@@ -461,47 +520,47 @@
           </div>
         </section>
 
-        <section id="languages">
+        <section id="languages" class="reveal">
           <h2><i class="ph ph-translate" style="color:var(--accent)"></i> Languages</h2>
           <div class="lang-grid">
             <div class="lang-item">
               <div class="lang-header"><span>French</span><span class="lang-level">Native</span></div>
               <div class="progress-track"><div class="progress-fill" style="width: 100%;"></div></div>
             </div>
-            <div class="lang-item">
+            <div class="lang-item" style="transition-delay: 0.1s;">
               <div class="lang-header"><span>English</span><span class="lang-level">Full Professional</span></div>
               <div class="progress-track"><div class="progress-fill" style="width: 90%;"></div></div>
             </div>
-            <div class="lang-item">
+            <div class="lang-item" style="transition-delay: 0.2s;">
               <div class="lang-header"><span>German</span><span class="lang-level">Limited Working</span></div>
               <div class="progress-track"><div class="progress-fill" style="width: 50%;"></div></div>
             </div>
-            <div class="lang-item">
+            <div class="lang-item" style="transition-delay: 0.3s;">
               <div class="lang-header"><span>Spanish</span><span class="lang-level">Limited Working</span></div>
               <div class="progress-track"><div class="progress-fill" style="width: 50%;"></div></div>
             </div>
-            <div class="lang-item">
+            <div class="lang-item" style="transition-delay: 0.4s;">
               <div class="lang-header"><span>Arabic</span><span class="lang-level">Limited Working</span></div>
               <div class="progress-track"><div class="progress-fill" style="width: 50%;"></div></div>
             </div>
           </div>
         </section>
 
-        <section id="portfolio">
+        <section id="portfolio" class="reveal">
           <h2><i class="ph ph-code" style="color:var(--accent)"></i> Selected Works</h2>
           <div class="project-grid">
             <a href="#" class="project-card">
               <h3>🚁 AI Drone Project</h3>
               <p>Autonomous drone navigation using computer vision and SLAM.</p>
             </a>
-            <a href="#" class="project-card">
+            <a href="#" class="project-card" style="transition-delay: 0.2s;">
               <h3>⚡ Smart Energy Monitor</h3>
               <p>IoT device tracking real-time energy consumption.</p>
             </a>
           </div>
         </section>
 
-        <section id="contact">
+        <section id="contact" class="reveal">
           <h2>Contact</h2>
           <div style="background: #fff; padding: 40px; border-radius: 16px; text-align: center; border:1px solid var(--timeline-line);">
             <p style="margin-bottom: 30px; font-weight: 500;">Open to new opportunities.</p>
@@ -523,6 +582,28 @@
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
 
+    // Intersection Observer pour les animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          // Lance les barres de progression si on est dans la section langues
+          if (entry.target.id === 'languages') {
+             const bars = entry.target.querySelectorAll('.progress-fill');
+             bars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => { bar.style.width = width; }, 100);
+             });
+          }
+        }
+      });
+    }, { threshold: 0.15 });
+
+    // Cible les sections, items de timeline, projets et barres de langue
+    document.querySelectorAll('.reveal, .timeline-item, .project-card, .lang-item').forEach(el => observer.observe(el));
+
+    // ScrollSpy
     const sections = document.querySelectorAll("section");
     const navLinks = document.querySelectorAll(".nav-link");
 
@@ -534,16 +615,6 @@
       navLinks.forEach(link => {
         link.classList.remove("active");
         if (link.getAttribute("href").includes(current)) link.classList.add("active");
-      });
-    });
-    
-    // Anim barres de langue
-    window.addEventListener('load', () => {
-      const bars = document.querySelectorAll('.progress-fill');
-      bars.forEach(bar => {
-         const width = bar.style.width;
-         bar.style.width = '0';
-         setTimeout(() => { bar.style.width = width; }, 500);
       });
     });
   </script>
