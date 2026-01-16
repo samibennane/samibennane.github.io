@@ -3,51 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sami Bennane | Portfolio</title>
+  <title>Sami Bennane</title>
 
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg: #0b1020;
-      --bg-soft: #111833;
-      --text: #e6e9f2;
-      --muted: #9aa4c7;
-      --accent: #5b6cff; /* indigo électrique */
+      --bg-dark: #0b1020;
+      --bg-light: #111833;
+      --indigo: #5b6cff;
+      --text-main: #ffffff;
+      --text-muted: #b8c0ff;
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
+      font-family: 'Inter', sans-serif;
     }
 
     body {
-      font-family: 'Inter', sans-serif;
-      background: radial-gradient(1200px 800px at 70% -20%, #1a235a, var(--bg));
-      color: var(--text);
+      background: linear-gradient(180deg, var(--bg-dark), var(--bg-light));
+      color: var(--text-main);
       line-height: 1.6;
-    }
-
-    a {
-      color: var(--accent);
-      text-decoration: none;
-      transition: opacity 0.2s;
-    }
-
-    a:hover {
-      opacity: 0.8;
-    }
-
-    section {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 100px 24px;
     }
 
     /* HERO */
@@ -57,184 +37,172 @@
       align-items: center;
       justify-content: center;
       text-align: center;
+      padding: 2rem;
+    }
+
+    .hero-content {
+      max-width: 800px;
+    }
+
+    .hero img {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--indigo);
+      margin-bottom: 1.5rem;
     }
 
     .hero h1 {
-      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      font-size: 3rem;
       font-weight: 700;
-      letter-spacing: -0.03em;
+      margin-bottom: 0.5rem;
     }
 
-    .hero h1 span {
-      color: var(--accent);
+    .hero h2 {
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
     }
 
     .hero p {
-      margin-top: 18px;
-      font-size: 1.2rem;
-      color: var(--muted);
+      font-size: 1rem;
+      max-width: 600px;
+      margin: 0 auto;
+      color: #e0e4ff;
     }
 
-    .hero .cta {
-      margin-top: 40px;
-      display: inline-block;
-      padding: 14px 28px;
-      border-radius: 999px;
-      background: var(--accent);
-      color: #fff;
-      font-weight: 600;
+    /* SECTIONS */
+    section {
+      padding: 5rem 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
     }
 
-    /* SECTION TITLES */
-    h2 {
+    section h3 {
       font-size: 2rem;
-      margin-bottom: 20px;
-      letter-spacing: -0.02em;
-    }
-
-    .subtitle {
-      color: var(--muted);
-      max-width: 700px;
-      margin-bottom: 50px;
-    }
-
-    /* ABOUT */
-    .about p {
-      max-width: 800px;
-      font-size: 1.05rem;
+      margin-bottom: 1.5rem;
+      color: var(--indigo);
     }
 
     /* PROJECTS */
-    .projects-grid {
+    .projects {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
     }
 
     .project-card {
-      background: linear-gradient(180deg, var(--bg-soft), rgba(17,24,51,0.6));
-      border-radius: 16px;
-      padding: 28px;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-      border: 1px solid rgba(255,255,255,0.05);
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: transform 0.2s ease, background 0.2s ease;
     }
 
     .project-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.08);
     }
 
-    .project-card h3 {
-      margin-bottom: 10px;
-      font-size: 1.2rem;
+    .project-card h4 {
+      margin-bottom: 0.5rem;
+      color: #ffffff;
     }
 
     .project-card p {
-      color: var(--muted);
       font-size: 0.95rem;
+      color: #d0d6ff;
     }
 
     /* CONTACT */
-    .contact-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 24px;
-      margin-top: 30px;
+    .contact a {
+      display: inline-block;
+      margin-right: 1.5rem;
+      color: var(--indigo);
+      text-decoration: none;
+      font-weight: 600;
     }
 
-    .contact-links a {
-      font-weight: 500;
+    .contact a:hover {
+      text-decoration: underline;
     }
 
     /* FOOTER */
     footer {
       text-align: center;
-      padding: 40px 20px;
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 600px) {
-      section {
-        padding: 80px 20px;
-      }
+      padding: 2rem;
+      font-size: 0.85rem;
+      color: #9aa3ff;
     }
   </style>
 </head>
+
 <body>
 
   <!-- HERO -->
-  <section class="hero">
-    <div>
-      <h1>Sami <span>Bennane</span></h1>
-      <p>Engineering Student · AI · Embedded Systems</p>
-      <a href="#projects" class="cta">View my work</a>
+  <div class="hero">
+    <div class="hero-content">
+      <img src="assets/images/photo_fei.png" alt="Sami Bennane">
+      <h1>Sami Bennane</h1>
+      <h2>Engineering Student · AI · Embedded Systems</h2>
+      <p>
+        Engineering student at Mines Saint-Étienne, passionate about artificial intelligence,
+        embedded systems, and building impactful technical projects at the intersection of
+        software and hardware.
+      </p>
     </div>
-  </section>
+  </div>
 
   <!-- ABOUT -->
-  <section class="about" id="about">
-    <h2>About</h2>
-    <p class="subtitle">
-      A brief introduction about who I am and what I’m building.
-    </p>
+  <section>
+    <h3>About</h3>
     <p>
-      I am an engineering student with a strong interest in artificial intelligence,
-      embedded systems, and high-impact technical projects.  
-      I enjoy building things from scratch, understanding systems deeply,
-      and translating complex ideas into concrete solutions.
+      I am an engineering student specializing in AI and embedded systems.
+      I enjoy designing intelligent systems, working on low-level hardware/software
+      interactions, and turning ideas into concrete, efficient solutions.
     </p>
   </section>
 
   <!-- PROJECTS -->
-  <section class="projects" id="projects">
-    <h2>Projects</h2>
-    <p class="subtitle">
-      A selection of projects and experiences I’ve worked on.
-    </p>
-
-    <div class="projects-grid">
+  <section>
+    <h3>Projects</h3>
+    <div class="projects">
       <div class="project-card">
-        <h3>Project Title</h3>
+        <h4>AI Task Planner</h4>
         <p>
-          Short description of the project, the problem it solves,
-          and the technologies involved.
+          Intelligent task planning system using machine learning models
+          to estimate duration and automatically schedule tasks.
         </p>
       </div>
 
       <div class="project-card">
-        <h3>Another Project</h3>
+        <h4>Embedded Sensor Network</h4>
         <p>
-          You can later add GitHub links, demos, or case studies here.
+          Design of low-power sensor nodes with LoRa communication
+          for real-time environmental monitoring.
         </p>
       </div>
 
       <div class="project-card">
-        <h3>Upcoming Work</h3>
+        <h4>Computer Vision Project</h4>
         <p>
-          This section can evolve as your portfolio grows.
+          Image classification system built from scratch to understand
+          the fundamentals of neural networks.
         </p>
       </div>
     </div>
   </section>
 
   <!-- CONTACT -->
-  <section class="contact" id="contact">
-    <h2>Contact</h2>
-    <p class="subtitle">
-      Feel free to reach out or connect with me.
-    </p>
-
-    <div class="contact-links">
-      <a href="https://www.linkedin.com/" target="_blank">LinkedIn</a>
-      <a href="mailto:your@email.com">Email</a>
-      <a href="https://github.com/samibennane" target="_blank">GitHub</a>
-    </div>
+  <section class="contact">
+    <h3>Contact</h3>
+    <a href="https://www.linkedin.com/in/TON_LINKEDIN" target="_blank">LinkedIn</a>
+    <a href="mailto:ton.email@email.com">Email</a>
   </section>
 
   <footer>
-    © 2026 Sami Bennane · Built with GitHub Pages
+    © 2026 · Sami Bennane
   </footer>
 
 </body>
