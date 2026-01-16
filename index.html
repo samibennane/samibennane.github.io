@@ -125,9 +125,11 @@
       display: inline-flex; align-items: center; gap: 8px;
       padding: 12px 28px; background: var(--text-main); color: var(--bg-dark);
       border-radius: 100px; font-weight: 600; margin-top: 20px;
+      cursor: pointer;
     }
     .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,255,255,0.2); }
     .btn.outline { background: transparent; color: var(--text-main); border: 1px solid var(--card-border); }
+    .btn.outline:hover { background: var(--card-bg); border-color: var(--text-main); }
 
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
     
@@ -186,6 +188,7 @@
     <nav class="nav">
       <a href="#home" class="nav-link active"><i class="ph ph-house"></i><span>Home</span></a>
       <a href="#about" class="nav-link"><i class="ph ph-user"></i><span>About</span></a>
+      <a href="#education" class="nav-link"><i class="ph ph-graduation-cap"></i><span>Edu</span></a>
       <a href="#experience" class="nav-link"><i class="ph ph-briefcase"></i><span>Exp</span></a>
       <a href="#volunteering" class="nav-link"><i class="ph ph-heart"></i><span>Vol.</span></a>
       <a href="#portfolio" class="nav-link"><i class="ph ph-code"></i><span>Work</span></a>
@@ -211,6 +214,34 @@
         <h2>About Me</h2>
         <div class="card">
           <p>I am an engineering student at <strong>Mines Saint-Étienne</strong>, passionate about bridging the gap between hardware and artificial intelligence.</p>
+        </div>
+      </section>
+
+      <section id="education" class="reveal hidden">
+        <h2>Education</h2>
+        <div class="grid">
+          <div class="card">
+            <span class="date-badge">2024 - 2027</span>
+            <h3>École des Mines de Saint-Étienne</h3>
+            <h4>Diplôme d'Ingénieur (Master of Science)</h4>
+            <p><strong>Major:</strong> AI, Embedded & Secure Systems.<br>
+            <strong>Rank:</strong> Top 10% (GPA 3.8/4.0).<br>
+            Focus on IoT, Computer Architecture, and Cryptography.</p>
+          </div>
+          <div class="card">
+            <span class="date-badge">2022 - 2024</span>
+            <h3>Lycée Pasteur (Neuilly-sur-Seine)</h3>
+            <h4>CPGE - MPSI / PSI</h4>
+            <p>Intensive preparatory program for French "Grandes Écoles".<br>
+            Focus on Advanced Mathematics, Physics and Engineering Sciences.</p>
+          </div>
+          <div class="card">
+            <span class="date-badge">2019 - 2022</span>
+            <h3>Lycée Lucie Aubrac</h3>
+            <h4>French Baccalaureate</h4>
+            <p>Scientific Track with <strong>Highest Honors</strong> (Mention Très Bien).<br>
+            Specializations in Mathematics & Physics-Chemistry.</p>
+          </div>
         </div>
       </section>
 
@@ -280,7 +311,14 @@
         <h2>Contact</h2>
         <div class="card" style="text-align:center">
           <p>Let's build something together.</p>
-          <a href="mailto:contact@samibennane.com" class="btn outline">Email Me</a>
+          <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:20px;">
+            <a href="mailto:sami.bennane@gmail.com" class="btn outline">
+              <i class="ph ph-envelope-simple"></i> Email Me
+            </a>
+            <a href="https://www.linkedin.com/in/sami-bennane-575380320" target="_blank" class="btn outline">
+              <i class="ph ph-linkedin-logo"></i> LinkedIn
+            </a>
+          </div>
         </div>
       </section>
 
