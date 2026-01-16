@@ -7,7 +7,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
@@ -18,19 +18,21 @@
     :root {
       /* Sidebar */
       --sidebar-bg: #4338ca;
-      --sidebar-bg-grad: linear-gradient(180deg, #4f46e5 0%, #3730a3 100%);
+      --sidebar-bg-grad: linear-gradient(180deg, #312e81 0%, #4338ca 100%);
       --sidebar-text: #ffffff;
       
-      /* Main Content (Light) */
-      --main-bg: #f8fafc; /* Légèrement grisé pour faire ressortir le blanc */
+      /* Main Content */
+      --main-bg: #ffffff;
+      --hero-bg: #020617; /* Fond très sombre pour le Hero */
+      
       --text-main: #111827;
       --text-secondary: #4b5563;
       --text-muted: #9ca3af;
       
       /* Accents */
       --accent: #4f46e5;
-      --hero-bg: #030712; /* Fond sombre pour le Hero */
       --tech-cyan: #06b6d4;
+      --tech-purple: #8b5cf6;
       --timeline-line: #e5e7eb;
 
       --sidebar-width: 280px;
@@ -47,20 +49,22 @@
       line-height: 1.6;
       display: flex;
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
     a { text-decoration: none; color: inherit; transition: 0.2s ease; }
     ul { list-style: none; }
 
-    /* === SIDEBAR === */
+    /* === SIDEBAR (Fixe à gauche) === */
     .sidebar {
       position: fixed; top: 0; left: 0; bottom: 0;
       width: var(--sidebar-width);
       background: var(--sidebar-bg-grad);
       color: var(--sidebar-text);
       display: flex; flex-direction: column;
-      padding: 40px 30px; z-index: 1000;
-      box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+      padding: 40px 30px; z-index: 2000; /* Au-dessus de tout */
+      box-shadow: 4px 0 30px rgba(0,0,0,0.3);
+      border-right: 1px solid rgba(255,255,255,0.05);
     }
 
     .brand { display: flex; align-items: center; gap: 15px; margin-bottom: 60px; font-weight: 700; font-size: 1.2rem; }
@@ -73,106 +77,160 @@
       font-weight: 500; font-size: 0.95rem; transition: 0.3s;
     }
     .nav-link:hover { background: rgba(255,255,255,0.15); color: #fff; transform: translateX(4px); }
-    .nav-link.active { background: #fff; color: var(--accent); font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .nav-link.active { background: #fff; color: var(--accent); font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
     .nav-link i { font-size: 20px; }
     
     .sidebar-footer { margin-top: auto; font-size: 0.8rem; color: rgba(255,255,255,0.4); }
 
-    /* === MAIN CONTENT === */
+    /* === MAIN WRAPPER === */
     main {
       margin-left: var(--sidebar-width);
       width: calc(100% - var(--sidebar-width));
-      padding: 40px 60px 120px; /* Moins de padding haut pour coller le Hero */
+      /* Padding 0 pour que le Hero colle aux bords */
+      padding: 0; 
+      display: flex; flex-direction: column;
+    }
+
+    /* === HERO SECTION (IMMERSIVE & GEOPOLITICS) === */
+    .hero-section {
+      position: relative;
+      height: 100vh; /* Prend tout l'écran */
+      width: 100%;
+      background-color: var(--hero-bg);
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      text-align: center;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    /* Grille de fond (Cyber Grid) */
+    .hero-bg-grid {
+      position: absolute; inset: 0;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+      z-index: 1;
+    }
+
+    /* === ANIMATION GLOBE TERRESTRE (CSS ONLY) === */
+    .geo-globe {
+      position: absolute;
+      width: 600px; height: 600px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      opacity: 0.15;
+      z-index: 0;
+      perspective: 1000px;
+      pointer-events: none;
+    }
+
+    .globe-ring {
+      position: absolute;
+      border: 1px solid var(--tech-cyan);
+      border-radius: 50%;
+      top: 0; left: 0; right: 0; bottom: 0;
+      box-shadow: 0 0 30px rgba(6, 182, 212, 0.2);
+    }
+
+    .ring-1 { animation: rotate1 20s linear infinite; }
+    .ring-2 { width: 80%; height: 80%; top: 10%; left: 10%; animation: rotate2 25s linear infinite reverse; border-color: var(--accent); }
+    .ring-3 { width: 60%; height: 60%; top: 20%; left: 20%; animation: rotate1 30s linear infinite; border-style: dashed; }
+    .ring-4 { width: 120%; height: 40%; top: 30%; left: -10%; border-color: rgba(255,255,255,0.1); transform: rotate(-45deg); }
+
+    @keyframes rotate1 { 0% { transform: rotateX(60deg) rotateZ(0deg); } 100% { transform: rotateX(60deg) rotateZ(360deg); } }
+    @keyframes rotate2 { 0% { transform: rotateY(60deg) rotateZ(0deg); } 100% { transform: rotateY(60deg) rotateZ(360deg); } }
+
+    /* === HERO CONTENT === */
+    .hero-content {
+      position: relative; z-index: 10;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 20px;
+    }
+
+    /* Badges "Data" Flottants */
+    .data-point {
+      position: absolute;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--tech-cyan);
+      display: flex; align-items: center; gap: 6px;
+      animation: floatData 4s infinite ease-in-out;
+    }
+    .dp-1 { top: -80px; right: -120px; animation-delay: 0s; }
+    .dp-2 { bottom: -60px; left: -140px; animation-delay: 2s; color: var(--tech-purple); }
+
+    .status-dot { width: 6px; height: 6px; background: currentColor; border-radius: 50%; box-shadow: 0 0 10px currentColor; }
+
+    /* Avatar Hero */
+    .hero-avatar {
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      border: 3px solid rgba(255,255,255,0.2);
+      padding: 4px;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      margin-bottom: 20px;
+    }
+    .hero-avatar img {
+      width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+    }
+
+    .hero-title {
+      font-size: clamp(48px, 6vw, 72px);
+      font-weight: 800;
+      letter-spacing: -2px;
+      background: linear-gradient(135deg, #fff 30%, #94a3b8 100%);
+      -webkit-background-clip: text; color: transparent;
+      margin: 0;
+      text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: #cbd5e1;
+      font-weight: 300;
+      max-width: 600px;
+    }
+    
+    .hero-btns { margin-top: 30px; display: flex; gap: 16px; }
+
+    .btn-hero {
+      padding: 14px 32px; border-radius: 100px; font-weight: 600;
+      transition: 0.3s; display: flex; align-items: center; gap: 8px;
+    }
+    .btn-white { background: #fff; color: #000; }
+    .btn-white:hover { box-shadow: 0 0 20px rgba(255,255,255,0.4); transform: translateY(-2px); }
+    
+    .btn-trans { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+    .btn-trans:hover { background: rgba(255,255,255,0.2); }
+
+    @keyframes floatData { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+
+    /* === CONTENT WRAPPER (WHITE) === */
+    .content-wrapper {
+      padding: 100px 60px;
+      background: var(--main-bg);
+      position: relative;
     }
 
     .container { max-width: var(--container-width); margin: 0 auto; }
-    section { margin-bottom: 140px; scroll-margin-top: 60px; }
+    section { margin-bottom: 120px; scroll-margin-top: 100px; }
 
     h2 {
       font-size: 28px; font-weight: 700; margin-bottom: 40px; color: var(--text-main);
       display: flex; align-items: center; gap: 12px;
     }
     h2::after { content: ""; flex: 1; height: 1px; background: var(--timeline-line); max-width: 200px; }
-    p { color: var(--text-secondary); font-size: 1.05rem; }
 
-    /* === HERO DARK (Le "Truc comme ça") === */
-    .hero-card {
-      background-color: var(--hero-bg);
-      background-image: 
-        radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.25), transparent 60%),
-        linear-gradient(180deg, rgba(255,255,255,0.02) 0%, transparent 100%);
-      border-radius: 32px;
-      padding: 80px 40px;
-      text-align: center;
-      display: flex; flex-direction: column; align-items: center;
-      color: #fff;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3);
-      border: 1px solid rgba(255,255,255,0.05);
-      margin-bottom: 80px;
-    }
-
-    /* Grille de fond subtile */
-    .hero-card::before {
-      content: ""; position: absolute; inset: 0;
-      background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
-      background-size: 40px 40px; opacity: 0.15;
-    }
-
-    /* Avatar Glow */
-    .avatar-container { position: relative; width: 180px; height: 180px; margin-bottom: 30px; }
-    
-    .avatar-glow {
-      position: absolute; inset: -10px;
-      background: linear-gradient(135deg, var(--accent), var(--tech-cyan));
-      border-radius: 50%;
-      filter: blur(20px); opacity: 0.6;
-      animation: pulse 4s infinite;
-    }
-    
-    .avatar {
-      position: relative; width: 100%; height: 100%;
-      border-radius: 50%; overflow: hidden;
-      border: 4px solid rgba(255,255,255,0.1);
-      z-index: 2; background: #000;
-    }
-    .avatar img { width: 100%; height: 100%; object-fit: cover; }
-
-    /* Textes Hero */
-    .hero-title {
-      font-size: clamp(40px, 5vw, 56px);
-      font-weight: 800; margin-bottom: 12px;
-      background: linear-gradient(to right, #fff, #94a3b8);
-      -webkit-background-clip: text; color: transparent;
-      letter-spacing: -1px;
-    }
-    .hero-subtitle {
-      color: #94a3b8; font-size: 1.1rem; max-width: 500px; margin-bottom: 30px;
-    }
-
-    /* Boutons Hero */
-    .hero-btns { display: flex; gap: 15px; justify-content: center; }
-    
-    .btn-hero-primary {
-      background: #fff; color: #000;
-      padding: 12px 28px; border-radius: 100px;
-      font-weight: 600; display: inline-flex; align-items: center; gap: 8px;
-      transition: 0.3s;
-    }
-    .btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255,255,255,0.2); }
-    
-    .btn-hero-outline {
-      background: rgba(255,255,255,0.05); color: #fff;
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 12px 28px; border-radius: 100px;
-      font-weight: 500; transition: 0.3s;
-    }
-    .btn-hero-outline:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
-
-    @keyframes pulse { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.05); } }
-
-    /* === TIMELINE === */
+    /* === TIMELINE STYLE === */
     .timeline { position: relative; padding-left: 20px; }
     .timeline::before {
       content: ''; position: absolute; left: 0; top: 10px; bottom: 0;
@@ -199,7 +257,7 @@
     .t-company { font-size: 1rem; font-weight: 500; color: #374151; margin-bottom: 8px; }
     .t-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; }
 
-    /* === LANGUAGES === */
+    /* === OTHER SECTIONS === */
     .lang-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
     .lang-item { display: flex; flex-direction: column; gap: 6px; }
     .lang-header { display: flex; justify-content: space-between; font-weight: 600; font-size: 0.95rem; }
@@ -207,7 +265,6 @@
     .progress-track { width: 100%; height: 8px; background: #e2e8f0; border-radius: 10px; overflow: hidden; }
     .progress-fill { height: 100%; background: var(--accent); border-radius: 10px; width: 0; transition: width 1s ease-out; }
 
-    /* === PROJECTS === */
     .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
     .project-card {
       background: #fff; border: 1px solid var(--timeline-line);
@@ -215,20 +272,6 @@
       transition: all 0.3s ease; display: flex; flex-direction: column; gap: 8px;
     }
     .project-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-
-    /* === CONTACT BTNS === */
-    .btn-contact-primary {
-      background: var(--accent); color: #fff; padding: 12px 24px; border-radius: 8px; 
-      display: inline-flex; align-items: center; gap: 8px; font-weight: 600;
-    }
-    .btn-contact-outline {
-      border: 1px solid var(--timeline-line); color: var(--text-main); padding: 12px 24px; border-radius: 8px;
-      display: inline-flex; align-items: center; gap: 8px; font-weight: 600;
-    }
-
-    /* === ANIMATIONS === */
-    .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
 
     /* === MOBILE === */
     @media (max-width: 900px) {
@@ -242,10 +285,12 @@
       .nav-link { flex-direction: column; padding: 6px; font-size: 10px; gap: 4px; }
       .nav-link:hover { transform: none; background: transparent; }
       
-      main { margin-left: 0; width: 100%; padding: 20px 20px 100px; }
-      .hero-card { padding: 40px 20px; border-radius: 24px; }
-      .hero-title { font-size: 32px; }
-      .avatar-container { width: 140px; height: 140px; }
+      main { margin-left: 0; width: 100%; }
+      .content-wrapper { padding: 60px 20px 120px; }
+      
+      .hero-title { font-size: 36px; }
+      .geo-globe { width: 300px; height: 300px; }
+      .data-point { display: none; } /* Hide floating details on mobile */
     }
   </style>
 </head>
@@ -272,182 +317,196 @@
   </aside>
 
   <main>
-    <div class="container">
+    
+    <section id="home" class="hero-section">
+      <div class="hero-bg-grid"></div>
 
-      <section id="home" class="reveal">
-        <div class="hero-card">
-          <div class="avatar-container">
-            <div class="avatar-glow"></div>
-            <div class="avatar">
-              <img src="assets/images/photo_fei.png" alt="Sami Bennane">
+      <div class="geo-globe">
+        <div class="globe-ring ring-1"></div>
+        <div class="globe-ring ring-2"></div>
+        <div class="globe-ring ring-3"></div>
+        <div class="globe-ring ring-4"></div>
+      </div>
+
+      <div class="hero-content">
+        
+        <div class="data-point dp-1">
+          <span class="status-dot"></span> AI_STRATEGY_INIT
+        </div>
+        <div class="data-point dp-2">
+          <span class="status-dot"></span> GLOBAL_EMBEDDED_NET
+        </div>
+
+        <div class="hero-avatar">
+          <img src="assets/images/photo_fei.png" alt="Sami Bennane">
+        </div>
+
+        <h1 class="hero-title">Sami Bennane</h1>
+        <p class="hero-subtitle">Engineering Student @ Mines Saint-Étienne <br> AI • Embedded Systems • Innovation</p>
+
+        <div class="hero-btns">
+          <a href="#portfolio" class="btn-hero btn-white">
+             View Work <i class="ph ph-caret-down"></i>
+          </a>
+          <a href="#contact" class="btn-hero btn-trans">
+             Contact Me
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div class="content-wrapper">
+      <div class="container">
+
+        <section id="about">
+          <h2>About Me</h2>
+          <p>I am an engineering student at <strong>Mines Saint-Étienne</strong>, passionate about bridging the gap between hardware and artificial intelligence. My focus is on building scalable embedded systems and secure architectures.</p>
+        </section>
+
+        <section id="education">
+          <h2><i class="ph ph-graduation-cap" style="color:var(--accent)"></i> Education</h2>
+          <div class="timeline">
+            <div class="timeline-item">
+              <span class="timeline-dot"></span>
+              <span class="t-date">2024 - 2027</span>
+              <div class="t-title">Diplôme d'Ingénieur (MSc)</div>
+              <div class="t-company">Mines Saint-Étienne</div>
+              <div class="t-desc">Major in AI, Embedded & Secure Systems. Rank: Top 10% (GPA 3.8/4.0). Focus: IoT, Cryptography.</div>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-dot"></span>
+              <span class="t-date">2022 - 2024</span>
+              <div class="t-title">CPGE - MPSI / PSI</div>
+              <div class="t-company">Lycée Pasteur (Neuilly-sur-Seine)</div>
+              <div class="t-desc">Intensive preparatory program for French "Grandes Écoles". Focus on Advanced Mathematics & Physics.</div>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-dot"></span>
+              <span class="t-date">2019 - 2022</span>
+              <div class="t-title">French Baccalaureate</div>
+              <div class="t-company">Lycée Lucie Aubrac</div>
+              <div class="t-desc">Scientific Track with Highest Honors (Mention Très Bien).</div>
             </div>
           </div>
+        </section>
 
-          <h1 class="hero-title">Sami Bennane</h1>
-          <p class="hero-subtitle">Engineering Student @ Mines Saint-Étienne <br> AI • Embedded Systems • Innovation</p>
+        <section id="experience">
+          <h2><i class="ph ph-briefcase" style="color:var(--accent)"></i> Experience</h2>
+          <div class="timeline">
+            <div class="timeline-item">
+              <span class="timeline-dot"></span>
+              <span class="t-date">Oct 2025 - Present</span>
+              <div class="t-title">Academic Tutor</div>
+              <div class="t-company">ECOLE SPORT ENTREPRENDRE</div>
+              <div class="t-desc">Math & Physics tutoring for elite athletes (rugby, handball, boxing).</div>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-dot"></span>
+              <span class="t-date">Jul 2025 (1 mo)</span>
+              <div class="t-title">IT Asset Assistant</div>
+              <div class="t-company">Informatique CDC</div>
+              <div class="t-desc">Tracking of IT assets and hardware infrastructure monitoring.</div>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-dot"></span>
+              <span class="t-date">Jan 2025 (1 mo)</span>
+              <div class="t-title">Cloud Intern</div>
+              <div class="t-company">CDC Informatique</div>
+              <div class="t-desc">Data migration (Lift-and-Shift) to internal cloud.</div>
+            </div>
+          </div>
+        </section>
 
-          <div class="hero-btns">
-            <a href="#portfolio" class="btn-hero-primary">View My Work <i class="ph ph-arrow-down"></i></a>
-            <a href="#contact" class="btn-hero-outline">Contact Me</a>
+        <section id="volunteering">
+          <h2><i class="ph ph-heart" style="color:var(--accent)"></i> Volunteering</h2>
+          <div class="timeline">
+            <div class="timeline-item">
+              <span class="timeline-dot"></span>
+              <span class="t-date">Apr 2025 - Present</span>
+              <div class="t-title">Corporate Relations Officer</div>
+              <div class="t-company">Forum Entreprises Ingénieur</div>
+              <div class="t-desc">Outreach and relationship management with companies.</div>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-dot"></span>
+              <span class="t-date">Mar 2025 - Present</span>
+              <div class="t-title">Football Team Manager</div>
+              <div class="t-company">BDS - Mines Saint-Étienne</div>
+              <div class="t-desc">Coordinating team activities and fostering cohesion.</div>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-dot"></span>
+              <span class="t-date">Feb 2025 - Jun 2025</span>
+              <div class="t-title">Volunteer</div>
+              <div class="t-company">École des XV</div>
+              <div class="t-desc">Supporting students facing academic challenges in Marseille.</div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="about" class="reveal">
-        <h2>About Me</h2>
-        <p>I am an engineering student at <strong>Mines Saint-Étienne</strong>, passionate about bridging the gap between hardware and artificial intelligence. My focus is on building scalable embedded systems and secure architectures.</p>
-      </section>
+        <section id="languages">
+          <h2><i class="ph ph-translate" style="color:var(--accent)"></i> Languages</h2>
+          <div class="lang-grid">
+            
+            <div class="lang-item">
+              <div class="lang-header"><span>French</span><span class="lang-level">Native</span></div>
+              <div class="progress-track"><div class="progress-fill" style="width: 100%;"></div></div>
+            </div>
+            <div class="lang-item">
+              <div class="lang-header"><span>English</span><span class="lang-level">Full Professional</span></div>
+              <div class="progress-track"><div class="progress-fill" style="width: 90%;"></div></div>
+            </div>
+            <div class="lang-item">
+              <div class="lang-header"><span>German</span><span class="lang-level">Limited Working</span></div>
+              <div class="progress-track"><div class="progress-fill" style="width: 50%;"></div></div>
+            </div>
+            <div class="lang-item">
+              <div class="lang-header"><span>Spanish</span><span class="lang-level">Limited Working</span></div>
+              <div class="progress-track"><div class="progress-fill" style="width: 50%;"></div></div>
+            </div>
+            <div class="lang-item">
+              <div class="lang-header"><span>Arabic</span><span class="lang-level">Limited Working</span></div>
+              <div class="progress-track"><div class="progress-fill" style="width: 50%;"></div></div>
+            </div>
 
-      <section id="education" class="reveal">
-        <h2><i class="ph ph-graduation-cap" style="color:var(--accent)"></i> Education</h2>
-        <div class="timeline">
-          <div class="timeline-item">
-            <span class="timeline-dot"></span>
-            <span class="t-date">2024 - 2027</span>
-            <div class="t-title">Diplôme d'Ingénieur (MSc)</div>
-            <div class="t-company">Mines Saint-Étienne</div>
-            <div class="t-desc">Major in AI, Embedded & Secure Systems. Rank: Top 10% (GPA 3.8/4.0). Focus: IoT, Cryptography.</div>
           </div>
-          <div class="timeline-item">
-            <span class="timeline-dot"></span>
-            <span class="t-date">2022 - 2024</span>
-            <div class="t-title">CPGE - MPSI / PSI</div>
-            <div class="t-company">Lycée Pasteur (Neuilly-sur-Seine)</div>
-            <div class="t-desc">Intensive preparatory program for French "Grandes Écoles". Focus on Advanced Mathematics & Physics.</div>
-          </div>
-          <div class="timeline-item">
-            <span class="timeline-dot"></span>
-            <span class="t-date">2019 - 2022</span>
-            <div class="t-title">French Baccalaureate</div>
-            <div class="t-company">Lycée Lucie Aubrac</div>
-            <div class="t-desc">Scientific Track with Highest Honors (Mention Très Bien).</div>
-          </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="experience" class="reveal">
-        <h2><i class="ph ph-briefcase" style="color:var(--accent)"></i> Experience</h2>
-        <div class="timeline">
-          <div class="timeline-item">
-            <span class="timeline-dot"></span>
-            <span class="t-date">Oct 2025 - Present</span>
-            <div class="t-title">Academic Tutor</div>
-            <div class="t-company">ECOLE SPORT ENTREPRENDRE</div>
-            <div class="t-desc">Math & Physics tutoring for elite athletes (rugby, handball, boxing).</div>
-          </div>
-          <div class="timeline-item">
-            <span class="timeline-dot"></span>
-            <span class="t-date">Jul 2025 (1 mo)</span>
-            <div class="t-title">IT Asset Assistant</div>
-            <div class="t-company">Informatique CDC</div>
-            <div class="t-desc">Tracking of IT assets and hardware infrastructure monitoring.</div>
-          </div>
-          <div class="timeline-item">
-            <span class="timeline-dot"></span>
-            <span class="t-date">Jan 2025 (1 mo)</span>
-            <div class="t-title">Cloud Intern</div>
-            <div class="t-company">CDC Informatique</div>
-            <div class="t-desc">Data migration (Lift-and-Shift) to internal cloud.</div>
-          </div>
-        </div>
-      </section>
-
-      <section id="volunteering" class="reveal">
-        <h2><i class="ph ph-heart" style="color:var(--accent)"></i> Volunteering</h2>
-        <div class="timeline">
-          <div class="timeline-item">
-            <span class="timeline-dot"></span>
-            <span class="t-date">Apr 2025 - Present</span>
-            <div class="t-title">Corporate Relations Officer</div>
-            <div class="t-company">Forum Entreprises Ingénieur</div>
-            <div class="t-desc">Outreach and relationship management with companies.</div>
-          </div>
-          <div class="timeline-item">
-            <span class="timeline-dot"></span>
-            <span class="t-date">Mar 2025 - Present</span>
-            <div class="t-title">Football Team Manager</div>
-            <div class="t-company">BDS - Mines Saint-Étienne</div>
-            <div class="t-desc">Coordinating team activities and fostering cohesion.</div>
-          </div>
-          <div class="timeline-item">
-            <span class="timeline-dot"></span>
-            <span class="t-date">Feb 2025 - Jun 2025</span>
-            <div class="t-title">Volunteer</div>
-            <div class="t-company">École des XV</div>
-            <div class="t-desc">Supporting students facing academic challenges in Marseille.</div>
-          </div>
-        </div>
-      </section>
-
-      <section id="languages" class="reveal">
-        <h2><i class="ph ph-translate" style="color:var(--accent)"></i> Languages</h2>
-        <div class="lang-grid">
-          
-          <div class="lang-item">
-            <div class="lang-header"><span>French</span><span class="lang-level">Native</span></div>
-            <div class="progress-track"><div class="progress-fill" style="width: 100%;"></div></div>
-          </div>
-          <div class="lang-item">
-            <div class="lang-header"><span>English</span><span class="lang-level">Full Professional</span></div>
-            <div class="progress-track"><div class="progress-fill" style="width: 90%;"></div></div>
-          </div>
-          <div class="lang-item">
-            <div class="lang-header"><span>German</span><span class="lang-level">Limited Working</span></div>
-            <div class="progress-track"><div class="progress-fill" style="width: 50%;"></div></div>
-          </div>
-          <div class="lang-item">
-            <div class="lang-header"><span>Spanish</span><span class="lang-level">Limited Working</span></div>
-            <div class="progress-track"><div class="progress-fill" style="width: 50%;"></div></div>
-          </div>
-          <div class="lang-item">
-            <div class="lang-header"><span>Arabic</span><span class="lang-level">Limited Working</span></div>
-            <div class="progress-track"><div class="progress-fill" style="width: 50%;"></div></div>
-          </div>
-
-        </div>
-      </section>
-
-      <section id="portfolio" class="reveal">
-        <h2><i class="ph ph-code" style="color:var(--accent)"></i> Selected Works</h2>
-        <div class="project-grid">
-          <a href="#" class="project-card">
-            <h3>🚁 AI Drone Project</h3>
-            <p>Autonomous drone navigation using computer vision and SLAM.</p>
-          </a>
-          <a href="#" class="project-card">
-            <h3>⚡ Smart Energy Monitor</h3>
-            <p>IoT device tracking real-time energy consumption.</p>
-          </a>
-        </div>
-      </section>
-
-      <section id="contact" class="reveal">
-        <h2>Contact</h2>
-        <div style="background: #fff; padding: 40px; border-radius: 16px; text-align: center; border:1px solid var(--timeline-line);">
-          <p style="margin-bottom: 30px; font-weight: 500;">Open to new opportunities.</p>
-          <div style="display: flex; gap: 15px; justify-content: center;">
-            <a href="mailto:sami.bennane@gmail.com" class="btn-contact-primary">
-              <i class="ph ph-envelope-simple"></i> Email Me
+        <section id="portfolio">
+          <h2><i class="ph ph-code" style="color:var(--accent)"></i> Selected Works</h2>
+          <div class="project-grid">
+            <a href="#" class="project-card">
+              <h3>🚁 AI Drone Project</h3>
+              <p>Autonomous drone navigation using computer vision and SLAM.</p>
             </a>
-            <a href="https://www.linkedin.com/in/sami-bennane-575380320" target="_blank" class="btn-contact-outline">
-              <i class="ph ph-linkedin-logo"></i> LinkedIn
+            <a href="#" class="project-card">
+              <h3>⚡ Smart Energy Monitor</h3>
+              <p>IoT device tracking real-time energy consumption.</p>
             </a>
           </div>
-        </div>
-      </section>
+        </section>
 
+        <section id="contact">
+          <h2>Contact</h2>
+          <div style="background: #fff; padding: 40px; border-radius: 16px; text-align: center; border:1px solid var(--timeline-line);">
+            <p style="margin-bottom: 30px; font-weight: 500;">Open to new opportunities.</p>
+            <div style="display: flex; gap: 15px; justify-content: center;">
+              <a href="mailto:sami.bennane@gmail.com" class="btn-contact-primary">
+                <i class="ph ph-envelope-simple"></i> Email Me
+              </a>
+              <a href="https://www.linkedin.com/in/sami-bennane-575380320" target="_blank" class="btn-contact-outline">
+                <i class="ph ph-linkedin-logo"></i> LinkedIn
+              </a>
+            </div>
+          </div>
+        </section>
+
+      </div>
     </div>
   </main>
 
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
-      });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
     const sections = document.querySelectorAll("section");
     const navLinks = document.querySelectorAll(".nav-link");
@@ -455,11 +514,23 @@
     window.addEventListener("scroll", () => {
       let current = "";
       sections.forEach(sec => {
-        if (pageYOffset >= (sec.offsetTop - 300)) current = sec.getAttribute("id");
+        // Ajustement pour la détection du Hero qui prend 100vh
+        const offset = sec.offsetTop;
+        if (pageYOffset >= (offset - 300)) current = sec.getAttribute("id");
       });
       navLinks.forEach(link => {
         link.classList.remove("active");
         if (link.getAttribute("href").includes(current)) link.classList.add("active");
+      });
+    });
+    
+    // Simple reveal script for languages bars
+    window.addEventListener('load', () => {
+      const bars = document.querySelectorAll('.progress-fill');
+      bars.forEach(bar => {
+         const width = bar.style.width;
+         bar.style.width = '0';
+         setTimeout(() => { bar.style.width = width; }, 500);
       });
     });
   </script>
