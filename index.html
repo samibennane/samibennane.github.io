@@ -16,10 +16,10 @@
 
   <style>
     :root {
-      /* Sidebar */
+      /* Sidebar Colors */
       --sidebar-text: #ffffff;
       
-      /* Main */
+      /* Main Colors */
       --main-bg: #ffffff;
       --hero-bg: #020617;
       
@@ -33,12 +33,19 @@
       --tech-purple: #8b5cf6;
       --timeline-line: #e5e7eb;
 
+      /* Dimensions Dynamiques (pour le toggle) */
       --sidebar-width: 280px;
       --container-width: 1000px;
       
       /* Transitions */
       --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
       --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
+      --transition-speed: 0.4s;
+    }
+
+    /* === ETAT RÉDUIT (COLLAPSED) === */
+    body.collapsed {
+      --sidebar-width: 88px; /* Largeur réduite */
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -57,58 +64,79 @@
     a { text-decoration: none; color: inherit; transition: 0.3s var(--ease-out); }
     ul { list-style: none; }
 
-    /* === SIDEBAR STYLISÉE (GLASSMORPHISM) === */
+    /* === SIDEBAR === */
     .sidebar {
       position: fixed; top: 0; left: 0; bottom: 0;
       width: var(--sidebar-width);
-      /* Fond sombre semi-transparent avec flou */
       background: rgba(15, 23, 42, 0.95); 
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-right: 1px solid rgba(255, 255, 255, 0.08);
       color: var(--sidebar-text);
       display: flex; flex-direction: column;
-      padding: 40px 25px; 
+      padding: 30px 20px; 
       z-index: 2000;
       box-shadow: 10px 0 30px rgba(0,0,0,0.2);
+      transition: width var(--transition-speed) var(--ease-out);
+      overflow: hidden; /* Important pour cacher le texte */
     }
 
-    /* Logo avec effet de lueur */
+    /* Bouton Toggle (Rabattre) */
+    .sidebar-toggle {
+      position: absolute;
+      top: 20px; right: 20px;
+      background: transparent;
+      border: none;
+      color: rgba(255,255,255,0.5);
+      cursor: pointer;
+      font-size: 24px;
+      transition: 0.3s;
+      z-index: 10;
+    }
+    .sidebar-toggle:hover { color: #fff; transform: scale(1.1); }
+    
+    /* Ajustement bouton toggle quand réduit */
+    body.collapsed .sidebar-toggle { right: 50%; transform: translateX(50%); }
+
+    /* Brand / Logo */
     .brand {
       display: flex; flex-direction: column; align-items: center; 
-      gap: 15px; margin-bottom: 40px; text-align: center;
-      opacity: 0; animation: fadeInDown 0.8s 0.2s forwards;
+      gap: 15px; margin-top: 40px; margin-bottom: 40px; text-align: center;
+      transition: all var(--transition-speed);
+      /* Pas d'animation d'entrée sur le logo pour éviter bug visuel au resize */
     }
     
     .brand-logo { 
       width: 90px; height: 90px; border-radius: 50%; 
-      object-fit: cover; 
-      padding: 3px;
-      /* Bordure dégradée */
+      object-fit: cover; padding: 3px;
       background: linear-gradient(135deg, var(--tech-cyan), var(--tech-purple)); 
       box-shadow: 0 0 25px rgba(79, 70, 229, 0.3);
-      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: all var(--transition-speed);
     }
-    .brand:hover .brand-logo { transform: rotate(10deg) scale(1.1); box-shadow: 0 0 40px rgba(6, 182, 212, 0.4); }
-
+    
     .brand-name { 
       font-weight: 800; font-size: 1.4rem; letter-spacing: -0.5px; 
       background: linear-gradient(to right, #fff, #94a3b8);
       -webkit-background-clip: text; color: transparent;
+      transition: opacity 0.2s;
+      white-space: nowrap;
     }
 
+    /* Comportement quand réduit */
+    body.collapsed .brand-logo { width: 50px; height: 50px; margin-bottom: 10px; }
+    body.collapsed .brand-name { opacity: 0; pointer-events: none; position: absolute; } /* Cache le nom */
+
     /* Navigation */
-    .nav { display: flex; flex-direction: column; gap: 8px; opacity: 0; animation: fadeIn 1s 0.4s forwards; flex: 1; }
+    .nav { display: flex; flex-direction: column; gap: 8px; flex: 1; }
     
     .nav-link {
       display: flex; align-items: center; gap: 16px; padding: 12px 20px;
       color: #94a3b8; border-radius: 12px;
-      font-weight: 500; font-size: 0.95rem; transition: all 0.3s ease;
-      position: relative; overflow: hidden;
-      border: 1px solid transparent;
+      font-weight: 500; font-size: 0.95rem; 
+      transition: all 0.3s ease;
+      white-space: nowrap; /* Empêche le texte de passer à la ligne */
     }
 
-    /* Hover Effect */
     .nav-link:hover { 
       background: rgba(255,255,255,0.03); 
       color: #fff; 
@@ -116,10 +144,9 @@
       transform: translateX(5px);
     }
     
-    .nav-link i { font-size: 20px; transition: 0.3s; color: #64748b; }
+    .nav-link i { font-size: 24px; transition: 0.3s; color: #64748b; flex-shrink: 0; }
     .nav-link:hover i { color: var(--tech-cyan); transform: scale(1.1); text-shadow: 0 0 10px var(--tech-cyan); }
 
-    /* Active State */
     .nav-link.active { 
       background: linear-gradient(90deg, rgba(79, 70, 229, 0.15) 0%, transparent 100%);
       color: #fff; 
@@ -129,33 +156,22 @@
     }
     .nav-link.active i { color: var(--accent); }
 
-    /* Bouton Resume en bas de sidebar */
-    .sidebar-resume-btn {
-      margin-top: auto;
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      padding: 14px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 16px;
-      color: #cbd5e1; font-weight: 600;
-      transition: 0.3s;
-      text-decoration: none;
-    }
-    .sidebar-resume-btn:hover {
-      background: rgba(255,255,255,0.1);
-      border-color: var(--tech-cyan);
-      color: #fff;
-      transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    }
+    /* Nav quand réduit */
+    body.collapsed .nav-link { justify-content: center; padding: 14px 0; }
+    body.collapsed .nav-link span { opacity: 0; width: 0; display: none; }
+    body.collapsed .nav-link:hover { transform: none; background: rgba(255,255,255,0.1); }
 
-    .sidebar-footer { margin-top: 20px; font-size: 0.75rem; color: rgba(255,255,255,0.2); text-align: center; }
+    /* Footer sidebar */
+    .sidebar-footer { margin-top: 20px; font-size: 0.75rem; color: rgba(255,255,255,0.2); text-align: center; white-space: nowrap; transition: opacity 0.3s; }
+    body.collapsed .sidebar-footer { opacity: 0; }
 
     /* === MAIN WRAPPER === */
     main {
       margin-left: var(--sidebar-width);
       width: calc(100% - var(--sidebar-width));
-      padding: 0; display: flex; flex-direction: column;
+      padding: 0; 
+      display: flex; flex-direction: column;
+      transition: margin-left var(--transition-speed) var(--ease-out), width var(--transition-speed) var(--ease-out);
     }
 
     /* === HERO SECTION === */
@@ -427,9 +443,9 @@
     @media (max-width: 900px) {
       .sidebar { width: 100%; height: auto; top: auto; bottom: 0; flex-direction: row; justify-content: space-between; padding: 10px 20px; }
       .brand, .sidebar-footer { display: none; }
+      .sidebar-toggle { display: none; } /* On cache le toggle sur mobile car la nav change */
       .nav { flex-direction: row; width: 100%; justify-content: space-between; animation: none; opacity: 1; }
       .nav-link { flex-direction: column; padding: 6px; font-size: 10px; gap: 4px; }
-      .sidebar-resume-btn { display: none; } /* Cache le gros bouton resume sur mobile */
       main { margin-left: 0; width: 100%; }
       .content-wrapper { padding: 60px 20px 120px; }
       .hero-title { font-size: 36px; }
@@ -444,7 +460,12 @@
 
 <body>
 
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar">
+    
+    <button class="sidebar-toggle" id="sidebarToggle">
+      <i class="ph ph-list"></i>
+    </button>
+
     <div class="brand">
       <img src="assets/images/b3n.png" alt="B3N Logo" class="brand-logo">
       <span class="brand-name">Sami Bennane</span>
@@ -460,10 +481,6 @@
       <a href="#essays" class="nav-link"><i class="ph ph-article"></i><span>Analysis</span></a>
       <a href="#contact" class="nav-link"><i class="ph ph-paper-plane-tilt"></i><span>Contact</span></a>
     </nav>
-
-    <a href="assets/docs/resume_en.pdf" download class="sidebar-resume-btn">
-      <i class="ph ph-download-simple"></i> Download Resume
-    </a>
 
     <div class="sidebar-footer">© <span id="year"></span> Sami Bennane</div>
   </aside>
@@ -694,6 +711,21 @@
 
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Toggle Sidebar
+    const toggleBtn = document.getElementById('sidebarToggle');
+    const toggleIcon = toggleBtn.querySelector('i');
+    
+    toggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('collapsed');
+      
+      // Change icon direction/style
+      if(document.body.classList.contains('collapsed')) {
+        toggleIcon.classList.replace('ph-list', 'ph-caret-right');
+      } else {
+        toggleIcon.classList.replace('ph-caret-right', 'ph-list');
+      }
+    });
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
