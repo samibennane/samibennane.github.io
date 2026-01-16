@@ -23,7 +23,7 @@
       
       /* Main Content */
       --main-bg: #ffffff;
-      --hero-bg: #020617; /* Fond très sombre pour le Hero */
+      --hero-bg: #020617;
       
       --text-main: #111827;
       --text-secondary: #4b5563;
@@ -55,20 +55,45 @@
     a { text-decoration: none; color: inherit; transition: 0.2s ease; }
     ul { list-style: none; }
 
-    /* === SIDEBAR (Fixe à gauche) === */
+    /* === SIDEBAR (Modifiée) === */
     .sidebar {
       position: fixed; top: 0; left: 0; bottom: 0;
       width: var(--sidebar-width);
       background: var(--sidebar-bg-grad);
       color: var(--sidebar-text);
       display: flex; flex-direction: column;
-      padding: 40px 30px; z-index: 2000; /* Au-dessus de tout */
+      padding: 40px 30px; z-index: 2000;
       box-shadow: 4px 0 30px rgba(0,0,0,0.3);
       border-right: 1px solid rgba(255,255,255,0.05);
     }
 
-    .brand { display: flex; align-items: center; gap: 15px; margin-bottom: 60px; font-weight: 700; font-size: 1.2rem; }
-    .brand-logo { width: 42px; height: 42px; background: rgba(255,255,255,0.15); border-radius: 10px; padding: 6px; object-fit: contain; }
+    /* Logo B3N + Nom en dessous */
+    .brand {
+      display: flex; 
+      flex-direction: column; /* Empilement vertical */
+      align-items: center; 
+      justify-content: center;
+      gap: 15px; 
+      margin-bottom: 50px; 
+      text-align: center;
+    }
+    
+    .brand-logo { 
+      width: 80px; /* Logo plus grand */
+      height: 80px; 
+      border-radius: 50%; 
+      object-fit: cover; /* S'assure que l'image remplit bien le cercle */
+      background: #fff; /* Fond blanc pour faire ressortir le logo si transparent */
+      padding: 2px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.2);
+    }
+
+    .brand-name {
+      font-weight: 700; 
+      font-size: 1.25rem; 
+      letter-spacing: -0.5px;
+      color: #fff;
+    }
 
     .nav { display: flex; flex-direction: column; gap: 12px; }
     .nav-link {
@@ -80,21 +105,20 @@
     .nav-link.active { background: #fff; color: var(--accent); font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
     .nav-link i { font-size: 20px; }
     
-    .sidebar-footer { margin-top: auto; font-size: 0.8rem; color: rgba(255,255,255,0.4); }
+    .sidebar-footer { margin-top: auto; font-size: 0.8rem; color: rgba(255,255,255,0.4); text-align: center; }
 
     /* === MAIN WRAPPER === */
     main {
       margin-left: var(--sidebar-width);
       width: calc(100% - var(--sidebar-width));
-      /* Padding 0 pour que le Hero colle aux bords */
       padding: 0; 
       display: flex; flex-direction: column;
     }
 
-    /* === HERO SECTION (IMMERSIVE & GEOPOLITICS) === */
+    /* === HERO SECTION (IMMERSIVE) === */
     .hero-section {
       position: relative;
-      height: 100vh; /* Prend tout l'écran */
+      height: 100vh;
       width: 100%;
       background-color: var(--hero-bg);
       display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -103,7 +127,6 @@
       color: #fff;
     }
 
-    /* Grille de fond (Cyber Grid) */
     .hero-bg-grid {
       position: absolute; inset: 0;
       background-image: 
@@ -114,27 +137,18 @@
       z-index: 1;
     }
 
-    /* === ANIMATION GLOBE TERRESTRE (CSS ONLY) === */
+    /* === GLOBE 3D CSS === */
     .geo-globe {
-      position: absolute;
-      width: 600px; height: 600px;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-      opacity: 0.15;
-      z-index: 0;
-      perspective: 1000px;
-      pointer-events: none;
+      position: absolute; width: 600px; height: 600px;
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      border-radius: 50%; opacity: 0.15; z-index: 0;
+      perspective: 1000px; pointer-events: none;
     }
-
     .globe-ring {
-      position: absolute;
-      border: 1px solid var(--tech-cyan);
-      border-radius: 50%;
-      top: 0; left: 0; right: 0; bottom: 0;
+      position: absolute; border: 1px solid var(--tech-cyan);
+      border-radius: 50%; top: 0; left: 0; right: 0; bottom: 0;
       box-shadow: 0 0 30px rgba(6, 182, 212, 0.2);
     }
-
     .ring-1 { animation: rotate1 20s linear infinite; }
     .ring-2 { width: 80%; height: 80%; top: 10%; left: 10%; animation: rotate2 25s linear infinite reverse; border-color: var(--accent); }
     .ring-3 { width: 60%; height: 60%; top: 20%; left: 20%; animation: rotate1 30s linear infinite; border-style: dashed; }
@@ -146,27 +160,43 @@
     /* === HERO CONTENT === */
     .hero-content {
       position: relative; z-index: 10;
-      display: flex; flex-direction: column; align-items: center;
-      gap: 20px;
+      display: flex; flex-direction: column; align-items: center; gap: 20px;
     }
 
-    /* Badges "Data" Flottants */
-    .data-point {
+    /* WIDGETS HUD (Stylés) */
+    .tech-widget {
       position: absolute;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 6px 12px;
-      border-radius: 4px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--tech-cyan);
-      display: flex; align-items: center; gap: 6px;
-      animation: floatData 4s infinite ease-in-out;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-left: 3px solid var(--tech-cyan);
+      padding: 12px 16px; border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace; color: #fff;
+      display: flex; flex-direction: column; gap: 6px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      z-index: 5; animation: floatWidget 6s ease-in-out infinite;
+      min-width: 140px; text-align: left;
     }
-    .dp-1 { top: -80px; right: -120px; animation-delay: 0s; }
-    .dp-2 { bottom: -60px; left: -140px; animation-delay: 2s; color: var(--tech-purple); }
+    .tw-left { top: 25%; left: 15%; animation-delay: 0s; border-left-color: var(--tech-cyan); }
+    .tw-right { 
+      bottom: 25%; right: 15%; animation-delay: 3s; 
+      border-left: 1px solid rgba(255,255,255,0.1); border-right: 3px solid var(--tech-purple);
+      text-align: right; align-items: flex-end;
+    }
+    .tw-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+    .tw-data { font-size: 0.95rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; }
+    
+    .processing-bar { display: flex; gap: 3px; height: 10px; align-items: flex-end; }
+    .bar { width: 3px; background-color: var(--tech-cyan); animation: equalize 1s infinite ease-in-out; }
+    .bar:nth-child(1) { height: 60%; animation-delay: 0s; }
+    .bar:nth-child(2) { height: 100%; animation-delay: 0.2s; }
+    .bar:nth-child(3) { height: 40%; animation-delay: 0.4s; }
 
-    .status-dot { width: 6px; height: 6px; background: currentColor; border-radius: 50%; box-shadow: 0 0 10px currentColor; }
+    .coordinate-text::after { content: " [LOCKED]"; animation: blinkText 2s infinite; color: var(--tech-purple); }
+
+    @keyframes equalize { 0%, 100% { height: 40%; } 50% { height: 100%; } }
+    @keyframes blinkText { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    @keyframes floatWidget { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
     /* Avatar Hero */
     .hero-avatar {
@@ -178,49 +208,28 @@
       backdrop-filter: blur(10px);
       margin-bottom: 20px;
     }
-    .hero-avatar img {
-      width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
-    }
+    .hero-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 
     .hero-title {
-      font-size: clamp(48px, 6vw, 72px);
-      font-weight: 800;
-      letter-spacing: -2px;
+      font-size: clamp(48px, 6vw, 72px); font-weight: 800; letter-spacing: -2px;
       background: linear-gradient(135deg, #fff 30%, #94a3b8 100%);
       -webkit-background-clip: text; color: transparent;
-      margin: 0;
-      text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      margin: 0; text-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
-
-    .hero-subtitle {
-      font-size: 1.25rem;
-      color: #cbd5e1;
-      font-weight: 300;
-      max-width: 600px;
-    }
+    .hero-subtitle { font-size: 1.25rem; color: #cbd5e1; font-weight: 300; max-width: 600px; }
     
     .hero-btns { margin-top: 30px; display: flex; gap: 16px; }
-
     .btn-hero {
       padding: 14px 32px; border-radius: 100px; font-weight: 600;
       transition: 0.3s; display: flex; align-items: center; gap: 8px;
     }
     .btn-white { background: #fff; color: #000; }
     .btn-white:hover { box-shadow: 0 0 20px rgba(255,255,255,0.4); transform: translateY(-2px); }
-    
     .btn-trans { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
     .btn-trans:hover { background: rgba(255,255,255,0.2); }
 
-    @keyframes floatData { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-
-
-    /* === CONTENT WRAPPER (WHITE) === */
-    .content-wrapper {
-      padding: 100px 60px;
-      background: var(--main-bg);
-      position: relative;
-    }
-
+    /* === CONTENT AREA (WHITE) === */
+    .content-wrapper { padding: 100px 60px; background: var(--main-bg); position: relative; }
     .container { max-width: var(--container-width); margin: 0 auto; }
     section { margin-bottom: 120px; scroll-margin-top: 100px; }
 
@@ -230,34 +239,25 @@
     }
     h2::after { content: ""; flex: 1; height: 1px; background: var(--timeline-line); max-width: 200px; }
 
-    /* === TIMELINE STYLE === */
+    /* Timeline */
     .timeline { position: relative; padding-left: 20px; }
-    .timeline::before {
-      content: ''; position: absolute; left: 0; top: 10px; bottom: 0;
-      width: 2px; background: var(--timeline-line); border-radius: 2px;
-    }
+    .timeline::before { content: ''; position: absolute; left: 0; top: 10px; bottom: 0; width: 2px; background: var(--timeline-line); border-radius: 2px; }
     .timeline-item { position: relative; padding-left: 40px; margin-bottom: 50px; }
-    .timeline-item:last-child { margin-bottom: 0; }
-    
     .timeline-dot {
-      position: absolute; left: -5px; top: 8px;
-      width: 12px; height: 12px;
-      background: #fff; border: 3px solid var(--accent);
-      border-radius: 50%; z-index: 2; transition: 0.3s;
+      position: absolute; left: -5px; top: 8px; width: 12px; height: 12px;
+      background: #fff; border: 3px solid var(--accent); border-radius: 50%; z-index: 2; transition: 0.3s;
     }
     .timeline-item:hover .timeline-dot { background: var(--accent); transform: scale(1.3); }
-
     .t-date {
       display: inline-block; font-size: 0.85rem; font-weight: 700;
-      color: var(--accent); text-transform: uppercase;
-      margin-bottom: 4px; background: rgba(79, 70, 229, 0.06);
-      padding: 4px 10px; border-radius: 4px;
+      color: var(--accent); text-transform: uppercase; margin-bottom: 4px; 
+      background: rgba(79, 70, 229, 0.06); padding: 4px 10px; border-radius: 4px;
     }
     .t-title { font-size: 1.25rem; font-weight: 700; color: var(--text-main); margin-bottom: 2px; }
     .t-company { font-size: 1rem; font-weight: 500; color: #374151; margin-bottom: 8px; }
     .t-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; }
 
-    /* === OTHER SECTIONS === */
+    /* Skills & Projects */
     .lang-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
     .lang-item { display: flex; flex-direction: column; gap: 6px; }
     .lang-header { display: flex; justify-content: space-between; font-weight: 600; font-size: 0.95rem; }
@@ -268,29 +268,36 @@
     .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
     .project-card {
       background: #fff; border: 1px solid var(--timeline-line);
-      border-radius: 16px; padding: 24px;
-      transition: all 0.3s ease; display: flex; flex-direction: column; gap: 8px;
+      border-radius: 16px; padding: 24px; transition: all 0.3s ease; 
+      display: flex; flex-direction: column; gap: 8px;
     }
     .project-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
 
-    /* === MOBILE === */
+    /* Contact */
+    .btn-contact-primary {
+      background: var(--accent); color: #fff; padding: 12px 24px; border-radius: 8px; 
+      display: inline-flex; align-items: center; gap: 8px; font-weight: 600;
+    }
+    .btn-contact-outline {
+      border: 1px solid var(--timeline-line); color: var(--text-main); padding: 12px 24px; border-radius: 8px;
+      display: inline-flex; align-items: center; gap: 8px; font-weight: 600;
+    }
+
+    /* Mobile */
     @media (max-width: 900px) {
       .sidebar {
         width: 100%; height: auto; top: auto; bottom: 0;
-        flex-direction: row; justify-content: space-between;
-        padding: 10px 20px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        flex-direction: row; justify-content: space-between; padding: 10px 20px;
       }
       .brand, .sidebar-footer { display: none; }
       .nav { flex-direction: row; width: 100%; justify-content: space-between; }
       .nav-link { flex-direction: column; padding: 6px; font-size: 10px; gap: 4px; }
-      .nav-link:hover { transform: none; background: transparent; }
       
       main { margin-left: 0; width: 100%; }
       .content-wrapper { padding: 60px 20px 120px; }
-      
       .hero-title { font-size: 36px; }
       .geo-globe { width: 300px; height: 300px; }
-      .data-point { display: none; } /* Hide floating details on mobile */
+      .tech-widget { display: none; } /* Hide heavy widgets on mobile */
     }
   </style>
 </head>
@@ -299,8 +306,8 @@
 
   <aside class="sidebar">
     <div class="brand">
-      <img src="assets/images/b3n.png" alt="Logo" class="brand-logo">
-      <span>Sami Bennane</span>
+      <img src="assets/images/b3n.png" alt="B3N Logo" class="brand-logo">
+      <span class="brand-name">Sami Bennane</span>
     </div>
 
     <nav class="nav">
@@ -330,11 +337,25 @@
 
       <div class="hero-content">
         
-        <div class="data-point dp-1">
-          <span class="status-dot"></span> AI_STRATEGY_INIT
+        <div class="tech-widget tw-left">
+          <span class="tw-label">System Status</span>
+          <div class="tw-data">
+            AI_OPTIMIZED
+            <div class="processing-bar">
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+            </div>
+          </div>
+          <span class="tw-label" style="font-size:0.6rem; opacity:0.6;">Ping: 12ms</span>
         </div>
-        <div class="data-point dp-2">
-          <span class="status-dot"></span> GLOBAL_EMBEDDED_NET
+
+        <div class="tech-widget tw-right">
+          <span class="tw-label">Global Target</span>
+          <div class="tw-data coordinate-text">
+            45.43° N / 4.39° E
+          </div>
+          <span class="tw-label" style="font-size:0.6rem; opacity:0.6;">Secure Uplink Est.</span>
         </div>
 
         <div class="hero-avatar">
@@ -447,7 +468,6 @@
         <section id="languages">
           <h2><i class="ph ph-translate" style="color:var(--accent)"></i> Languages</h2>
           <div class="lang-grid">
-            
             <div class="lang-item">
               <div class="lang-header"><span>French</span><span class="lang-level">Native</span></div>
               <div class="progress-track"><div class="progress-fill" style="width: 100%;"></div></div>
@@ -468,7 +488,6 @@
               <div class="lang-header"><span>Arabic</span><span class="lang-level">Limited Working</span></div>
               <div class="progress-track"><div class="progress-fill" style="width: 50%;"></div></div>
             </div>
-
           </div>
         </section>
 
@@ -514,9 +533,7 @@
     window.addEventListener("scroll", () => {
       let current = "";
       sections.forEach(sec => {
-        // Ajustement pour la détection du Hero qui prend 100vh
-        const offset = sec.offsetTop;
-        if (pageYOffset >= (offset - 300)) current = sec.getAttribute("id");
+        if (pageYOffset >= (sec.offsetTop - 300)) current = sec.getAttribute("id");
       });
       navLinks.forEach(link => {
         link.classList.remove("active");
@@ -524,7 +541,7 @@
       });
     });
     
-    // Simple reveal script for languages bars
+    // Anim barres de langue
     window.addEventListener('load', () => {
       const bars = document.querySelectorAll('.progress-fill');
       bars.forEach(bar => {
