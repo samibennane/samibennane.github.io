@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sami Bennane — Portfolio</title>
 
-  <link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)">
-  <link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
-  <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap)" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   
-  <script src="[https://unpkg.com/@phosphor-icons/web](https://unpkg.com/@phosphor-icons/web)"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
   <link rel="icon" type="image/png" sizes="32x32" href="assets/images/b3n.png">
   <link rel="apple-touch-icon" href="assets/images/b3n.png">
@@ -101,7 +101,7 @@
     section { scroll-margin-top: 100px; }
 
     /* Animations */
-    .reveal { opacity: 1; transform: translateY(0); transition: 0.8s; } /* Default visible just in case */
+    .reveal { opacity: 1; transform: translateY(0); transition: 0.8s; }
     .reveal.hidden { opacity: 0; transform: translateY(30px); }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
@@ -130,7 +130,17 @@
     .card h3 { margin-top: 0; }
     .card p { color: var(--text-muted); line-height: 1.5; }
 
-    .avatar { width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--accent); overflow: hidden; margin-bottom: 20px; }
+    /* === MODIFICATION ICI : AVATAR PLUS GRAND === */
+    .avatar { 
+      width: 220px; /* Taille augmentée (était 120px) */
+      height: 220px; 
+      border-radius: 50%; 
+      border: 4px solid var(--accent); 
+      overflow: hidden; 
+      margin-bottom: 30px;
+      /* Ajout d'une lueur stylée derrière la photo */
+      box-shadow: 0 0 50px rgba(79, 107, 255, 0.25);
+    }
     .avatar img { width: 100%; height: 100%; object-fit: cover; }
     
     .hero { min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
@@ -149,6 +159,9 @@
       .nav-link i { font-size: 20px; }
       
       main { margin-left: 0; width: 100%; padding-bottom: 100px; }
+      
+      /* Ajustement mobile pour que ça ne soit pas trop énorme sur téléphone */
+      .avatar { width: 160px; height: 160px; }
     }
   </style>
 </head>
@@ -176,7 +189,7 @@
       <section id="home" class="hero reveal">
         <div class="avatar"><img src="assets/images/photo_fei.png" alt="Sami"></div>
         <h1>Sami <span class="accent-text">Bennane</span></h1>
-        <p style="color:var(--text-muted)">Engineering Student • AI • Embedded Systems</p>
+        <p style="color:var(--text-muted); font-size: 1.1em; max-width: 600px;">Engineering Student • AI • Embedded Systems</p>
         <div style="display:flex; gap:15px; justify-content:center;">
           <a href="#portfolio" class="btn">My Work</a>
           <a href="#contact" class="btn outline">Contact</a>
@@ -196,12 +209,12 @@
           <div class="card">
             <h3>Engineering Intern</h3>
             <p class="accent-text" style="font-size:0.9em">2023 - Present</p>
-            <p>Working on embedded systems and AI optimization.</p>
+            <p>Working on embedded solutions and optimizing neural networks for edge devices.</p>
           </div>
           <div class="card">
             <h3>Web Developer</h3>
             <p class="accent-text" style="font-size:0.9em">2022 - 2023</p>
-            <p>Full stack development with React & Node.js.</p>
+            <p>Full stack web development using React and Node.js for internal tooling.</p>
           </div>
         </div>
       </section>
