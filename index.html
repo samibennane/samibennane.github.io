@@ -36,7 +36,7 @@
       --timeline-line: #e5e7eb;
 
       --sidebar-width: 280px;
-      --container-width: 900px;
+      --container-width: 1000px; /* Un peu plus large pour accommoder l'image à côté */
       
       --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
       --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
@@ -238,55 +238,59 @@
     }
     h2::after { content: ""; flex: 1; height: 1px; background: var(--timeline-line); max-width: 200px; }
 
-    /* === TIMELINE AVEC IMAGES === */
-    .timeline { position: relative; padding-left: 0; }
-    /* Ligne décalée pour laisser la place aux logos */
-    .timeline::before { 
-      content: ''; position: absolute; left: 24px; top: 10px; bottom: 0; 
-      width: 2px; background: var(--timeline-line); border-radius: 2px; 
+    /* === SPLIT LAYOUT (EXPERIENCE) === */
+    .split-layout {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr; /* Texte un peu plus large que l'image */
+      gap: 50px;
+      align-items: start;
     }
+
+    /* Partie Image à droite */
+    .split-image-container {
+      position: sticky;
+      top: 100px; /* Reste visible si on scroll */
+      height: 400px;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      border: 1px solid rgba(0,0,0,0.05);
+      opacity: 0; transform: translateX(30px); /* Anim entrée */
+      transition: 0.8s var(--ease-out);
+    }
+    .split-image-container.visible { opacity: 1; transform: translateX(0); }
     
-    .timeline-item { 
-      position: relative; padding-left: 70px; margin-bottom: 50px; 
-      opacity: 0; transform: translateX(-20px); transition: all 0.6s var(--ease-out);
+    .split-image-container img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.6s;
     }
-    .timeline-item.visible { opacity: 1; transform: translateX(0); }
+    .split-image-container:hover img { transform: scale(1.05); }
+
+    /* Timeline dans le Split Layout */
+    .timeline { position: relative; padding-left: 20px; }
+    .timeline::before { content: ''; position: absolute; left: 0; top: 10px; bottom: 0; width: 2px; background: var(--timeline-line); border-radius: 2px; }
+    .timeline-item { position: relative; padding-left: 40px; margin-bottom: 50px; opacity: 0; transform: translateY(20px); transition: 0.6s; }
+    .timeline-item.visible { opacity: 1; transform: translateY(0); }
     
-    /* Logo dans la timeline (Remplace le dot) */
-    .t-logo {
-      position: absolute; left: 0; top: 0;
-      width: 50px; height: 50px;
-      background: #fff;
-      border: 1px solid var(--timeline-line);
-      border-radius: 12px; /* Carré arrondi style moderne */
-      padding: 4px;
-      z-index: 2;
-      object-fit: contain;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      transition: 0.3s;
+    .timeline-dot {
+      position: absolute; left: -5px; top: 8px; width: 12px; height: 12px;
+      background: #fff; border: 3px solid var(--accent); border-radius: 50%; z-index: 2; transition: 0.3s;
     }
-    .timeline-item:hover .t-logo { transform: scale(1.1); border-color: var(--accent); }
+    .timeline-item:hover .timeline-dot { background: var(--accent); transform: scale(1.5); box-shadow: 0 0 15px var(--accent); }
     
     .t-date {
       display: inline-block; font-size: 0.85rem; font-weight: 700;
       color: var(--accent); text-transform: uppercase; margin-bottom: 4px; 
       background: rgba(79, 70, 229, 0.06); padding: 4px 10px; border-radius: 4px;
-      transition: 0.3s;
     }
-    .timeline-item:hover .t-date { background: var(--accent); color: #fff; }
-
     .t-title { font-size: 1.25rem; font-weight: 700; color: var(--text-main); margin-bottom: 2px; }
     .t-company { font-size: 1rem; font-weight: 500; color: #374151; margin-bottom: 8px; }
     .t-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; }
 
     /* Skills */
     .lang-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-    .lang-item { 
-      display: flex; flex-direction: column; gap: 6px; 
-      opacity: 0; transform: translateY(20px); transition: all 0.6s var(--ease-out);
-    }
+    .lang-item { display: flex; flex-direction: column; gap: 6px; opacity: 0; transform: translateY(20px); transition: 0.6s; }
     .lang-item.visible { opacity: 1; transform: translateY(0); }
-
     .lang-header { display: flex; justify-content: space-between; font-weight: 600; font-size: 0.95rem; }
     .lang-level { color: var(--text-muted); font-size: 0.85rem; font-weight: 400; }
     .progress-track { width: 100%; height: 8px; background: #e2e8f0; border-radius: 10px; overflow: hidden; }
@@ -296,7 +300,7 @@
     .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
     .project-card {
       background: #fff; border: 1px solid var(--timeline-line);
-      border-radius: 16px; padding: 24px; transition: all 0.4s var(--ease-out); 
+      border-radius: 16px; padding: 24px; transition: 0.4s; 
       display: flex; flex-direction: column; gap: 8px; opacity: 0; transform: translateY(30px);
     }
     .project-card.visible { opacity: 1; transform: translateY(0); }
@@ -327,11 +331,7 @@
     @keyframes floatWidget { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
     @keyframes equalize { 0%, 100% { height: 40%; } 50% { height: 100%; } }
     @keyframes blinkText { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-    
-    @keyframes globeEnter {
-      0% { opacity: 0; transform: translate(30vw, 30vh) scale(0.4); }
-      100% { opacity: 0.15; transform: translate(-50%, -50%) scale(1); }
-    }
+    @keyframes globeEnter { 0% { opacity: 0; transform: translate(30vw, 30vh) scale(0.4); } 100% { opacity: 0.15; transform: translate(-50%, -50%) scale(1); } }
 
     .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s var(--ease-out); }
     .reveal.visible { opacity: 1; transform: translateY(0); }
@@ -346,7 +346,11 @@
       .content-wrapper { padding: 60px 20px 120px; }
       .hero-title { font-size: 36px; }
       .geo-globe { width: 300px; height: 300px; }
-      .tech-widget { display: none; } 
+      .tech-widget { display: none; }
+      
+      /* Mobile Split Fix */
+      .split-layout { grid-template-columns: 1fr; }
+      .split-image-container { display: none; } /* Cache l'image sur mobile pour pas prendre de place, ou mettre order:-1 */
     }
   </style>
 </head>
@@ -421,21 +425,21 @@
           <h2><i class="ph ph-graduation-cap" style="color:var(--accent)"></i> Education</h2>
           <div class="timeline">
             <div class="timeline-item">
-              <img src="assets/images/mines.png" alt="Mines" class="t-logo">
+              <span class="timeline-dot"></span>
               <span class="t-date">2024 - 2027</span>
               <div class="t-title">Diplôme d'Ingénieur (MSc)</div>
               <div class="t-company">Mines Saint-Étienne</div>
               <div class="t-desc">Major in AI, Embedded & Secure Systems. Rank: Top 10% (GPA 3.8/4.0). Focus: IoT, Cryptography.</div>
             </div>
             <div class="timeline-item" style="transition-delay: 0.1s;">
-              <img src="assets/images/pasteur.png" alt="Prepa" class="t-logo">
+              <span class="timeline-dot"></span>
               <span class="t-date">2022 - 2024</span>
               <div class="t-title">CPGE - MPSI / PSI</div>
               <div class="t-company">Lycée Pasteur (Neuilly-sur-Seine)</div>
               <div class="t-desc">Intensive preparatory program for French "Grandes Écoles". Focus on Advanced Mathematics & Physics.</div>
             </div>
             <div class="timeline-item" style="transition-delay: 0.2s;">
-              <img src="assets/images/lycee.png" alt="Bac" class="t-logo">
+              <span class="timeline-dot"></span>
               <span class="t-date">2019 - 2022</span>
               <div class="t-title">French Baccalaureate</div>
               <div class="t-company">Lycée Lucie Aubrac</div>
@@ -446,27 +450,34 @@
 
         <section id="experience" class="reveal">
           <h2><i class="ph ph-briefcase" style="color:var(--accent)"></i> Experience</h2>
-          <div class="timeline">
-            <div class="timeline-item">
-              <img src="assets/images/ese.png" alt="ESE" class="t-logo">
-              <span class="t-date">Oct 2025 - Present</span>
-              <div class="t-title">Academic Tutor</div>
-              <div class="t-company">ECOLE SPORT ENTREPRENDRE</div>
-              <div class="t-desc">Math & Physics tutoring for elite athletes (rugby, handball, boxing).</div>
+          
+          <div class="split-layout">
+            <div class="timeline">
+              <div class="timeline-item">
+                <span class="timeline-dot"></span>
+                <span class="t-date">Oct 2025 - Present</span>
+                <div class="t-title">Academic Tutor</div>
+                <div class="t-company">ECOLE SPORT ENTREPRENDRE</div>
+                <div class="t-desc">Math & Physics tutoring for elite athletes (rugby, handball, boxing).</div>
+              </div>
+              <div class="timeline-item" style="transition-delay: 0.1s;">
+                <span class="timeline-dot"></span>
+                <span class="t-date">Jul 2025 (1 mo)</span>
+                <div class="t-title">IT Asset Assistant</div>
+                <div class="t-company">Informatique CDC</div>
+                <div class="t-desc">Tracking of IT assets and hardware infrastructure monitoring.</div>
+              </div>
+              <div class="timeline-item" style="transition-delay: 0.2s;">
+                <span class="timeline-dot"></span>
+                <span class="t-date">Jan 2025 (1 mo)</span>
+                <div class="t-title">Cloud Intern</div>
+                <div class="t-company">CDC Informatique</div>
+                <div class="t-desc">Data migration (Lift-and-Shift) to internal cloud.</div>
+              </div>
             </div>
-            <div class="timeline-item" style="transition-delay: 0.1s;">
-              <img src="assets/images/icdc.png" alt="ICDC" class="t-logo">
-              <span class="t-date">Jul 2025 (1 mo)</span>
-              <div class="t-title">IT Asset Assistant</div>
-              <div class="t-company">Informatique CDC</div>
-              <div class="t-desc">Tracking of IT assets and hardware infrastructure monitoring.</div>
-            </div>
-            <div class="timeline-item" style="transition-delay: 0.2s;">
-              <img src="assets/images/icdc.png" alt="ICDC" class="t-logo">
-              <span class="t-date">Jan 2025 (1 mo)</span>
-              <div class="t-title">Cloud Intern</div>
-              <div class="t-company">CDC Informatique</div>
-              <div class="t-desc">Data migration (Lift-and-Shift) to internal cloud.</div>
+
+            <div class="split-image-container">
+              <img src="assets/images/icdc.png" alt="Experience Illustration">
             </div>
           </div>
         </section>
@@ -475,21 +486,21 @@
           <h2><i class="ph ph-heart" style="color:var(--accent)"></i> Volunteering</h2>
           <div class="timeline">
             <div class="timeline-item">
-              <img src="assets/images/forum.png" alt="Forum" class="t-logo">
+              <span class="timeline-dot"></span>
               <span class="t-date">Apr 2025 - Present</span>
               <div class="t-title">Corporate Relations Officer</div>
               <div class="t-company">Forum Entreprises Ingénieur</div>
               <div class="t-desc">Outreach and relationship management with companies.</div>
             </div>
             <div class="timeline-item" style="transition-delay: 0.1s;">
-              <img src="assets/images/bds.png" alt="BDS" class="t-logo">
+              <span class="timeline-dot"></span>
               <span class="t-date">Mar 2025 - Present</span>
               <div class="t-title">Football Team Manager</div>
               <div class="t-company">BDS - Mines Saint-Étienne</div>
               <div class="t-desc">Coordinating team activities and fostering cohesion.</div>
             </div>
             <div class="timeline-item" style="transition-delay: 0.2s;">
-              <img src="assets/images/ecolexv.png" alt="XV" class="t-logo">
+              <span class="timeline-dot"></span>
               <span class="t-date">Feb 2025 - Jun 2025</span>
               <div class="t-title">Volunteer</div>
               <div class="t-company">École des XV</div>
@@ -550,7 +561,7 @@
       });
     }, { threshold: 0.15 });
 
-    document.querySelectorAll('.reveal, .timeline-item, .project-card, .lang-item').forEach(el => observer.observe(el));
+    document.querySelectorAll('.reveal, .timeline-item, .project-card, .lang-item, .split-image-container').forEach(el => observer.observe(el));
 
     const sections = document.querySelectorAll("section");
     const navLinks = document.querySelectorAll(".nav-link");
