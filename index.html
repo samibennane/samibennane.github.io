@@ -110,6 +110,16 @@
     h2 { font-size: 32px; margin-bottom: 24px; border-bottom: 1px solid var(--card-border); padding-bottom: 10px; }
     
     .accent-text { color: var(--accent); }
+    .date-badge { 
+      font-size: 0.85em; 
+      font-family: monospace; 
+      color: var(--accent); 
+      background: rgba(79, 107, 255, 0.1);
+      padding: 4px 8px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
     
     .btn {
       display: inline-flex; align-items: center; gap: 8px;
@@ -125,23 +135,21 @@
       padding: 24px; background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: var(--radius-md); transition: 0.3s;
+      display: flex; flex-direction: column;
     }
     .card:hover { border-color: var(--text-muted); transform: translateY(-5px); }
-    .card h3 { margin-top: 0; }
-    .card p { color: var(--text-muted); line-height: 1.5; }
+    .card h3 { margin-top: 0; margin-bottom: 5px; font-size: 1.1rem; }
+    .card h4 { margin: 0 0 10px 0; font-size: 0.9rem; font-weight: 400; color: var(--text-muted); }
+    .card p { color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; margin-top: auto; }
 
-    /* === MODIFICATION TAILLE PHOTO === */
+    /* === AVATAR LARGE === */
     .avatar { 
-      /* Taille encore plus grande pour ordinateur */
       width: 300px; 
       height: 300px; 
-      
       border-radius: 50%; 
-      border: 5px solid var(--accent); /* Bordure un peu plus épaisse */
+      border: 5px solid var(--accent); 
       overflow: hidden; 
       margin-bottom: 30px;
-      
-      /* Lueur ajustée pour la grande taille */
       box-shadow: 0 0 60px rgba(79, 107, 255, 0.3);
     }
     .avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -163,7 +171,6 @@
       
       main { margin-left: 0; width: 100%; padding-bottom: 100px; }
       
-      /* Ajustement mobile : Plus grand ici aussi */
       .avatar { width: 200px; height: 200px; }
     }
   </style>
@@ -180,6 +187,7 @@
       <a href="#home" class="nav-link active"><i class="ph ph-house"></i><span>Home</span></a>
       <a href="#about" class="nav-link"><i class="ph ph-user"></i><span>About</span></a>
       <a href="#experience" class="nav-link"><i class="ph ph-briefcase"></i><span>Exp</span></a>
+      <a href="#volunteering" class="nav-link"><i class="ph ph-heart"></i><span>Vol.</span></a>
       <a href="#portfolio" class="nav-link"><i class="ph ph-code"></i><span>Work</span></a>
       <a href="#contact" class="nav-link"><i class="ph ph-envelope"></i><span>Contact</span></a>
     </nav>
@@ -210,14 +218,46 @@
         <h2>Experience</h2>
         <div class="grid">
           <div class="card">
-            <h3>Engineering Intern</h3>
-            <p class="accent-text" style="font-size:0.9em">2023 - Present</p>
-            <p>Working on embedded solutions and optimizing neural networks for edge devices.</p>
+            <span class="date-badge">Oct 2025 - Present</span>
+            <h3>Academic Tutor for Elite Athletes</h3>
+            <h4>ECOLE SPORT ENTREPRENDRE PAYS D AIX</h4>
+            <p>Provided mathematics and physics tutoring for elite athletes competing in rugby, handball, and boxing.</p>
           </div>
           <div class="card">
-            <h3>Web Developer</h3>
-            <p class="accent-text" style="font-size:0.9em">2022 - 2023</p>
-            <p>Full stack web development using React and Node.js for internal tooling.</p>
+            <span class="date-badge">Jul 2025 (1 mo)</span>
+            <h3>IT Asset Management Assistant</h3>
+            <h4>Informatique CDC</h4>
+            <p>Contributed to the management and tracking of IT assets, ensuring accurate monitoring of hardware infrastructure.</p>
+          </div>
+          <div class="card">
+            <span class="date-badge">Jan 2025 (1 mo)</span>
+            <h3>Cloud Computing Intern</h3>
+            <h4>CDC Informatique</h4>
+            <p>Data migration from on-premise to internal cloud (Lift-and-Shift) with a focus on performance optimization.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="volunteering" class="reveal hidden">
+        <h2>Volunteering</h2>
+        <div class="grid">
+          <div class="card">
+            <span class="date-badge">Apr 2025 - Present</span>
+            <h3>Corporate Relations Officer</h3>
+            <h4>Forum Entreprises Ingénieur - Mines St Etienne</h4>
+            <p>In charge of outreach and relationship management with companies, organizing a large-scale career forum.</p>
+          </div>
+          <div class="card">
+            <span class="date-badge">Mar 2025 - Present</span>
+            <h3>Football Team Manager</h3>
+            <h4>BDS - Mines de Saint-Etienne</h4>
+            <p>Responsible for coordinating team activities, managing organizational aspects and fostering team cohesion.</p>
+          </div>
+          <div class="card">
+            <span class="date-badge">Feb 2025 - Jun 2025</span>
+            <h3>Volunteer</h3>
+            <h4>École des XV</h4>
+            <p>Supported primary and middle school students facing academic and social challenges in Marseille.</p>
           </div>
         </div>
       </section>
@@ -248,10 +288,8 @@
   </main>
 
   <script>
-    // 1. Year Update
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // 2. ScrollSpy
     const sections = document.querySelectorAll("section");
     const navLinks = document.querySelectorAll(".nav-link");
 
@@ -266,7 +304,6 @@
       });
     });
 
-    // 3. Reveal Animation (Safe Mode)
     const reveals = document.querySelectorAll(".reveal");
     if ('IntersectionObserver' in window) {
       const observer = new IntersectionObserver((entries) => {
