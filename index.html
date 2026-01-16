@@ -2,234 +2,264 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sami Bennane | Portfolio</title>
 
   <style>
     :root {
-      --bg-dark: #050b1d;
-      --bg-light: #0b1538;
-      --indigo: #4f6cff;
-      --text-main: #e9ecff;
-      --text-muted: #aab1ff;
+      --bg-dark: #070b1f;
+      --bg-darker: #050816;
+      --primary: #5b6cff;
+      --primary-soft: #8f9bff;
+      --text-main: #ffffff;
+      --text-muted: #aab0ff;
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      font-family: "Inter", system-ui, sans-serif;
     }
 
     body {
-      background: radial-gradient(circle at top right, var(--bg-light), var(--bg-dark) 65%);
+      background: radial-gradient(circle at top right, #0f1a44, var(--bg-dark));
       color: var(--text-main);
-      line-height: 1.6;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    /* ---------- HERO ---------- */
-
-    .hero {
-      min-height: 100vh;
       display: flex;
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      width: 240px;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      background: linear-gradient(180deg, #060b2a, #030515);
+      padding: 40px 24px;
+    }
+
+    .sidebar nav a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      margin: 16px 0;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      font-size: 14px;
+      transition: color 0.2s ease;
+    }
+
+    .sidebar nav a:hover {
+      color: var(--primary);
+    }
+
+    /* ===== MAIN ===== */
+    main {
+      margin-left: 240px;
+      width: calc(100% - 240px);
+    }
+
+    section {
+      padding: 120px 80px;
+      min-height: 100vh;
+    }
+
+    h2 {
+      font-size: 36px;
+      margin-bottom: 24px;
+      color: var(--primary);
+    }
+
+    p {
+      max-width: 700px;
+      line-height: 1.6;
+      color: #d7dcff;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 40px 20px;
-    }
-
-    .hero-content {
       text-align: center;
-      max-width: 720px;
     }
 
-    .hero-photo {
-      width: 180px;
-      height: 180px;
+    .hero img {
+      width: 160px;
+      height: 160px;
       object-fit: cover;
       border-radius: 50%;
-      margin-bottom: 28px;
-      border: 3px solid rgba(255, 255, 255, 0.15);
+      border: 4px solid var(--primary);
+      margin-bottom: 32px;
     }
 
     .hero h1 {
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      font-weight: 800;
+      font-size: 56px;
       margin-bottom: 12px;
-      letter-spacing: -1px;
     }
 
     .hero h1 span {
-      color: var(--indigo);
+      color: var(--primary);
+    }
+
+    .hero h3 {
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-bottom: 24px;
     }
 
     .hero p {
-      font-size: 1.1rem;
-      color: var(--text-muted);
-      margin-bottom: 36px;
+      max-width: 640px;
     }
 
-    .btn {
+    /* ===== LISTS ===== */
+    ul {
+      list-style: none;
+    }
+
+    li {
+      margin-bottom: 12px;
+    }
+
+    .tag {
       display: inline-block;
-      padding: 14px 28px;
+      background: rgba(91,108,255,0.15);
+      color: var(--primary-soft);
+      padding: 6px 12px;
       border-radius: 999px;
-      background: var(--indigo);
-      color: white;
-      font-weight: 600;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 8px 30px rgba(79, 108, 255, 0.35);
+      margin: 6px 6px 0 0;
+      font-size: 13px;
     }
 
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 40px rgba(79, 108, 255, 0.45);
-    }
-
-    /* ---------- SECTIONS ---------- */
-
-    section {
-      padding: 100px 20px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    section h2 {
-      font-size: 2rem;
-      margin-bottom: 40px;
-      font-weight: 700;
-    }
-
-    /* ---------- ABOUT ---------- */
-
-    .about p {
-      max-width: 700px;
-      color: var(--text-muted);
-      font-size: 1.05rem;
-    }
-
-    /* ---------- PROJECTS ---------- */
-
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-    }
-
-    .project-card {
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: 16px;
-      padding: 24px;
-      transition: transform 0.25s ease, background 0.25s ease;
-    }
-
-    .project-card:hover {
-      transform: translateY(-6px);
-      background: rgba(255, 255, 255, 0.07);
-    }
-
-    .project-card h3 {
-      margin-bottom: 10px;
-      font-size: 1.1rem;
-    }
-
-    .project-card p {
-      font-size: 0.95rem;
-      color: var(--text-muted);
-    }
-
-    /* ---------- CONTACT ---------- */
-
-    .contact a {
-      display: inline-block;
-      margin-right: 20px;
-      font-weight: 600;
-      color: var(--indigo);
-    }
-
+    /* ===== FOOTER ===== */
     footer {
+      padding: 40px 80px;
       text-align: center;
-      padding: 40px 20px;
-      font-size: 0.85rem;
-      color: #7d84c4;
+      color: #7f88d9;
+    }
+
+    @media (max-width: 900px) {
+      .sidebar {
+        display: none;
+      }
+      main {
+        margin-left: 0;
+        width: 100%;
+      }
+      section {
+        padding: 80px 24px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-content">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <nav>
+      <a href="#home">HOME</a>
+      <a href="#about">ABOUT</a>
+      <a href="#certificates">CERTIFICATES</a>
+      <a href="#experience">EXPERIENCE</a>
+      <a href="#portfolio">PORTFOLIO</a>
+      <a href="#skills">SKILLS</a>
+      <a href="#conferences">CONFERENCES</a>
+      <a href="#contact">CONTACT</a>
+    </nav>
+  </aside>
 
-      <img
-        src="assets/images/photo_fei.png"
-        alt="Sami Bennane"
-        class="hero-photo"
-      />
+  <!-- MAIN CONTENT -->
+  <main>
 
+    <!-- HOME -->
+    <section id="home" class="hero">
+      <img src="assets/images/photo_fei.png" alt="Sami Bennane">
       <h1>Sami <span>Bennane</span></h1>
-      <p>Engineering Student · AI · Embedded Systems</p>
+      <h3>Engineering Student · AI · Embedded Systems</h3>
+      <p>
+        Engineering student at Mines Saint-Étienne, passionate about artificial intelligence,
+        embedded systems, and building impactful technical projects at the intersection
+        of software and hardware.
+      </p>
+    </section>
 
-      <a href="#projects" class="btn">View my work</a>
-    </div>
-  </section>
+    <!-- ABOUT -->
+    <section id="about">
+      <h2>About</h2>
+      <p>
+        I am an engineering student with a strong interest in AI, embedded systems,
+        and system-level design. I enjoy working on technically challenging projects
+        that combine theory and real-world applications.
+      </p>
+    </section>
 
-  <!-- ABOUT -->
-  <section class="about" id="about">
-    <h2>About</h2>
-    <p>
-      Engineering student with a strong interest in artificial intelligence,
-      embedded systems, and high-performance technologies. I enjoy building
-      concrete projects that bridge software and hardware, and I’m particularly
-      motivated by challenging, real-world problems.
-    </p>
-  </section>
+    <!-- CERTIFICATES -->
+    <section id="certificates">
+      <h2>Certificates</h2>
+      <ul>
+        <li>• AI & Machine Learning – Online Certificate</li>
+        <li>• Embedded Systems Fundamentals</li>
+        <li>• Cloud Computing & DevOps Basics</li>
+      </ul>
+    </section>
 
-  <!-- PROJECTS -->
-  <section class="projects" id="projects">
-    <h2>Projects</h2>
+    <!-- EXPERIENCE -->
+    <section id="experience">
+      <h2>Experience</h2>
+      <p>
+        Various academic and associative experiences including tutoring elite athletes,
+        technical projects in embedded systems, and organizational roles in student associations.
+      </p>
+    </section>
 
-    <div class="projects-grid">
-      <div class="project-card">
-        <h3>AI Task Planner</h3>
-        <p>
-          Intelligent task planning application using machine learning models
-          to estimate duration and optimize scheduling.
-        </p>
+    <!-- PORTFOLIO -->
+    <section id="portfolio">
+      <h2>Portfolio</h2>
+      <p>
+        Selected projects in AI, embedded systems, and software engineering.
+        (You will add real projects here.)
+      </p>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <h2>Skills</h2>
+      <div>
+        <span class="tag">Python</span>
+        <span class="tag">C / C++</span>
+        <span class="tag">Embedded Systems</span>
+        <span class="tag">AI / ML</span>
+        <span class="tag">Linux</span>
+        <span class="tag">Git</span>
+        <span class="tag">HTML / CSS</span>
       </div>
+    </section>
 
-      <div class="project-card">
-        <h3>Embedded Sensor Network</h3>
-        <p>
-          IoT system based on microcontrollers and LoRa communication for
-          low-power data transmission.
-        </p>
-      </div>
+    <!-- CONFERENCES -->
+    <section id="conferences">
+      <h2>Conferences</h2>
+      <p>
+        Participation in engineering forums, tech conferences, and professional events.
+      </p>
+    </section>
 
-      <div class="project-card">
-        <h3>Image Classification from Scratch</h3>
-        <p>
-          Custom neural network implementation without pre-trained models to
-          understand fundamental ML concepts.
-        </p>
-      </div>
-    </div>
-  </section>
+    <!-- CONTACT -->
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>
+        LinkedIn: <a href="#" style="color: var(--primary);">linkedin.com/in/sami-bennane</a><br>
+        Email: sami.bennane@email.com
+      </p>
+    </section>
 
-  <!-- CONTACT -->
-  <section class="contact" id="contact">
-    <h2>Contact</h2>
-    <a href="https://www.linkedin.com/" target="_blank">LinkedIn</a>
-    <a href="mailto:your.email@example.com">Email</a>
-  </section>
+    <footer>
+      © 2026 Sami Bennane · Portfolio
+    </footer>
 
-  <footer>
-    © 2026 Sami Bennane — Portfolio
-  </footer>
+  </main>
 
 </body>
 </html>
