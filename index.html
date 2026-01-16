@@ -17,11 +17,10 @@
   <style>
     :root {
       /* Sidebar */
-      --sidebar-bg: #4338ca;
       --sidebar-bg-grad: linear-gradient(180deg, #312e81 0%, #4338ca 100%);
       --sidebar-text: #ffffff;
       
-      /* Main Content */
+      /* Main */
       --main-bg: #ffffff;
       --hero-bg: #020617;
       
@@ -55,7 +54,7 @@
     a { text-decoration: none; color: inherit; transition: 0.2s ease; }
     ul { list-style: none; }
 
-    /* === SIDEBAR (Modifiée) === */
+    /* === SIDEBAR === */
     .sidebar {
       position: fixed; top: 0; left: 0; bottom: 0;
       width: var(--sidebar-width);
@@ -67,33 +66,16 @@
       border-right: 1px solid rgba(255,255,255,0.05);
     }
 
-    /* Logo B3N + Nom en dessous */
     .brand {
-      display: flex; 
-      flex-direction: column; /* Empilement vertical */
-      align-items: center; 
-      justify-content: center;
-      gap: 15px; 
-      margin-bottom: 50px; 
-      text-align: center;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 15px; margin-bottom: 50px; text-align: center;
     }
-    
     .brand-logo { 
-      width: 80px; /* Logo plus grand */
-      height: 80px; 
-      border-radius: 50%; 
-      object-fit: cover; /* S'assure que l'image remplit bien le cercle */
-      background: #fff; /* Fond blanc pour faire ressortir le logo si transparent */
-      padding: 2px;
+      width: 80px; height: 80px; border-radius: 50%; 
+      object-fit: cover; background: #fff; padding: 2px;
       box-shadow: 0 0 20px rgba(255,255,255,0.2);
     }
-
-    .brand-name {
-      font-weight: 700; 
-      font-size: 1.25rem; 
-      letter-spacing: -0.5px;
-      color: #fff;
-    }
+    .brand-name { font-weight: 700; font-size: 1.25rem; letter-spacing: -0.5px; color: #fff; }
 
     .nav { display: flex; flex-direction: column; gap: 12px; }
     .nav-link {
@@ -111,11 +93,10 @@
     main {
       margin-left: var(--sidebar-width);
       width: calc(100% - var(--sidebar-width));
-      padding: 0; 
-      display: flex; flex-direction: column;
+      padding: 0; display: flex; flex-direction: column;
     }
 
-    /* === HERO SECTION (IMMERSIVE) === */
+    /* === HERO SECTION === */
     .hero-section {
       position: relative;
       height: 100vh;
@@ -133,11 +114,11 @@
         linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
       background-size: 50px 50px;
-      mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+      mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
       z-index: 1;
     }
 
-    /* === GLOBE 3D CSS === */
+    /* GLOBE CSS */
     .geo-globe {
       position: absolute; width: 600px; height: 600px;
       top: 50%; left: 50%; transform: translate(-50%, -50%);
@@ -157,13 +138,7 @@
     @keyframes rotate1 { 0% { transform: rotateX(60deg) rotateZ(0deg); } 100% { transform: rotateX(60deg) rotateZ(360deg); } }
     @keyframes rotate2 { 0% { transform: rotateY(60deg) rotateZ(0deg); } 100% { transform: rotateY(60deg) rotateZ(360deg); } }
 
-    /* === HERO CONTENT === */
-    .hero-content {
-      position: relative; z-index: 10;
-      display: flex; flex-direction: column; align-items: center; gap: 20px;
-    }
-
-    /* WIDGETS HUD (Stylés) */
+    /* WIDGETS HUD - Positionnés par rapport à l'écran (gravitation) */
     .tech-widget {
       position: absolute;
       background: rgba(15, 23, 42, 0.65);
@@ -174,15 +149,26 @@
       font-family: 'JetBrains Mono', monospace; color: #fff;
       display: flex; flex-direction: column; gap: 6px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      z-index: 5; animation: floatWidget 6s ease-in-out infinite;
+      z-index: 5; 
       min-width: 140px; text-align: left;
+      /* Animation de flottaison */
+      animation: floatWidget 6s ease-in-out infinite;
     }
-    .tw-left { top: 25%; left: 15%; animation-delay: 0s; border-left-color: var(--tech-cyan); }
+
+    /* Positionnement éloigné de la photo */
+    .tw-left { 
+      top: 40%; left: 8%; /* Éloigné à gauche */
+      animation-delay: 0s; 
+      border-left-color: var(--tech-cyan); 
+    }
     .tw-right { 
-      bottom: 25%; right: 15%; animation-delay: 3s; 
-      border-left: 1px solid rgba(255,255,255,0.1); border-right: 3px solid var(--tech-purple);
+      top: 45%; right: 8%; /* Éloigné à droite */
+      animation-delay: 3s; 
+      border-left: 1px solid rgba(255,255,255,0.1); 
+      border-right: 3px solid var(--tech-purple);
       text-align: right; align-items: flex-end;
     }
+
     .tw-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
     .tw-data { font-size: 0.95rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; }
     
@@ -196,9 +182,18 @@
 
     @keyframes equalize { 0%, 100% { height: 40%; } 50% { height: 100%; } }
     @keyframes blinkText { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-    @keyframes floatWidget { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+    @keyframes floatWidget { 
+      0%, 100% { transform: translateY(0); } 
+      50% { transform: translateY(-15px); } 
+    }
 
-    /* Avatar Hero */
+    /* Hero Content Centré */
+    .hero-content {
+      position: relative; z-index: 10;
+      display: flex; flex-direction: column; align-items: center; gap: 20px;
+      /* Pas de largeur fixe pour éviter les collisions */
+    }
+
     .hero-avatar {
       width: 180px; height: 180px;
       border-radius: 50%;
@@ -228,7 +223,7 @@
     .btn-trans { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
     .btn-trans:hover { background: rgba(255,255,255,0.2); }
 
-    /* === CONTENT AREA (WHITE) === */
+    /* === CONTENT AREA === */
     .content-wrapper { padding: 100px 60px; background: var(--main-bg); position: relative; }
     .container { max-width: var(--container-width); margin: 0 auto; }
     section { margin-bottom: 120px; scroll-margin-top: 100px; }
@@ -297,7 +292,9 @@
       .content-wrapper { padding: 60px 20px 120px; }
       .hero-title { font-size: 36px; }
       .geo-globe { width: 300px; height: 300px; }
-      .tech-widget { display: none; } /* Hide heavy widgets on mobile */
+      
+      /* Sur mobile, on cache ou on réajuste les widgets */
+      .tech-widget { display: none; } 
     }
   </style>
 </head>
@@ -335,29 +332,28 @@
         <div class="globe-ring ring-4"></div>
       </div>
 
+      <div class="tech-widget tw-left">
+        <span class="tw-label">System Status</span>
+        <div class="tw-data">
+          AI_OPTIMIZED
+          <div class="processing-bar">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+        </div>
+        <span class="tw-label" style="font-size:0.6rem; opacity:0.6;">Ping: 12ms</span>
+      </div>
+
+      <div class="tech-widget tw-right">
+        <span class="tw-label">Global Target</span>
+        <div class="tw-data coordinate-text">
+          45.43° N / 4.39° E
+        </div>
+        <span class="tw-label" style="font-size:0.6rem; opacity:0.6;">Secure Uplink Est.</span>
+      </div>
+
       <div class="hero-content">
-        
-        <div class="tech-widget tw-left">
-          <span class="tw-label">System Status</span>
-          <div class="tw-data">
-            AI_OPTIMIZED
-            <div class="processing-bar">
-              <div class="bar"></div>
-              <div class="bar"></div>
-              <div class="bar"></div>
-            </div>
-          </div>
-          <span class="tw-label" style="font-size:0.6rem; opacity:0.6;">Ping: 12ms</span>
-        </div>
-
-        <div class="tech-widget tw-right">
-          <span class="tw-label">Global Target</span>
-          <div class="tw-data coordinate-text">
-            45.43° N / 4.39° E
-          </div>
-          <span class="tw-label" style="font-size:0.6rem; opacity:0.6;">Secure Uplink Est.</span>
-        </div>
-
         <div class="hero-avatar">
           <img src="assets/images/photo_fei.png" alt="Sami Bennane">
         </div>
