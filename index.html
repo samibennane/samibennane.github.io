@@ -3,156 +3,251 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Sami Bennane — Portfolio</title>
 
-  <!-- ===== FAVICON / LOGO ONGLET ===== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
   <link rel="icon" type="image/png" sizes="32x32" href="assets/images/b3n.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/images/b3n.png">
   <link rel="apple-touch-icon" href="assets/images/b3n.png">
 
   <style>
-    :root{
-      --bg0:#050814;
-      --bg1:#07102a;
-      --card: rgba(255,255,255,.06);
-      --border: rgba(255,255,255,.14);
-      --text:#e9efff;
-      --muted: rgba(233,239,255,.72);
-      --muted2: rgba(233,239,255,.55);
+    :root {
+      --bg-dark: #050814;
+      --bg-gradient: linear-gradient(180deg, rgba(5,8,20,0) 0%, rgba(5,8,20,1) 100%);
+      
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-hover: rgba(255, 255, 255, 0.08);
+      
+      --text-main: #e9efff;
+      --text-muted: #94a3b8;
+      
+      --accent: #4f6bff;
+      --accent-glow: rgba(79, 107, 255, 0.4);
+      --accent2: #8b5cff;
 
-      --accent:#4f6bff;
-      --accent2:#8b5cff;
+      --radius-sm: 12px;
+      --radius-md: 18px;
+      --radius-lg: 26px;
 
-      --radius: 18px;
-      --radius2: 26px;
-
-      --sidew: 280px;
-      --sidew-collapsed: 84px;
-      --maxw: 1060px;
-
-      --t: 260ms;
-      --e: cubic-bezier(.2,.9,.2,1);
+      --sidebar-w: 280px;
+      --max-w: 1000px;
+      
+      --trans: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      color:var(--text);
-      background:
-        radial-gradient(900px 520px at 65% 10%, rgba(79,107,255,.35), transparent 55%),
-        radial-gradient(900px 520px at 12% 85%, rgba(139,92,255,.22), transparent 55%),
-        linear-gradient(180deg, var(--bg0), var(--bg1) 65%, #040713);
-      min-height:100vh;
-      overflow-x:hidden;
+    * { box-sizing: border-box; }
+    
+    html { scroll-behavior: smooth; }
+    
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: var(--text-main);
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 15% 10%, rgba(79,107,255,0.15) 0%, transparent 40%),
+        radial-gradient(circle at 85% 60%, rgba(139,92,255,0.12) 0%, transparent 40%);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
     }
 
-    a{color:inherit;text-decoration:none}
-    .wrap{display:flex;min-height:100vh}
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; padding: 0; margin: 0; }
+
+    /* LAYOUT */
+    .wrap { display: flex; min-height: 100vh; }
 
     /* ===== SIDEBAR ===== */
-    .sidebar{
-      position:sticky;top:0;height:100vh;width:var(--sidew);
-      padding:22px 16px;
-      display:flex;flex-direction:column;gap:16px;
-      background:rgba(8,12,28,.6);
-      backdrop-filter:blur(14px);
-      border-right:1px solid rgba(255,255,255,.08);
+    .sidebar {
+      position: fixed; top: 0; left: 0;
+      height: 100vh; width: var(--sidebar-w);
+      padding: 30px 20px;
+      display: flex; flex-direction: column; gap: 20px;
+      background: rgba(5, 8, 20, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-right: 1px solid var(--card-border);
+      z-index: 100;
     }
 
-    .brand{
-      display:flex;align-items:center;gap:12px;
-      padding:12px;border-radius:14px;
+    .brand {
+      display: flex; align-items: center; gap: 14px;
+      padding: 10px 14px;
+      margin-bottom: 20px;
     }
 
-    /* LOGO SIDEBAR */
-    .brand-badge{
-      width:44px;height:44px;
-      border-radius:14px;
-      background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.12);
-      display:grid;place-items:center;
-      overflow:hidden;
+    .brand-badge {
+      width: 48px; height: 48px;
+      border-radius: var(--radius-sm);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      display: grid; place-items: center;
+      overflow: hidden;
     }
-    .brand-badge img{
-      width:100%;height:100%;
-      object-fit:contain;
-      padding:4px;
-    }
+    .brand-badge img { width: 100%; height: 100%; object-fit: cover; }
 
-    .brand-title b{display:block;font-size:14px}
-    .brand-title span{font-size:12px;color:var(--muted2)}
+    .brand-title b { display: block; font-size: 16px; font-weight: 700; letter-spacing: -0.5px; }
+    .brand-title span { font-size: 12px; color: var(--text-muted); font-weight: 400; }
 
-    .nav{display:flex;flex-direction:column;gap:6px}
-    .nav a{
-      padding:12px;border-radius:14px;
-      display:flex;gap:12px;align-items:center;
-      color:var(--muted);
-      transition:.25s;
+    .nav { display: flex; flex-direction: column; gap: 6px; }
+    .nav a {
+      padding: 12px 16px; border-radius: var(--radius-sm);
+      display: flex; gap: 14px; align-items: center;
+      color: var(--text-muted);
+      font-size: 14px; font-weight: 500;
+      transition: var(--trans);
+      border: 1px solid transparent;
     }
-    .nav a:hover,.nav a.active{
-      background:rgba(255,255,255,.06);
-      color:var(--text);
-    }
+    
+    .nav a i { font-size: 18px; transition: var(--trans); }
 
-    .ico{
-      width:34px;height:34px;
-      border-radius:12px;
-      background:rgba(255,255,255,.08);
-      display:grid;place-items:center;
+    /* Hover & Active States */
+    .nav a:hover {
+      background: var(--card-bg);
+      color: var(--text-main);
+      transform: translateX(4px);
     }
+    .nav a.active {
+      background: rgba(79, 107, 255, 0.1);
+      color: var(--accent);
+      border-color: rgba(79, 107, 255, 0.2);
+    }
+    .nav a.active i { color: var(--accent); }
 
-    .side-footer{margin-top:auto;font-size:12px;color:var(--muted2)}
+    .side-footer { margin-top: auto; font-size: 12px; color: var(--text-muted); padding-left: 14px; opacity: 0.6; }
 
     /* ===== MAIN ===== */
-    main{flex:1;padding:36px 26px;display:flex;justify-content:center}
-    .container{width:100%;max-width:var(--maxw);display:flex;flex-direction:column;gap:70px}
+    main {
+      flex: 1;
+      margin-left: var(--sidebar-w); /* Décale le contenu */
+      padding: 60px 40px;
+      display: flex; justify-content: center;
+    }
 
-    section{scroll-margin-top:20px}
-    .reveal{opacity:0;transform:translateY(18px);transition:.7s}
-    .reveal.visible{opacity:1;transform:none}
+    .container { width: 100%; max-width: var(--max-w); display: flex; flex-direction: column; gap: 100px; }
+
+    section { scroll-margin-top: 100px; }
+    
+    /* Animation d'apparition */
+    .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    h2 { font-size: 32px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+    h2::after { content:""; height: 1px; flex: 1; background: var(--card-border); max-width: 200px; }
 
     /* ===== HERO ===== */
-    .hero{min-height:80vh;display:flex;align-items:center;justify-content:center;text-align:center}
-    .hero-card{
-      max-width:860px;
-      padding:40px 26px;
-      border-radius:var(--radius2);
-      background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.1);
-      backdrop-filter:blur(14px);
+    .hero { min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+    
+    .avatar-wrapper {
+      position: relative;
+      width: 130px; height: 130px;
+      margin: 0 auto 24px;
+    }
+    
+    .avatar {
+      width: 100%; height: 100%; border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid rgba(255,255,255,0.1);
+      position: relative; z-index: 2;
+    }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    
+    /* Glow effect derrière l'avatar */
+    .avatar-wrapper::before {
+      content: ''; position: absolute; inset: -10px;
+      background: var(--accent);
+      filter: blur(40px); opacity: 0.4;
+      border-radius: 50%; z-index: 1;
     }
 
-    .avatar{
-      width:116px;height:116px;border-radius:50%;
-      margin:0 auto 14px;
-      overflow:hidden;
-      border:3px solid var(--accent);
-    }
-    .avatar img{width:100%;height:100%;object-fit:cover}
-
-    /* LOGO HERO */
-    .hero-logo{
-      width:64px;
-      margin:14px auto 0;
-      opacity:.85;
+    h1 { margin: 10px 0; font-size: clamp(42px, 5vw, 68px); font-weight: 800; letter-spacing: -2px; line-height: 1.1; }
+    .accent-text {
+      background: linear-gradient(135deg, #fff 10%, var(--accent) 100%);
+      -webkit-background-clip: text; color: transparent;
     }
 
-    h1{margin:10px 0;font-size:clamp(40px,4.5vw,62px)}
-    .accent{
-      background:linear-gradient(90deg,var(--accent),var(--accent2));
-      -webkit-background-clip:text;
-      color:transparent;
+    .hero p { font-size: 18px; color: var(--text-muted); max-width: 600px; margin: 0 auto 30px; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px;
+      background: var(--text-main); color: var(--bg-dark);
+      border-radius: 100px;
+      font-weight: 600; transition: var(--trans);
+    }
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px -5px rgba(255,255,255,0.3); }
+    .btn.outline { background: transparent; color: var(--text-main); border: 1px solid var(--card-border); }
+    .btn.outline:hover { background: var(--card-bg); border-color: var(--text-main); }
+    .btn-group { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* ===== CARDS (Experience & Projects) ===== */
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+
+    .card {
+      padding: 24px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      transition: var(--trans);
+    }
+    .card:hover {
+      background: var(--card-hover);
+      border-color: rgba(255,255,255,0.2);
+      transform: translateY(-5px);
     }
 
-    .subtitle{color:var(--muted);margin-bottom:18px}
+    .card h3 { margin: 0 0 8px; font-size: 18px; }
+    .card .date { font-size: 13px; color: var(--accent); margin-bottom: 12px; display: block; font-family: monospace; }
+    .card p { font-size: 14px; color: var(--text-muted); margin: 0; }
 
-    /* ===== SCRIPT HELPERS ===== */
-    @media(max-width:900px){
-      .sidebar{position:fixed}
-      main{padding-left:300px}
+    /* ===== SKILLS ===== */
+    .skills-wrapper { display: flex; flex-wrap: wrap; gap: 10px; }
+    .skill-tag {
+      padding: 8px 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 100px;
+      font-size: 13px; color: var(--text-muted);
+      transition: var(--trans);
+    }
+    .skill-tag:hover {
+      color: var(--accent); border-color: var(--accent); background: rgba(79, 107, 255, 0.1);
+    }
+
+    /* ===== MOBILE RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .sidebar {
+        top: auto; bottom: 0; left: 0;
+        width: 100%; height: auto;
+        flex-direction: row; justify-content: space-around;
+        padding: 12px;
+        border-right: none; border-top: 1px solid var(--card-border);
+        background: rgba(5, 8, 20, 0.95);
+      }
+
+      /* On cache le logo et le footer sur mobile pour gagner de la place */
+      .brand, .side-footer { display: none; }
+
+      .nav { flex-direction: row; width: 100%; justify-content: space-between; }
+      .nav a {
+        flex-direction: column; gap: 4px; padding: 8px;
+        font-size: 10px; border-radius: 8px;
+      }
+      .nav a:hover { transform: none; }
+      .nav a i { font-size: 20px; margin-bottom: 2px; }
+
+      main {
+        margin-left: 0;
+        padding: 40px 20px 100px 20px; /* Padding bottom pour la nav */
+      }
+      
+      .hero { min-height: 70vh; }
+      h1 { font-size: 42px; }
     }
   </style>
 </head>
@@ -160,78 +255,172 @@
 <body>
 <div class="wrap" id="app">
 
-  <!-- SIDEBAR -->
   <aside class="sidebar">
     <a class="brand" href="#home">
       <div class="brand-badge">
-        <img src="assets/images/b3n.png" alt="B3N Logo">
+        <img src="assets/images/b3n.png" alt="Logo">
       </div>
       <div class="brand-title">
         <b>Sami Bennane</b>
-        <span>AI • Embedded • Engineering</span>
+        <span>Engineering Student</span>
       </div>
     </a>
 
-    <nav class="nav" id="nav">
-      <a href="#home" class="active"><span class="ico">⌂</span>HOME</a>
-      <a href="#about"><span class="ico">👤</span>ABOUT</a>
-      <a href="#certificates"><span class="ico">🏅</span>CERTIFICATES</a>
-      <a href="#experience"><span class="ico">🧩</span>EXPERIENCE</a>
-      <a href="#portfolio"><span class="ico">🗂</span>PORTFOLIO</a>
-      <a href="#skills"><span class="ico">⚡</span>SKILLS</a>
-      <a href="#contact"><span class="ico">✉️</span>CONTACT</a>
+    <nav class="nav" id="nav-menu">
+      <a href="#home" class="nav-link active">
+        <i class="ph ph-house"></i>
+        <span>Home</span>
+      </a>
+      <a href="#about" class="nav-link">
+        <i class="ph ph-user"></i>
+        <span>About</span>
+      </a>
+      <a href="#experience" class="nav-link">
+        <i class="ph ph-briefcase"></i>
+        <span>Exp</span>
+      </a>
+      <a href="#portfolio" class="nav-link">
+        <i class="ph ph-code"></i>
+        <span>Work</span>
+      </a>
+      <a href="#skills" class="nav-link">
+        <i class="ph ph-lightning"></i>
+        <span>Skills</span>
+      </a>
+      <a href="#contact" class="nav-link">
+        <i class="ph ph-envelope-simple"></i>
+        <span>Contact</span>
+      </a>
     </nav>
 
-    <div class="side-footer">© <span id="y"></span> samibennane.com</div>
+    <div class="side-footer">© <span id="year"></span> S.Bennane</div>
   </aside>
 
-  <!-- MAIN -->
   <main>
     <div class="container">
 
-      <!-- HERO -->
       <section id="home" class="hero reveal visible">
-        <div class="hero-card">
+        <div class="avatar-wrapper">
           <div class="avatar">
             <img src="assets/images/photo_fei.png" alt="Sami Bennane">
           </div>
+        </div>
 
-          <!-- LOGO SOUS PHOTO -->
-          <img src="assets/images/b3n.png" class="hero-logo" alt="B3N Logo">
-
-          <h1>Sami <span class="accent">Bennane</span></h1>
-          <p class="subtitle">Engineering Student · AI · Embedded Systems</p>
+        <h1>Sami <span class="accent-text">Bennane</span></h1>
+        <p>Engineering Student at Mines Saint-Étienne <br> AI • Embedded Systems • Innovation</p>
+        
+        <div class="btn-group">
+          <a href="#portfolio" class="btn">View My Work <i class="ph ph-arrow-down"></i></a>
+          <a href="#contact" class="btn outline">Contact Me</a>
         </div>
       </section>
 
-      <!-- ABOUT -->
       <section id="about" class="reveal">
-        <h2>About</h2>
-        <p>
-          Engineering student at Mines Saint-Étienne, focused on AI, embedded systems,
-          and high-impact technical projects bridging software and hardware.
-        </p>
+        <h2>About Me</h2>
+        <div class="card">
+          <p style="font-size: 16px; line-height: 1.8;">
+            I am a passionate engineering student focused on the intersection of 
+            <strong style="color:#fff">Artificial Intelligence</strong> and <strong style="color:#fff">Hardware</strong>. 
+            Currently studying at Mines Saint-Étienne, I love building scalable systems and solving complex problems through code.
+          </p>
+        </div>
       </section>
 
-      <!-- (les autres sections restent inchangées, ton code est compatible) -->
+      <section id="experience" class="reveal">
+        <h2>Experience</h2>
+        <div class="grid">
+          <article class="card">
+            <span class="date">2023 - Present</span>
+            <h3>Engineering Intern</h3>
+            <p>Developing embedded solutions and optimizing neural networks for edge devices.</p>
+          </article>
+          <article class="card">
+            <span class="date">2022 - 2023</span>
+            <h3>Junior Developer</h3>
+            <p>Full stack web development using React and Node.js for internal tooling.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="portfolio" class="reveal">
+        <h2>Selected Works</h2>
+        <div class="grid">
+          <a href="#" class="card">
+            <h3>🤖 AI Drone Project</h3>
+            <p>Autonomous drone navigation system using computer vision and SLAM.</p>
+          </a>
+          <a href="#" class="card">
+            <h3>⚡ Smart Energy Monitor</h3>
+            <p>IoT device tracking real-time energy consumption with cloud dashboard.</p>
+          </a>
+        </div>
+      </section>
+
+      <section id="skills" class="reveal">
+        <h2>Technical Skills</h2>
+        <div class="skills-wrapper">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">C++ / Embedded C</span>
+          <span class="skill-tag">TensorFlow / PyTorch</span>
+          <span class="skill-tag">Linux</span>
+          <span class="skill-tag">Docker</span>
+          <span class="skill-tag">React.js</span>
+          <span class="skill-tag">Git & CI/CD</span>
+        </div>
+      </section>
+
+      <section id="contact" class="reveal" style="padding-bottom: 50px;">
+        <h2>Get in Touch</h2>
+        <div class="card" style="text-align: center; padding: 40px;">
+          <p>Open to new opportunities and collaborations.</p>
+          <br>
+          <a href="mailto:contact@samibennane.com" class="btn">Say Hello <i class="ph ph-paper-plane-right"></i></a>
+        </div>
+      </section>
 
     </div>
   </main>
 </div>
 
 <script>
-  document.getElementById("y").textContent = new Date().getFullYear();
+  // 1. Auto-update Year
+  document.getElementById("year").textContent = new Date().getFullYear();
 
+  // 2. Reveal on Scroll Animation
   const reveals = document.querySelectorAll(".reveal");
-  const io = new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        e.target.classList.add("visible");
-        io.unobserve(e.target);
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
       }
-    })
-  },{threshold:.15});
-  reveals.forEach(r=>io.observe(r));
+    });
+  }, { threshold: 0.1 });
+
+  reveals.forEach(r => revealObserver.observe(r));
+
+  // 3. ScrollSpy (Active Link Highlighting)
+  const sections = document.querySelectorAll("section");
+  const navLinks = document.querySelectorAll(".nav-link");
+
+  window.addEventListener("scroll", () => {
+    let current = "";
+    sections.forEach((section) => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.clientHeight;
+      // Ajustement de 150px pour le trigger
+      if (pageYOffset >= (sectionTop - 250)) {
+        current = section.getAttribute("id");
+      }
+    });
+
+    navLinks.forEach((link) => {
+      link.classList.remove("active");
+      if (link.getAttribute("href").includes(current)) {
+        link.classList.add("active");
+      }
+    });
+  });
 </script>
 </body>
 </html>
