@@ -7,7 +7,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
   
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
@@ -16,346 +16,544 @@
 
   <style>
     :root {
-      --bg-dark: #050814;
-      --card-bg: rgba(255, 255, 255, 0.03);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --card-hover: rgba(255, 255, 255, 0.12);
-      --text-main: #e9efff;
-      --text-muted: #94a3b8;
-      --accent: #4f6bff;
-      --radius-sm: 12px;
-      --radius-md: 18px;
-      --sidebar-w: 280px;
-      --max-w: 1000px;
+      /* Palette Sombre Premium */
+      --bg-color: #030305;
+      --surface-1: #0f1014;
+      --surface-2: #18191e;
+      --border: rgba(255, 255, 255, 0.06);
+      --border-hover: rgba(255, 255, 255, 0.15);
+      
+      --text-primary: #ffffff;
+      --text-secondary: #888b99;
+      --accent: #5c7cfa; /* Indigo vibrant */
+      --accent-glow: rgba(92, 124, 250, 0.3);
+
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      
+      --font-main: 'Inter', sans-serif;
+      --max-w: 1100px;
+      
+      --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
     }
 
-    /* Reset & Base */
-    * { box-sizing: border-box; }
+    /* === RESET & BASE === */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     html { scroll-behavior: smooth; }
+    
     body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      color: var(--text-main);
-      background-color: var(--bg-dark);
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      font-family: var(--font-main);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      line-height: 1.6;
+      /* Background subtil animé */
       background-image: 
-        radial-gradient(circle at 15% 10%, rgba(79,107,255,0.15) 0%, transparent 40%),
-        radial-gradient(circle at 85% 60%, rgba(139,92,255,0.12) 0%, transparent 40%);
-      min-height: 100vh;
+        radial-gradient(circle at 10% 0%, rgba(92,124,250,0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(120, 92, 250, 0.05) 0%, transparent 40%);
+      background-attachment: fixed;
     }
 
     a { text-decoration: none; color: inherit; transition: 0.3s; }
-    ul { list-style: none; padding: 0; margin: 0; }
+    ul { list-style: none; }
 
-    /* Layout */
-    .wrap { display: flex; min-height: 100vh; }
-    
-    /* Sidebar */
-    .sidebar {
-      position: fixed; top: 0; left: 0;
-      height: 100vh; width: var(--sidebar-w);
-      padding: 30px 20px;
-      display: flex; flex-direction: column; gap: 20px;
-      background: rgba(5, 8, 20, 0.8);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-right: 1px solid var(--card-border);
-      z-index: 999;
-    }
-
-    .brand { display: flex; align-items: center; gap: 14px; padding: 10px; margin-bottom: 20px; }
-    .brand-badge {
-      width: 48px; height: 48px;
-      border-radius: var(--radius-sm);
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden;
-    }
-    .brand-badge img { width: 100%; height: 100%; object-fit: cover; }
-    .brand-title b { display: block; font-size: 16px; }
-    .brand-title span { font-size: 12px; color: var(--text-muted); }
-
-    .nav { display: flex; flex-direction: column; gap: 6px; }
-    .nav-link {
-      padding: 12px 16px; border-radius: var(--radius-sm);
-      display: flex; gap: 14px; align-items: center;
-      color: var(--text-muted); font-size: 14px; font-weight: 500;
-    }
-    .nav-link:hover { background: var(--card-bg); color: var(--text-main); }
-    .nav-link.active {
-      background: rgba(79, 107, 255, 0.1); color: var(--accent);
-    }
-    .nav-link i { font-size: 18px; }
-
-    .side-footer { margin-top: auto; font-size: 12px; color: var(--text-muted); padding-left: 14px; opacity: 0.6; }
-
-    /* Main Content */
+    /* === LAYOUT === */
     main {
-      flex: 1;
-      margin-left: var(--sidebar-w);
-      padding: 60px 40px;
-      width: calc(100% - var(--sidebar-w));
+      padding: 120px 20px 160px; /* Padding bottom pour le dock */
+      max-width: var(--max-w);
+      margin: 0 auto;
+      min-height: 100vh;
     }
 
-    .container { max-width: var(--max-w); margin: 0 auto; display: flex; flex-direction: column; gap: 100px; }
-    section { scroll-margin-top: 100px; }
+    section { 
+      margin-bottom: 140px; 
+      scroll-margin-top: 100px; /* Pour que le scroll s'arrête au bon endroit */
+    }
 
-    /* Animations */
-    .reveal { opacity: 1; transform: translateY(0); transition: 0.8s; }
-    .reveal.hidden { opacity: 0; transform: translateY(30px); }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
+    /* === TYPOGRAPHY === */
+    h1 {
+      font-size: clamp(48px, 6vw, 80px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      background: linear-gradient(to bottom right, #fff, #a5a5a5);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
 
-    /* Components */
-    h1 { font-size: clamp(40px, 5vw, 64px); margin: 10px 0; letter-spacing: -2px; line-height: 1.1; }
-    h2 { font-size: 32px; margin-bottom: 24px; border-bottom: 1px solid var(--card-border); padding-bottom: 10px; }
-    
-    .accent-text { color: var(--accent); }
-    .date-badge { 
-      font-size: 0.85em; 
-      font-family: monospace; 
-      color: var(--accent); 
-      background: rgba(79, 107, 255, 0.1);
-      padding: 4px 8px;
-      border-radius: 6px;
-      display: inline-block;
-      margin-bottom: 12px;
+    h2 {
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
     
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 12px 28px; background: var(--text-main); color: var(--bg-dark);
-      border-radius: 100px; font-weight: 600; margin-top: 20px;
-      cursor: pointer;
-    }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,255,255,0.2); }
-    .btn.outline { background: transparent; color: var(--text-main); border: 1px solid var(--card-border); }
-    .btn.outline:hover { background: var(--card-bg); border-color: var(--text-main); }
+    h2 i { color: var(--accent); opacity: 0.8; }
 
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
-    
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+
+    .section-header {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+
+    /* === HERO SECTION === */
+    .hero {
+      min-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+    }
+
+    /* Avatar Ultra-Premium */
+    .avatar-container {
+      position: relative;
+      margin-bottom: 40px;
+    }
+    .avatar {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      /* Double border effect */
+      background: linear-gradient(var(--surface-1), var(--surface-1)) padding-box,
+                  linear-gradient(135deg, var(--accent), #a78bfa) border-box;
+      border: 4px solid transparent;
+      overflow: hidden;
+      box-shadow: 0 20px 80px -20px var(--accent-glow);
+      animation: float 6s ease-in-out infinite;
+    }
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.02); /* Petit zoom pour éviter les bords blancs */
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* === BENTO GRID SYSTEM === */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    /* Cartes Modernes */
     .card {
-      padding: 24px; background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius-md); transition: 0.3s;
-      display: flex; flex-direction: column;
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      transition: all 0.4s var(--ease-out);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
     }
-    .card:hover { border-color: var(--text-muted); transform: translateY(-5px); }
-    .card h3 { margin-top: 0; margin-bottom: 5px; font-size: 1.1rem; }
-    .card h4 { margin: 0 0 10px 0; font-size: 0.9rem; font-weight: 400; color: var(--text-muted); }
-    .card p { color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; margin-top: auto; }
 
-    /* === AVATAR LARGE === */
-    .avatar { 
-      width: 300px; 
-      height: 300px; 
-      border-radius: 50%; 
-      border: 5px solid var(--accent); 
-      overflow: hidden; 
-      margin-bottom: 30px;
-      box-shadow: 0 0 60px rgba(79, 107, 255, 0.3);
+    /* Effet hover sophistiqué */
+    .card:hover {
+      transform: translateY(-5px) scale(1.01);
+      border-color: var(--border-hover);
+      box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+      background: var(--surface-2);
     }
-    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      opacity: 0; transition: 0.4s;
+    }
+    .card:hover::before { opacity: 1; }
+
+    /* Contenu des cartes */
+    .card-date {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--accent);
+      margin-bottom: 12px;
+      display: inline-block;
+      padding: 6px 12px;
+      background: rgba(92, 124, 250, 0.1);
+      border-radius: 100px;
+      width: fit-content;
+    }
+
+    .card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+
+    .card h4 {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      font-weight: 400;
+      margin-bottom: 16px;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: #a1a1aa;
+      line-height: 1.6;
+    }
+
+    /* === NAVIGATION DOCK (STYLE MACOS) === */
+    .dock-wrapper {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      padding: 0 20px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .dock {
+      background: rgba(15, 16, 20, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 12px;
+      border-radius: 24px;
+      display: flex;
+      gap: 8px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    }
+
+    .dock-item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      color: var(--text-secondary);
+      border-radius: 16px;
+      transition: all 0.3s var(--ease-out);
+    }
+
+    .dock-item i { font-size: 24px; transition: 0.3s; }
     
-    .hero { min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+    .dock-item:hover {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      transform: translateY(-5px);
+    }
 
-    /* Mobile */
-    @media (max-width: 900px) {
-      .wrap { display: block; }
-      .sidebar {
-        top: auto; bottom: 0; width: 100%; height: auto;
-        flex-direction: row; justify-content: space-around;
-        padding: 12px; border-top: 1px solid var(--card-border);
-      }
-      .brand, .side-footer { display: none; }
-      .nav { flex-direction: row; width: 100%; justify-content: space-between; }
-      .nav-link { flex-direction: column; gap: 5px; font-size: 10px; padding: 8px; }
-      .nav-link i { font-size: 20px; }
-      
-      main { margin-left: 0; width: 100%; padding-bottom: 100px; }
-      
-      .avatar { width: 200px; height: 200px; }
+    .dock-item.active {
+      color: var(--accent);
+      background: rgba(92, 124, 250, 0.15);
+    }
+    
+    /* Tooltip simple */
+    .dock-item span {
+      position: absolute;
+      top: -40px;
+      background: var(--surface-2);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: 0.2s;
+      pointer-events: none;
+      white-space: nowrap;
+      border: 1px solid var(--border);
+    }
+    .dock-item:hover span { opacity: 1; transform: translateY(0); }
+
+    /* === BUTTONS === */
+    .btn-group {
+      display: flex;
+      gap: 16px;
+      margin-top: 30px;
+    }
+
+    .btn {
+      padding: 14px 32px;
+      border-radius: 100px;
+      font-weight: 600;
+      transition: 0.3s;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: #fff;
+      color: #000;
+      border: 1px solid #fff;
+    }
+    .btn-primary:hover {
+      background: #e2e2e2;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #fff;
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover {
+      border-color: #fff;
+      background: rgba(255,255,255,0.05);
+    }
+
+    /* === ANIMATIONS === */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s var(--ease-out);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* Stagger delay classes (générées via CSS ou JS, ici simplifiées) */
+    .delay-1 { transition-delay: 0.1s; }
+    .delay-2 { transition-delay: 0.2s; }
+    .delay-3 { transition-delay: 0.3s; }
+
+    /* === MOBILE === */
+    @media (max-width: 768px) {
+      h1 { font-size: 42px; }
+      .avatar { width: 220px; height: 220px; }
+      .bento-grid { grid-template-columns: 1fr; }
+      .dock { padding: 10px; gap: 4px; border-radius: 20px; }
+      .dock-item { width: 42px; height: 42px; }
+      .dock-item i { font-size: 20px; }
+      .dock-item span { display: none; } /* Pas de tooltip sur mobile */
     }
   </style>
 </head>
 
 <body>
 
-  <aside class="sidebar">
-    <a href="#home" class="brand">
-      <div class="brand-badge"><img src="assets/images/b3n.png" alt="Logo"></div>
-      <div class="brand-title"><b>Sami Bennane</b><span>Portfolio</span></div>
-    </a>
-    <nav class="nav">
-      <a href="#home" class="nav-link active"><i class="ph ph-house"></i><span>Home</span></a>
-      <a href="#about" class="nav-link"><i class="ph ph-user"></i><span>About</span></a>
-      <a href="#education" class="nav-link"><i class="ph ph-graduation-cap"></i><span>Edu</span></a>
-      <a href="#experience" class="nav-link"><i class="ph ph-briefcase"></i><span>Exp</span></a>
-      <a href="#volunteering" class="nav-link"><i class="ph ph-heart"></i><span>Vol.</span></a>
-      <a href="#portfolio" class="nav-link"><i class="ph ph-code"></i><span>Work</span></a>
-      <a href="#contact" class="nav-link"><i class="ph ph-envelope"></i><span>Contact</span></a>
+  <div class="dock-wrapper">
+    <nav class="dock">
+      <a href="#home" class="dock-item active" aria-label="Home">
+        <i class="ph ph-house"></i>
+        <span>Home</span>
+      </a>
+      <a href="#about" class="dock-item" aria-label="About">
+        <i class="ph ph-user"></i>
+        <span>About</span>
+      </a>
+      <a href="#education" class="dock-item" aria-label="Education">
+        <i class="ph ph-graduation-cap"></i>
+        <span>Edu</span>
+      </a>
+      <a href="#experience" class="dock-item" aria-label="Experience">
+        <i class="ph ph-briefcase"></i>
+        <span>Exp</span>
+      </a>
+      <a href="#volunteering" class="dock-item" aria-label="Volunteering">
+        <i class="ph ph-heart"></i>
+        <span>Vol</span>
+      </a>
+      <a href="#contact" class="dock-item" aria-label="Contact">
+        <i class="ph ph-paper-plane-tilt"></i>
+        <span>Contact</span>
+      </a>
     </nav>
-    <div class="side-footer">© <span id="year"></span> S.Bennane</div>
-  </aside>
+  </div>
 
   <main>
-    <div class="container">
+    
+    <section id="home" class="hero reveal">
+      <div class="avatar-container">
+        <div class="avatar">
+          <img src="assets/images/photo_fei.png" alt="Sami Bennane">
+        </div>
+      </div>
       
-      <section id="home" class="hero reveal">
-        <div class="avatar"><img src="assets/images/photo_fei.png" alt="Sami"></div>
-        <h1>Sami <span class="accent-text">Bennane</span></h1>
-        <p style="color:var(--text-muted); font-size: 1.1em; max-width: 600px;">Engineering Student • AI • Embedded Systems</p>
-        <div style="display:flex; gap:15px; justify-content:center;">
-          <a href="#portfolio" class="btn">My Work</a>
-          <a href="#contact" class="btn outline">Contact</a>
-        </div>
-      </section>
+      <h1>Sami Bennane</h1>
+      <p class="subtitle">Engineering Student @ Mines Saint-Étienne <br> AI • Embedded Systems • Innovation</p>
+      
+      <div class="btn-group">
+        <a href="#contact" class="btn btn-primary">Get in touch <i class="ph ph-arrow-right"></i></a>
+        <a href="#portfolio" class="btn btn-secondary">See work</a>
+      </div>
+    </section>
 
-      <section id="about" class="reveal hidden">
-        <h2>About Me</h2>
-        <div class="card">
-          <p>I am an engineering student at <strong>Mines Saint-Étienne</strong>, passionate about bridging the gap between hardware and artificial intelligence.</p>
-        </div>
-      </section>
+    <section id="about" class="reveal">
+      <div class="card">
+        <h2><i class="ph ph-user-circle"></i> About Me</h2>
+        <p style="font-size: 1.1rem; color: var(--text-secondary);">
+          I am an engineering student at <strong>Mines Saint-Étienne</strong>, passionate about bridging the gap between hardware and artificial intelligence. My focus is on building scalable embedded systems and secure architectures. I thrive in challenging environments where innovation meets technical rigor.
+        </p>
+      </div>
+    </section>
 
-      <section id="education" class="reveal hidden">
-        <h2>Education</h2>
-        <div class="grid">
-          <div class="card">
-            <span class="date-badge">2024 - 2027</span>
-            <h3>École des Mines de Saint-Étienne</h3>
-            <h4>Diplôme d'Ingénieur (Master of Science)</h4>
-            <p><strong>Major:</strong> AI, Embedded & Secure Systems.<br>
-            <strong>Rank:</strong> Top 10% (GPA 3.8/4.0).<br>
-            Focus on IoT, Computer Architecture, and Cryptography.</p>
-          </div>
-          <div class="card">
-            <span class="date-badge">2022 - 2024</span>
-            <h3>Lycée Pasteur (Neuilly-sur-Seine)</h3>
-            <h4>CPGE - MPSI / PSI</h4>
-            <p>Intensive preparatory program for French "Grandes Écoles".<br>
-            Focus on Advanced Mathematics, Physics and Engineering Sciences.</p>
-          </div>
-          <div class="card">
-            <span class="date-badge">2019 - 2022</span>
-            <h3>Lycée Lucie Aubrac</h3>
-            <h4>French Baccalaureate</h4>
-            <p>Scientific Track with <strong>Highest Honors</strong> (Mention Très Bien).<br>
-            Specializations in Mathematics & Physics-Chemistry.</p>
-          </div>
-        </div>
-      </section>
+    <section id="education">
+      <div class="section-header reveal">
+        <h2><i class="ph ph-graduation-cap"></i> Education</h2>
+      </div>
+      <div class="bento-grid">
+        <article class="card reveal delay-1">
+          <span class="card-date">2024 - 2027</span>
+          <h3>Mines Saint-Étienne</h3>
+          <h4>Diplôme d'Ingénieur (MSc)</h4>
+          <p>Major in AI, Embedded & Secure Systems. <br>Rank: Top 10% (GPA 3.8/4.0). Focus on IoT & Cryptography.</p>
+        </article>
+        <article class="card reveal delay-2">
+          <span class="card-date">2022 - 2024</span>
+          <h3>Lycée Pasteur</h3>
+          <h4>CPGE - MPSI / PSI</h4>
+          <p>Intensive preparatory program for French "Grandes Écoles". Focus on Advanced Mathematics & Physics.</p>
+        </article>
+        <article class="card reveal delay-3">
+          <span class="card-date">2019 - 2022</span>
+          <h3>Lycée Lucie Aubrac</h3>
+          <h4>Baccalaureate</h4>
+          <p>Scientific Track with Highest Honors (Mention Très Bien). Specializations in Math & Physics.</p>
+        </article>
+      </div>
+    </section>
 
-      <section id="experience" class="reveal hidden">
-        <h2>Experience</h2>
-        <div class="grid">
-          <div class="card">
-            <span class="date-badge">Oct 2025 - Present</span>
-            <h3>Academic Tutor for Elite Athletes</h3>
-            <h4>ECOLE SPORT ENTREPRENDRE PAYS D AIX</h4>
-            <p>Provided mathematics and physics tutoring for elite athletes competing in rugby, handball, and boxing.</p>
-          </div>
-          <div class="card">
-            <span class="date-badge">Jul 2025 (1 mo)</span>
-            <h3>IT Asset Management Assistant</h3>
-            <h4>Informatique CDC</h4>
-            <p>Contributed to the management and tracking of IT assets, ensuring accurate monitoring of hardware infrastructure.</p>
-          </div>
-          <div class="card">
-            <span class="date-badge">Jan 2025 (1 mo)</span>
-            <h3>Cloud Computing Intern</h3>
-            <h4>CDC Informatique</h4>
-            <p>Data migration from on-premise to internal cloud (Lift-and-Shift) with a focus on performance optimization.</p>
-          </div>
-        </div>
-      </section>
+    <section id="experience">
+      <div class="section-header reveal">
+        <h2><i class="ph ph-briefcase"></i> Experience</h2>
+      </div>
+      <div class="bento-grid">
+        <article class="card reveal delay-1">
+          <span class="card-date">Oct 2025 - Present</span>
+          <h3>Academic Tutor</h3>
+          <h4>École Sport Entreprendre</h4>
+          <p>Providing mathematics and physics tutoring for elite athletes (rugby, handball, boxing).</p>
+        </article>
+        <article class="card reveal delay-2">
+          <span class="card-date">Jul 2025 (1 mo)</span>
+          <h3>IT Asset Assistant</h3>
+          <h4>Informatique CDC</h4>
+          <p>Management and tracking of IT assets, ensuring accurate monitoring of infrastructure.</p>
+        </article>
+        <article class="card reveal delay-3">
+          <span class="card-date">Jan 2025 (1 mo)</span>
+          <h3>Cloud Intern</h3>
+          <h4>CDC Informatique</h4>
+          <p>Data migration (Lift-and-Shift) to internal cloud with focus on performance optimization.</p>
+        </article>
+      </div>
+    </section>
 
-      <section id="volunteering" class="reveal hidden">
-        <h2>Volunteering</h2>
-        <div class="grid">
-          <div class="card">
-            <span class="date-badge">Apr 2025 - Present</span>
-            <h3>Corporate Relations Officer</h3>
-            <h4>Forum Entreprises Ingénieur - Mines St Etienne</h4>
-            <p>In charge of outreach and relationship management with companies, organizing a large-scale career forum.</p>
-          </div>
-          <div class="card">
-            <span class="date-badge">Mar 2025 - Present</span>
-            <h3>Football Team Manager</h3>
-            <h4>BDS - Mines de Saint-Etienne</h4>
-            <p>Responsible for coordinating team activities, managing organizational aspects and fostering team cohesion.</p>
-          </div>
-          <div class="card">
-            <span class="date-badge">Feb 2025 - Jun 2025</span>
-            <h3>Volunteer</h3>
-            <h4>École des XV</h4>
-            <p>Supported primary and middle school students facing academic and social challenges in Marseille.</p>
-          </div>
-        </div>
-      </section>
+    <section id="volunteering">
+      <div class="section-header reveal">
+        <h2><i class="ph ph-heart"></i> Volunteering</h2>
+      </div>
+      <div class="bento-grid">
+        <article class="card reveal delay-1">
+          <span class="card-date">Apr 2025 - Present</span>
+          <h3>Corporate Relations</h3>
+          <h4>Forum Entreprises Ingénieur</h4>
+          <p>Outreach and relationship management with companies for a large-scale career forum.</p>
+        </article>
+        <article class="card reveal delay-2">
+          <span class="card-date">Mar 2025 - Present</span>
+          <h3>Team Manager</h3>
+          <h4>BDS - Football Team</h4>
+          <p>Coordinating team activities, managing organizational aspects and fostering cohesion.</p>
+        </article>
+        <article class="card reveal delay-3">
+          <span class="card-date">Feb 2025 - Jun 2025</span>
+          <h3>Volunteer</h3>
+          <h4>École des XV</h4>
+          <p>Supporting primary/middle school students facing academic challenges in Marseille.</p>
+        </article>
+      </div>
+    </section>
 
-      <section id="portfolio" class="reveal hidden">
-        <h2>Portfolio</h2>
-        <div class="grid">
-          <a href="#" class="card">
-            <h3>🚁 AI Drone</h3>
-            <p>Autonomous navigation using SLAM.</p>
+    <section id="contact" class="reveal">
+      <div class="card" style="text-align: center; padding: 60px 20px;">
+        <h2>Let's create something together</h2>
+        <p style="margin-bottom: 30px;">Feel free to reach out for collaborations or just a chat.</p>
+        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+          <a href="mailto:sami.bennane@gmail.com" class="btn btn-primary">
+            <i class="ph ph-envelope-simple"></i> sami.bennane@gmail.com
           </a>
-          <a href="#" class="card">
-            <h3>⚡ Energy Monitor</h3>
-            <p>IoT device for real-time tracking.</p>
+          <a href="https://www.linkedin.com/in/sami-bennane-575380320" target="_blank" class="btn btn-secondary">
+            <i class="ph ph-linkedin-logo"></i> LinkedIn
           </a>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section id="contact" class="reveal hidden">
-        <h2>Contact</h2>
-        <div class="card" style="text-align:center">
-          <p>Let's build something together.</p>
-          <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:20px;">
-            <a href="mailto:sami.bennane@gmail.com" class="btn outline">
-              <i class="ph ph-envelope-simple"></i> Email Me
-            </a>
-            <a href="https://www.linkedin.com/in/sami-bennane-575380320" target="_blank" class="btn outline">
-              <i class="ph ph-linkedin-logo"></i> LinkedIn
-            </a>
-          </div>
-        </div>
-      </section>
+    <footer style="text-align: center; color: var(--text-secondary); font-size: 0.9rem; padding-bottom: 20px;">
+      <p>&copy; <span id="year"></span> Sami Bennane. All rights reserved.</p>
+    </footer>
 
-    </div>
   </main>
 
   <script>
+    // 1. Year Update
     document.getElementById("year").textContent = new Date().getFullYear();
 
+    // 2. Intersection Observer pour les animations au scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: "0px 0px -50px 0px"
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target); // On joue l'animation une seule fois
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // 3. Active Link Handling for Dock
     const sections = document.querySelectorAll("section");
-    const navLinks = document.querySelectorAll(".nav-link");
+    const navLinks = document.querySelectorAll(".dock-item");
 
     window.addEventListener("scroll", () => {
       let current = "";
       sections.forEach(sec => {
-        if (pageYOffset >= (sec.offsetTop - 300)) current = sec.getAttribute("id");
+        const sectionTop = sec.offsetTop;
+        const sectionHeight = sec.clientHeight;
+        if (pageYOffset >= (sectionTop - 300)) {
+          current = sec.getAttribute("id");
+        }
       });
+
       navLinks.forEach(link => {
         link.classList.remove("active");
-        if (link.getAttribute("href").includes(current)) link.classList.add("active");
+        if (link.getAttribute("href").includes(current)) {
+          link.classList.add("active");
+        }
       });
     });
-
-    const reveals = document.querySelectorAll(".reveal");
-    if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.remove("hidden");
-            entry.target.classList.add("visible");
-          }
-        });
-      }, { threshold: 0.1 });
-      reveals.forEach(r => observer.observe(r));
-    } else {
-      reveals.forEach(r => r.classList.remove("hidden"));
-    }
   </script>
 </body>
 </html>
