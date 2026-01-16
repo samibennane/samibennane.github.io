@@ -78,10 +78,10 @@
       z-index: 2000;
       box-shadow: 10px 0 30px rgba(0,0,0,0.2);
       transition: width var(--transition-speed) var(--ease-out);
-      overflow: hidden; /* Important pour cacher le texte */
+      overflow: hidden;
     }
 
-    /* Bouton Toggle (Rabattre) */
+    /* Bouton Toggle */
     .sidebar-toggle {
       position: absolute;
       top: 20px; right: 20px;
@@ -94,16 +94,13 @@
       z-index: 10;
     }
     .sidebar-toggle:hover { color: #fff; transform: scale(1.1); }
-    
-    /* Ajustement bouton toggle quand réduit */
     body.collapsed .sidebar-toggle { right: 50%; transform: translateX(50%); }
 
-    /* Brand / Logo */
+    /* Brand */
     .brand {
       display: flex; flex-direction: column; align-items: center; 
       gap: 15px; margin-top: 40px; margin-bottom: 40px; text-align: center;
       transition: all var(--transition-speed);
-      /* Pas d'animation d'entrée sur le logo pour éviter bug visuel au resize */
     }
     
     .brand-logo { 
@@ -122,9 +119,9 @@
       white-space: nowrap;
     }
 
-    /* Comportement quand réduit */
+    /* Comportement réduit */
     body.collapsed .brand-logo { width: 50px; height: 50px; margin-bottom: 10px; }
-    body.collapsed .brand-name { opacity: 0; pointer-events: none; position: absolute; } /* Cache le nom */
+    body.collapsed .brand-name { opacity: 0; pointer-events: none; position: absolute; }
 
     /* Navigation */
     .nav { display: flex; flex-direction: column; gap: 8px; flex: 1; }
@@ -134,7 +131,7 @@
       color: #94a3b8; border-radius: 12px;
       font-weight: 500; font-size: 0.95rem; 
       transition: all 0.3s ease;
-      white-space: nowrap; /* Empêche le texte de passer à la ligne */
+      white-space: nowrap;
     }
 
     .nav-link:hover { 
@@ -156,12 +153,12 @@
     }
     .nav-link.active i { color: var(--accent); }
 
-    /* Nav quand réduit */
+    /* Nav réduit */
     body.collapsed .nav-link { justify-content: center; padding: 14px 0; }
     body.collapsed .nav-link span { opacity: 0; width: 0; display: none; }
     body.collapsed .nav-link:hover { transform: none; background: rgba(255,255,255,0.1); }
 
-    /* Footer sidebar */
+    /* Footer */
     .sidebar-footer { margin-top: 20px; font-size: 0.75rem; color: rgba(255,255,255,0.2); text-align: center; white-space: nowrap; transition: opacity 0.3s; }
     body.collapsed .sidebar-footer { opacity: 0; }
 
@@ -443,7 +440,7 @@
     @media (max-width: 900px) {
       .sidebar { width: 100%; height: auto; top: auto; bottom: 0; flex-direction: row; justify-content: space-between; padding: 10px 20px; }
       .brand, .sidebar-footer { display: none; }
-      .sidebar-toggle { display: none; } /* On cache le toggle sur mobile car la nav change */
+      .sidebar-toggle { display: none; } 
       .nav { flex-direction: row; width: 100%; justify-content: space-between; animation: none; opacity: 1; }
       .nav-link { flex-direction: column; padding: 6px; font-size: 10px; gap: 4px; }
       main { margin-left: 0; width: 100%; }
@@ -650,13 +647,12 @@
         <section id="portfolio" class="reveal">
           <h2><i class="ph ph-code" style="color:var(--accent)"></i> Technical Projects</h2>
           <div class="project-grid">
-            <a href="#" class="project-card">
-              <h3>🚁 AI Drone Project</h3>
-              <p>Autonomous drone navigation using computer vision and SLAM algorithms for real-time pathfinding.</p>
-            </a>
-            <a href="#" class="project-card" style="transition-delay:0.2s">
-              <h3>⚡ Smart Energy Monitor</h3>
-              <p>IoT device tracking real-time energy consumption with predictive analytics for household optimization.</p>
+            <a href="assets/docs/pcp.pdf" target="_blank" class="project-card">
+              <h3>🔊 Acoustic Transduction & Amplification</h3>
+              <p>
+                Design and analysis of an analog signal chain for sound capture.
+                <strong>Key skills:</strong> Analog Electronics (AD8542), Signal Conditioning, Bode Analysis (PartQuest), and Hardware Validation (FFT).
+              </p>
             </a>
           </div>
         </section>
