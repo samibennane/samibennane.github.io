@@ -19,20 +19,20 @@
       /* --- PALETTE DE COULEURS --- */
       
       /* Sidebar Violette/Indigo */
-      --sidebar-bg: #4338ca; /* Indigo foncé */
+      --sidebar-bg: #4338ca;
       --sidebar-bg-grad: linear-gradient(180deg, #4f46e5 0%, #3730a3 100%);
       --sidebar-text: #ffffff;
       --sidebar-hover: rgba(255, 255, 255, 0.15);
 
       /* Contenu Principal (Clean White) */
       --main-bg: #ffffff;
-      --text-main: #111827;       /* Noir presque pur */
-      --text-secondary: #4b5563;  /* Gris foncé */
-      --text-muted: #9ca3af;      /* Gris clair */
+      --text-main: #111827;
+      --text-secondary: #4b5563;
+      --text-muted: #9ca3af;
       
       /* Accents */
-      --accent: #4f46e5;          /* Le même violet que la sidebar pour les liens/boutons */
-      --timeline-line: #e5e7eb;   /* Ligne grise subtile */
+      --accent: #4f46e5;
+      --timeline-line: #e5e7eb;
 
       /* Dimensions */
       --sidebar-width: 280px;
@@ -48,7 +48,6 @@
       background-color: var(--main-bg);
       color: var(--text-main);
       line-height: 1.6;
-      /* Flexbox pour mettre Sidebar à gauche et Contenu à droite */
       display: flex;
       min-height: 100vh;
     }
@@ -56,327 +55,208 @@
     a { text-decoration: none; color: inherit; transition: 0.2s ease; }
     ul { list-style: none; }
 
-    /* === 1. LA SIDEBAR (Gauche, Violette, Fixe) === */
+    /* === 1. SIDEBAR (Gauche) === */
     .sidebar {
       position: fixed;
-      top: 0; 
-      left: 0;
-      bottom: 0;
+      top: 0; left: 0; bottom: 0;
       width: var(--sidebar-width);
       background: var(--sidebar-bg-grad);
       color: var(--sidebar-text);
-      display: flex;
-      flex-direction: column;
+      display: flex; flex-direction: column;
       padding: 40px 30px;
       z-index: 1000;
       box-shadow: 4px 0 20px rgba(0,0,0,0.1);
     }
 
-    /* Logo / Brand dans la sidebar */
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 15px;
+      display: flex; align-items: center; gap: 15px;
       margin-bottom: 60px;
-      font-weight: 700;
-      font-size: 1.2rem;
-      letter-spacing: -0.5px;
+      font-weight: 700; font-size: 1.2rem;
     }
     .brand-logo {
       width: 42px; height: 42px;
       background: rgba(255,255,255,0.15);
-      border-radius: 10px;
-      padding: 6px;
+      border-radius: 10px; padding: 6px;
       object-fit: contain;
     }
 
-    /* Navigation Verticale */
-    .nav {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+    .nav { display: flex; flex-direction: column; gap: 12px; }
 
     .nav-link {
-      display: flex;
-      align-items: center;
-      gap: 14px;
+      display: flex; align-items: center; gap: 14px;
       padding: 12px 16px;
       color: rgba(255, 255, 255, 0.7);
       border-radius: 12px;
-      font-weight: 500;
-      font-size: 0.95rem;
+      font-weight: 500; font-size: 0.95rem;
       transition: all 0.3s;
     }
-
     .nav-link i { font-size: 20px; }
-
     .nav-link:hover {
       background: var(--sidebar-hover);
-      color: #fff;
-      transform: translateX(4px);
+      color: #fff; transform: translateX(4px);
     }
-
     .nav-link.active {
-      background: #fff;
-      color: var(--accent);
-      font-weight: 600;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      background: #fff; color: var(--accent);
+      font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
-    .sidebar-footer {
-      margin-top: auto;
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.4);
-    }
+    .sidebar-footer { margin-top: auto; font-size: 0.8rem; color: rgba(255,255,255,0.4); }
 
-    /* === 2. LE CONTENU PRINCIPAL (A droite) === */
+    /* === 2. CONTENU PRINCIPAL === */
     main {
-      margin-left: var(--sidebar-width); /* On pousse le contenu pour laisser la place à la sidebar */
+      margin-left: var(--sidebar-width);
       width: calc(100% - var(--sidebar-width));
-      padding: 80px 60px 120px; /* Aéré */
+      padding: 80px 60px 120px;
     }
 
-    .container {
-      max-width: var(--container-width);
-      margin: 0 auto;
-    }
+    .container { max-width: var(--container-width); margin: 0 auto; }
+    section { margin-bottom: 140px; scroll-margin-top: 100px; }
 
-    section { 
-      margin-bottom: 140px; 
-      scroll-margin-top: 100px; 
-    }
-
-    /* Typography du contenu */
     h1 {
       font-size: clamp(42px, 5vw, 68px);
       font-weight: 800;
-      letter-spacing: -1.5px;
-      line-height: 1.1;
-      margin-bottom: 20px;
-      color: var(--text-main);
+      letter-spacing: -1.5px; line-height: 1.1;
+      margin-bottom: 20px; color: var(--text-main);
     }
 
     h2 {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 40px;
-      color: var(--text-main);
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      font-size: 28px; font-weight: 700;
+      margin-bottom: 40px; color: var(--text-main);
+      display: flex; align-items: center; gap: 12px;
     }
-    /* Petite ligne décorative sous le H2 */
     h2::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: var(--timeline-line);
-      max-width: 200px;
+      content: ""; flex: 1; height: 1px;
+      background: var(--timeline-line); max-width: 200px;
     }
 
     p { color: var(--text-secondary); font-size: 1.05rem; }
 
-    /* === 3. HERO SECTION (Photo Ronde) === */
+    /* === 3. HERO === */
     .hero {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
+      display: flex; flex-direction: column;
+      align-items: center; text-align: center;
       padding: 40px 0 80px;
     }
-
-    .avatar-wrapper {
-      position: relative;
+    .avatar {
+      width: 260px; height: 260px;
+      border-radius: 50%; overflow: hidden;
+      border: 5px solid #fff;
+      box-shadow: 0 20px 50px rgba(79, 70, 229, 0.25);
       margin-bottom: 30px;
     }
-    
-    .avatar {
-      width: 260px;
-      height: 260px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 5px solid #fff; /* Bordure blanche propre */
-      box-shadow: 0 20px 50px rgba(79, 70, 229, 0.25); /* Ombre violette */
-    }
     .avatar img { width: 100%; height: 100%; object-fit: cover; }
-
     .hero-subtitle {
-      font-size: 1.25rem;
-      color: var(--text-secondary);
-      max-width: 600px;
-      margin-bottom: 35px;
+      font-size: 1.25rem; color: var(--text-secondary);
+      max-width: 600px; margin-bottom: 35px;
     }
-
-    /* Boutons */
     .btn-group { display: flex; gap: 16px; justify-content: center; }
-    
     .btn {
-      padding: 14px 32px;
-      border-radius: 50px;
-      font-weight: 600;
-      display: inline-flex; align-items: center; gap: 8px;
-      cursor: pointer;
-      font-size: 1rem;
+      padding: 14px 32px; border-radius: 50px;
+      font-weight: 600; display: inline-flex; align-items: center; gap: 8px;
+      cursor: pointer; font-size: 1rem;
     }
-    
     .btn-primary {
-      background: var(--accent);
-      color: #fff;
+      background: var(--accent); color: #fff;
       border: 2px solid var(--accent);
     }
     .btn-primary:hover {
-      background: #4338ca;
-      border-color: #4338ca;
+      background: #4338ca; border-color: #4338ca;
       transform: translateY(-2px);
       box-shadow: 0 10px 20px rgba(79, 70, 229, 0.2);
     }
-    
     .btn-outline {
-      background: transparent;
-      color: var(--text-main);
+      background: transparent; color: var(--text-main);
       border: 2px solid var(--timeline-line);
     }
-    .btn-outline:hover {
-      border-color: var(--text-main);
-      background: #fff;
-    }
+    .btn-outline:hover { border-color: var(--text-main); background: #fff; }
 
-    /* === 4. TIMELINE VERTICALE (Style CV moderne) === */
-    .timeline {
-      position: relative;
-      padding-left: 20px;
-    }
-    
-    /* La ligne grise verticale */
+    /* === 4. TIMELINE === */
+    .timeline { position: relative; padding-left: 20px; }
     .timeline::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 10px; bottom: 0;
-      width: 2px;
-      background: var(--timeline-line);
-      border-radius: 2px;
+      content: ''; position: absolute; left: 0; top: 10px; bottom: 0;
+      width: 2px; background: var(--timeline-line); border-radius: 2px;
     }
-
-    .timeline-item {
-      position: relative;
-      padding-left: 40px; /* Espace entre ligne et texte */
-      margin-bottom: 60px;
-    }
+    .timeline-item { position: relative; padding-left: 40px; margin-bottom: 60px; }
     .timeline-item:last-child { margin-bottom: 0; }
-
-    /* Le point sur la ligne */
-    .timeline-dot {
-      position: absolute;
-      left: -5px; top: 8px;
-      width: 12px; height: 12px;
-      background: #fff;
-      border: 3px solid var(--accent);
-      border-radius: 50%;
-      z-index: 2;
-      transition: 0.3s;
-    }
     
-    .timeline-item:hover .timeline-dot {
-      background: var(--accent);
-      transform: scale(1.3);
+    .timeline-dot {
+      position: absolute; left: -5px; top: 8px;
+      width: 12px; height: 12px;
+      background: #fff; border: 3px solid var(--accent);
+      border-radius: 50%; z-index: 2; transition: 0.3s;
     }
+    .timeline-item:hover .timeline-dot { background: var(--accent); transform: scale(1.3); }
 
-    /* Contenu Timeline */
     .t-date {
-      display: inline-block;
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 5px;
-      background: rgba(79, 70, 229, 0.06);
-      padding: 4px 10px;
-      border-radius: 4px;
+      display: inline-block; font-size: 0.85rem; font-weight: 700;
+      color: var(--accent); text-transform: uppercase;
+      margin-bottom: 5px; background: rgba(79, 70, 229, 0.06);
+      padding: 4px 10px; border-radius: 4px;
     }
+    .t-title { font-size: 1.35rem; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
+    .t-company { font-size: 1.05rem; font-weight: 500; color: #374151; margin-bottom: 12px; }
+    .t-desc { font-size: 1rem; color: var(--text-secondary); line-height: 1.7; }
 
-    .t-title {
-      font-size: 1.35rem;
-      font-weight: 700;
-      color: var(--text-main);
-      margin-bottom: 4px;
-    }
-
-    .t-company {
-      font-size: 1.05rem;
-      font-weight: 500;
-      color: #374151; /* Gris moyen */
-      margin-bottom: 12px;
-    }
-
-    .t-desc {
-      font-size: 1rem;
-      color: var(--text-secondary);
-      line-height: 1.7;
-    }
-
-    /* === 5. PROJETS (GRID) === */
-    .project-grid {
+    /* === 5. LANGUAGES (NOUVEAU) === */
+    .lang-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      grid-template-columns: 1fr;
+      gap: 25px;
+    }
+    .lang-item {
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .lang-header {
+      display: flex; justify-content: space-between;
+      font-weight: 600; color: var(--text-main);
+    }
+    .lang-level {
+      color: var(--text-muted); font-size: 0.9rem; font-weight: 400;
+    }
+    .progress-track {
+      width: 100%; height: 10px;
+      background: #f3f4f6;
+      border-radius: 20px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 20px;
+      width: 0; /* Animé par JS */
+      transition: width 1s ease-out;
+    }
+
+    /* === 6. PROJETS === */
+    .project-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 30px;
     }
-
     .project-card {
-      background: #f9fafb; /* Gris très très clair */
-      border: 1px solid var(--timeline-line);
-      border-radius: 16px;
-      padding: 30px;
-      transition: all 0.3s ease;
-      display: flex; flex-direction: column; gap: 10px;
+      background: #f9fafb; border: 1px solid var(--timeline-line);
+      border-radius: 16px; padding: 30px;
+      transition: all 0.3s ease; display: flex; flex-direction: column; gap: 10px;
     }
-
     .project-card:hover {
-      transform: translateY(-5px);
-      background: #fff;
-      border-color: var(--accent);
-      box-shadow: 0 15px 30px rgba(0,0,0,0.06);
+      transform: translateY(-5px); background: #fff;
+      border-color: var(--accent); box-shadow: 0 15px 30px rgba(0,0,0,0.06);
     }
 
-    .project-card h3 { margin: 0; font-size: 1.25rem; }
+    /* === ANIMATIONS === */
+    .reveal { opacity: 0; transform: translateY(40px); transition: 0.8s; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    /* === ANIMATIONS D'APPARITION === */
-    .reveal {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* === RESPONSIVE (MOBILE) === */
+    /* === MOBILE === */
     @media (max-width: 900px) {
-      /* Sidebar devient barre du bas sur mobile */
       .sidebar {
-        width: 100%; height: auto;
-        top: auto; bottom: 0;
-        flex-direction: row;
-        justify-content: space-between;
-        padding: 10px 20px;
-        box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        width: 100%; height: auto; top: auto; bottom: 0;
+        flex-direction: row; justify-content: space-between;
+        padding: 10px 20px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
       }
-      
       .brand, .sidebar-footer { display: none; }
-      
       .nav { flex-direction: row; width: 100%; justify-content: space-between; }
-      .nav-link { flex-direction: column; padding: 6px; font-size: 10px; gap: 4px; border-radius: 8px; }
-      .nav-link span { display: block; font-size: 10px; }
-      .nav-link:hover { background: transparent; color: #fff; transform: none; }
-      
-      main {
-        margin-left: 0;
-        width: 100%;
-        padding: 40px 20px 100px;
-      }
-
+      .nav-link { flex-direction: column; padding: 6px; font-size: 10px; gap: 4px; }
+      .nav-link:hover { transform: none; }
+      main { margin-left: 0; width: 100%; padding: 40px 20px 100px; }
       .avatar { width: 180px; height: 180px; }
       h1 { font-size: 42px; }
     }
@@ -392,29 +272,16 @@
     </div>
 
     <nav class="nav">
-      <a href="#home" class="nav-link active">
-        <i class="ph ph-house"></i> <span>Home</span>
-      </a>
-      <a href="#about" class="nav-link">
-        <i class="ph ph-user"></i> <span>About</span>
-      </a>
-      <a href="#education" class="nav-link">
-        <i class="ph ph-graduation-cap"></i> <span>Edu</span>
-      </a>
-      <a href="#experience" class="nav-link">
-        <i class="ph ph-briefcase"></i> <span>Exp</span>
-      </a>
-      <a href="#volunteering" class="nav-link">
-        <i class="ph ph-heart"></i> <span>Vol</span>
-      </a>
-      <a href="#contact" class="nav-link">
-        <i class="ph ph-paper-plane-tilt"></i> <span>Contact</span>
-      </a>
+      <a href="#home" class="nav-link active"><i class="ph ph-house"></i><span>Home</span></a>
+      <a href="#about" class="nav-link"><i class="ph ph-user"></i><span>About</span></a>
+      <a href="#education" class="nav-link"><i class="ph ph-graduation-cap"></i><span>Edu</span></a>
+      <a href="#experience" class="nav-link"><i class="ph ph-briefcase"></i><span>Exp</span></a>
+      <a href="#volunteering" class="nav-link"><i class="ph ph-heart"></i><span>Vol</span></a>
+      <a href="#languages" class="nav-link"><i class="ph ph-translate"></i><span>Lang</span></a>
+      <a href="#contact" class="nav-link"><i class="ph ph-paper-plane-tilt"></i><span>Contact</span></a>
     </nav>
 
-    <div class="sidebar-footer">
-      © <span id="year"></span>
-    </div>
+    <div class="sidebar-footer">© <span id="year"></span></div>
   </aside>
 
   <main>
@@ -422,14 +289,10 @@
 
       <section id="home" class="hero reveal">
         <div class="avatar-wrapper">
-          <div class="avatar">
-            <img src="assets/images/photo_fei.png" alt="Sami Bennane">
-          </div>
+          <div class="avatar"><img src="assets/images/photo_fei.png" alt="Sami Bennane"></div>
         </div>
-        
         <h1>Sami Bennane</h1>
         <p class="hero-subtitle">Engineering Student @ Mines Saint-Étienne <br> AI • Embedded Systems • Innovation</p>
-        
         <div class="btn-group">
           <a href="#contact" class="btn btn-primary">Contact Me</a>
           <a href="#portfolio" class="btn btn-outline">My Work</a>
@@ -438,122 +301,141 @@
 
       <section id="about" class="reveal">
         <h2>About Me</h2>
-        <p>
-          I am an engineering student at <strong>Mines Saint-Étienne</strong>, passionate about bridging the gap between hardware and artificial intelligence. 
-          My focus is on building scalable embedded systems and secure architectures. I thrive in challenging environments where innovation meets technical rigor.
-        </p>
+        <p>I am an engineering student at <strong>Mines Saint-Étienne</strong>, passionate about bridging the gap between hardware and artificial intelligence. My focus is on building scalable embedded systems and secure architectures.</p>
       </section>
 
       <section id="education" class="reveal">
         <h2><i class="ph ph-graduation-cap" style="color:var(--accent)"></i> Education</h2>
         <div class="timeline">
-          
           <div class="timeline-item">
             <span class="timeline-dot"></span>
             <span class="t-date">2024 - 2027</span>
             <div class="t-title">Diplôme d'Ingénieur (MSc)</div>
             <div class="t-company">Mines Saint-Étienne</div>
-            <div class="t-desc">
-              Major in AI, Embedded & Secure Systems.<br>
-              Rank: Top 10% (GPA 3.8/4.0).<br>
-              Focus: IoT, Computer Architecture, Cryptography.
-            </div>
+            <div class="t-desc">Major in AI, Embedded & Secure Systems. Rank: Top 10% (GPA 3.8/4.0). Focus: IoT, Cryptography.</div>
           </div>
-
           <div class="timeline-item">
             <span class="timeline-dot"></span>
             <span class="t-date">2022 - 2024</span>
             <div class="t-title">CPGE - MPSI / PSI</div>
             <div class="t-company">Lycée Pasteur (Neuilly-sur-Seine)</div>
-            <div class="t-desc">
-              Intensive preparatory program for French "Grandes Écoles".<br>
-              Focus on Advanced Mathematics, Physics and Engineering Sciences.
-            </div>
+            <div class="t-desc">Intensive preparatory program for French "Grandes Écoles". Focus on Advanced Mathematics & Physics.</div>
           </div>
-
           <div class="timeline-item">
             <span class="timeline-dot"></span>
             <span class="t-date">2019 - 2022</span>
             <div class="t-title">French Baccalaureate</div>
             <div class="t-company">Lycée Lucie Aubrac</div>
-            <div class="t-desc">
-              Scientific Track with Highest Honors (Mention Très Bien).<br>
-              Specializations in Mathematics & Physics-Chemistry.
-            </div>
+            <div class="t-desc">Scientific Track with Highest Honors (Mention Très Bien).</div>
           </div>
-
         </div>
       </section>
 
       <section id="experience" class="reveal">
         <h2><i class="ph ph-briefcase" style="color:var(--accent)"></i> Experience</h2>
         <div class="timeline">
-          
           <div class="timeline-item">
             <span class="timeline-dot"></span>
             <span class="t-date">Oct 2025 - Present</span>
-            <div class="t-title">Academic Tutor for Elite Athletes</div>
+            <div class="t-title">Academic Tutor</div>
             <div class="t-company">ECOLE SPORT ENTREPRENDRE</div>
-            <div class="t-desc">
-              Providing mathematics and physics tutoring for elite athletes competing in rugby, handball, and boxing. 
-              Supporting their academic path alongside their sports career.
-            </div>
+            <div class="t-desc">Math & Physics tutoring for elite athletes (rugby, handball, boxing).</div>
           </div>
-
           <div class="timeline-item">
             <span class="timeline-dot"></span>
             <span class="t-date">Jul 2025 (1 mo)</span>
-            <div class="t-title">IT Asset Management Assistant</div>
+            <div class="t-title">IT Asset Assistant</div>
             <div class="t-company">Informatique CDC</div>
-            <div class="t-desc">
-              Contributed to the management and tracking of IT assets, ensuring accurate monitoring of hardware infrastructure.
-            </div>
+            <div class="t-desc">Tracking of IT assets and hardware infrastructure monitoring.</div>
           </div>
-
           <div class="timeline-item">
             <span class="timeline-dot"></span>
             <span class="t-date">Jan 2025 (1 mo)</span>
-            <div class="t-title">Cloud Computing Intern</div>
-            <div class="t-company">Informatique CDC</div>
-            <div class="t-desc">
-              Data migration from on-premise to internal cloud (Lift-and-Shift) with a focus on performance optimization.
-            </div>
+            <div class="t-title">Cloud Intern</div>
+            <div class="t-company">CDC Informatique</div>
+            <div class="t-desc">Data migration (Lift-and-Shift) to internal cloud.</div>
           </div>
-
         </div>
       </section>
 
       <section id="volunteering" class="reveal">
         <h2><i class="ph ph-heart" style="color:var(--accent)"></i> Volunteering</h2>
         <div class="timeline">
-          
           <div class="timeline-item">
             <span class="timeline-dot"></span>
             <span class="t-date">Apr 2025 - Present</span>
             <div class="t-title">Corporate Relations Officer</div>
             <div class="t-company">Forum Entreprises Ingénieur</div>
-            <div class="t-desc">
-              In charge of outreach and relationship management with companies, organizing a large-scale career forum connecting students with industry leaders.
-            </div>
+            <div class="t-desc">Outreach and relationship management with companies.</div>
           </div>
-
           <div class="timeline-item">
             <span class="timeline-dot"></span>
             <span class="t-date">Mar 2025 - Present</span>
             <div class="t-title">Football Team Manager</div>
             <div class="t-company">BDS - Mines Saint-Étienne</div>
-            <div class="t-desc">
-              Responsible for coordinating team activities, managing organizational aspects, planning trainings and fostering team cohesion.
-            </div>
+            <div class="t-desc">Coordinating team activities and fostering cohesion.</div>
           </div>
-
           <div class="timeline-item">
             <span class="timeline-dot"></span>
             <span class="t-date">Feb 2025 - Jun 2025</span>
             <div class="t-title">Volunteer</div>
             <div class="t-company">École des XV</div>
-            <div class="t-desc">
-              Supported primary and middle school students facing academic and social challenges in Marseille. Mentoring and academic support.
+            <div class="t-desc">Supporting students facing academic challenges in Marseille.</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="languages" class="reveal">
+        <h2><i class="ph ph-translate" style="color:var(--accent)"></i> Languages</h2>
+        <div class="lang-grid">
+          
+          <div class="lang-item">
+            <div class="lang-header">
+              <span>French</span>
+              <span class="lang-level">Native</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width: 100%;"></div>
+            </div>
+          </div>
+
+          <div class="lang-item">
+            <div class="lang-header">
+              <span>English</span>
+              <span class="lang-level">Full Professional</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width: 90%;"></div>
+            </div>
+          </div>
+
+          <div class="lang-item">
+            <div class="lang-header">
+              <span>German</span>
+              <span class="lang-level">Limited Working</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width: 50%;"></div>
+            </div>
+          </div>
+
+          <div class="lang-item">
+            <div class="lang-header">
+              <span>Spanish</span>
+              <span class="lang-level">Limited Working</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width: 50%;"></div>
+            </div>
+          </div>
+
+          <div class="lang-item">
+            <div class="lang-header">
+              <span>Arabic</span>
+              <span class="lang-level">Limited Working</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width: 50%;"></div>
             </div>
           </div>
 
@@ -565,11 +447,11 @@
         <div class="project-grid">
           <a href="#" class="project-card">
             <h3>🚁 AI Drone Project</h3>
-            <p>Autonomous drone navigation system using computer vision and SLAM algorithms for real-time mapping.</p>
+            <p>Autonomous drone navigation using computer vision and SLAM.</p>
           </a>
           <a href="#" class="project-card">
             <h3>⚡ Smart Energy Monitor</h3>
-            <p>IoT device tracking real-time energy consumption with cloud dashboard and predictive analysis.</p>
+            <p>IoT device tracking real-time energy consumption.</p>
           </a>
         </div>
       </section>
@@ -577,9 +459,7 @@
       <section id="contact" class="reveal">
         <h2>Contact</h2>
         <div style="background: #f9fafb; padding: 40px; border-radius: 16px; text-align: center; border:1px solid var(--timeline-line);">
-          <p style="margin-bottom: 30px; color: var(--text-main); font-weight: 500;">
-            Open to new opportunities. Let's build something together.
-          </p>
+          <p style="margin-bottom: 30px; font-weight: 500;">Open to new opportunities.</p>
           <div class="btn-group">
             <a href="mailto:sami.bennane@gmail.com" class="btn btn-primary">
               <i class="ph ph-envelope-simple"></i> Email Me
@@ -595,36 +475,27 @@
   </main>
 
   <script>
-    // 1. Date auto
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // 2. Scroll Animation (Reveal)
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
+        if (entry.isIntersecting) entry.target.classList.add('visible');
       });
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // 3. Active Link in Sidebar
+    // ScrollSpy
     const sections = document.querySelectorAll("section");
     const navLinks = document.querySelectorAll(".nav-link");
 
     window.addEventListener("scroll", () => {
       let current = "";
       sections.forEach(sec => {
-        const sectionTop = sec.offsetTop;
-        if (pageYOffset >= (sectionTop - 300)) {
-          current = sec.getAttribute("id");
-        }
+        if (pageYOffset >= (sec.offsetTop - 300)) current = sec.getAttribute("id");
       });
       navLinks.forEach(link => {
         link.classList.remove("active");
-        if (link.getAttribute("href").includes(current)) {
-          link.classList.add("active");
-        }
+        if (link.getAttribute("href").includes(current)) link.classList.add("active");
       });
     });
   </script>
