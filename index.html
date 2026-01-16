@@ -238,14 +238,15 @@
     }
     h2::after { content: ""; flex: 1; height: 1px; background: var(--timeline-line); max-width: 200px; }
 
-    /* === SPLIT LAYOUT (EXPERIENCE & VOLUNTEERING) === */
+    /* === SPLIT LAYOUT (EDUCATION, EXPERIENCE, VOLUNTEERING) === */
     .split-layout {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr; /* Texte plus large */
+      grid-template-columns: 1.2fr 0.8fr; /* Texte légèrement plus large */
       gap: 50px;
       align-items: start;
     }
 
+    /* Le conteneur d'image qui reste en place (sticky) */
     .split-image-container {
       position: sticky;
       top: 100px; /* Reste visible au scroll */
@@ -346,6 +347,7 @@
       .hero-title { font-size: 36px; }
       .geo-globe { width: 300px; height: 300px; }
       .tech-widget { display: none; }
+      /* Responsive Split Layout : Image disparait ou passe en dessous */
       .split-layout { grid-template-columns: 1fr; }
       .split-image-container { display: none; }
     }
@@ -420,27 +422,34 @@
 
         <section id="education" class="reveal">
           <h2><i class="ph ph-graduation-cap" style="color:var(--accent)"></i> Education</h2>
-          <div class="timeline">
-            <div class="timeline-item">
-              <span class="timeline-dot"></span>
-              <span class="t-date">2024 - 2027</span>
-              <div class="t-title">Diplôme d'Ingénieur (MSc)</div>
-              <div class="t-company">Mines Saint-Étienne</div>
-              <div class="t-desc">Major in AI, Embedded & Secure Systems. Rank: Top 10% (GPA 3.8/4.0). Focus: IoT, Cryptography.</div>
+          
+          <div class="split-layout">
+            <div class="timeline">
+              <div class="timeline-item">
+                <span class="timeline-dot"></span>
+                <span class="t-date">2024 - 2027</span>
+                <div class="t-title">Diplôme d'Ingénieur (MSc)</div>
+                <div class="t-company">Mines Saint-Étienne</div>
+                <div class="t-desc">Major in AI, Embedded & Secure Systems. Rank: Top 10% (GPA 3.8/4.0). Focus: IoT, Cryptography.</div>
+              </div>
+              <div class="timeline-item" style="transition-delay: 0.1s;">
+                <span class="timeline-dot"></span>
+                <span class="t-date">2022 - 2024</span>
+                <div class="t-title">CPGE - MPSI / PSI</div>
+                <div class="t-company">Lycée Pasteur (Neuilly-sur-Seine)</div>
+                <div class="t-desc">Intensive preparatory program for French "Grandes Écoles". Focus on Advanced Mathematics & Physics.</div>
+              </div>
+              <div class="timeline-item" style="transition-delay: 0.2s;">
+                <span class="timeline-dot"></span>
+                <span class="t-date">2019 - 2022</span>
+                <div class="t-title">French Baccalaureate</div>
+                <div class="t-company">Lycée Lucie Aubrac</div>
+                <div class="t-desc">Scientific Track with Highest Honors (Mention Très Bien).</div>
+              </div>
             </div>
-            <div class="timeline-item" style="transition-delay: 0.1s;">
-              <span class="timeline-dot"></span>
-              <span class="t-date">2022 - 2024</span>
-              <div class="t-title">CPGE - MPSI / PSI</div>
-              <div class="t-company">Lycée Pasteur (Neuilly-sur-Seine)</div>
-              <div class="t-desc">Intensive preparatory program for French "Grandes Écoles". Focus on Advanced Mathematics & Physics.</div>
-            </div>
-            <div class="timeline-item" style="transition-delay: 0.2s;">
-              <span class="timeline-dot"></span>
-              <span class="t-date">2019 - 2022</span>
-              <div class="t-title">French Baccalaureate</div>
-              <div class="t-company">Lycée Lucie Aubrac</div>
-              <div class="t-desc">Scientific Track with Highest Honors (Mention Très Bien).</div>
+
+            <div class="split-image-container">
+              <img src="assets/images/unif.jpeg" alt="Education">
             </div>
           </div>
         </section>
@@ -474,7 +483,7 @@
             </div>
 
             <div class="split-image-container">
-              <img src="assets/images/icdc.png" alt="Experience Illustration">
+              <img src="assets/images/icdc.png" alt="Experience">
             </div>
           </div>
         </section>
@@ -508,7 +517,7 @@
             </div>
 
             <div class="split-image-container">
-              <img src="assets/images/pros.jpeg" alt="Volunteering Illustration">
+              <img src="assets/images/pros.jpeg" alt="Volunteering">
             </div>
           </div>
         </section>
