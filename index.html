@@ -1,265 +1,304 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sami Bennane | Portfolio</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sami Bennane | Portfolio</title>
 
-  <style>
-    :root {
-      --bg-dark: #070b1f;
-      --bg-darker: #050816;
-      --primary: #5b6cff;
-      --primary-soft: #8f9bff;
-      --text-main: #ffffff;
-      --text-muted: #aab0ff;
-    }
+<style>
+:root {
+  --bg-main: #050816;
+  --bg-soft: #0b102e;
+  --primary: #5b6cff;
+  --primary-glow: #8f9bff;
+  --text: #ffffff;
+  --muted: #aab0ff;
+}
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Inter", system-ui, sans-serif;
-    }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", system-ui, sans-serif;
+}
 
-    body {
-      background: radial-gradient(circle at top right, #0f1a44, var(--bg-dark));
-      color: var(--text-main);
-      display: flex;
-    }
+html {
+  scroll-behavior: smooth;
+}
 
-    /* ===== SIDEBAR ===== */
-    .sidebar {
-      width: 240px;
-      height: 100vh;
-      position: fixed;
-      left: 0;
-      top: 0;
-      background: linear-gradient(180deg, #060b2a, #030515);
-      padding: 40px 24px;
-    }
+body {
+  background: radial-gradient(circle at top right, #0f1a44, var(--bg-main));
+  color: var(--text);
+  display: flex;
+}
 
-    .sidebar nav a {
-      display: block;
-      color: white;
-      text-decoration: none;
-      margin: 16px 0;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      font-size: 14px;
-      transition: color 0.2s ease;
-    }
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: 240px;
+  height: 100vh;
+  position: fixed;
+  background: linear-gradient(180deg, #060b2a, #030515);
+  padding: 40px 24px;
+}
 
-    .sidebar nav a:hover {
-      color: var(--primary);
-    }
+.sidebar a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  margin: 18px 0;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  font-size: 13px;
+  transition: 0.3s;
+}
 
-    /* ===== MAIN ===== */
-    main {
-      margin-left: 240px;
-      width: calc(100% - 240px);
-    }
+.sidebar a:hover {
+  color: var(--primary);
+  transform: translateX(6px);
+}
 
-    section {
-      padding: 120px 80px;
-      min-height: 100vh;
-    }
+/* ===== MAIN ===== */
+main {
+  margin-left: 240px;
+  width: calc(100% - 240px);
+}
 
-    h2 {
-      font-size: 36px;
-      margin-bottom: 24px;
-      color: var(--primary);
-    }
+section {
+  padding: 120px 80px;
+  min-height: 100vh;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: 0.8s ease;
+}
 
-    p {
-      max-width: 700px;
-      line-height: 1.6;
-      color: #d7dcff;
-    }
+section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 
-    /* ===== HERO ===== */
-    .hero {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
+h2 {
+  font-size: 38px;
+  margin-bottom: 32px;
+  color: var(--primary);
+}
 
-    .hero img {
-      width: 160px;
-      height: 160px;
-      object-fit: cover;
-      border-radius: 50%;
-      border: 4px solid var(--primary);
-      margin-bottom: 32px;
-    }
+p {
+  max-width: 750px;
+  line-height: 1.7;
+  color: #d7dcff;
+}
 
-    .hero h1 {
-      font-size: 56px;
-      margin-bottom: 12px;
-    }
+/* ===== HERO ===== */
+.hero {
+  text-align: center;
+}
 
-    .hero h1 span {
-      color: var(--primary);
-    }
+.hero img {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  border: 4px solid var(--primary);
+  margin-bottom: 32px;
+}
 
-    .hero h3 {
-      font-weight: 400;
-      color: var(--text-muted);
-      margin-bottom: 24px;
-    }
+.hero h1 {
+  font-size: 60px;
+}
 
-    .hero p {
-      max-width: 640px;
-    }
+.hero h1 span {
+  color: var(--primary);
+}
 
-    /* ===== LISTS ===== */
-    ul {
-      list-style: none;
-    }
+.hero h3 {
+  color: var(--muted);
+  margin: 16px 0 28px;
+  font-weight: 400;
+}
 
-    li {
-      margin-bottom: 12px;
-    }
+.hero p {
+  margin: auto;
+}
 
-    .tag {
-      display: inline-block;
-      background: rgba(91,108,255,0.15);
-      color: var(--primary-soft);
-      padding: 6px 12px;
-      border-radius: 999px;
-      margin: 6px 6px 0 0;
-      font-size: 13px;
-    }
+/* ===== TIMELINE ===== */
+.timeline {
+  border-left: 2px solid var(--primary);
+  padding-left: 30px;
+}
 
-    /* ===== FOOTER ===== */
-    footer {
-      padding: 40px 80px;
-      text-align: center;
-      color: #7f88d9;
-    }
+.timeline-item {
+  margin-bottom: 30px;
+}
 
-    @media (max-width: 900px) {
-      .sidebar {
-        display: none;
-      }
-      main {
-        margin-left: 0;
-        width: 100%;
-      }
-      section {
-        padding: 80px 24px;
-      }
-    }
-  </style>
+.timeline-item h4 {
+  color: var(--primary-glow);
+  margin-bottom: 6px;
+}
+
+/* ===== PROJECTS ===== */
+.projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.project {
+  background: var(--bg-soft);
+  padding: 24px;
+  border-radius: 14px;
+  transition: 0.4s;
+}
+
+.project:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 30px rgba(91,108,255,0.25);
+}
+
+.project h4 {
+  margin-bottom: 10px;
+}
+
+.project span {
+  font-size: 13px;
+  color: var(--primary-glow);
+}
+
+/* ===== SKILLS ===== */
+.skill {
+  display: inline-block;
+  background: rgba(91,108,255,0.15);
+  padding: 8px 16px;
+  border-radius: 999px;
+  margin: 8px;
+  transition: 0.3s;
+}
+
+.skill:hover {
+  background: var(--primary);
+  color: black;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  text-align: center;
+  padding: 40px;
+  color: #7f88d9;
+}
+
+/* ===== MOBILE ===== */
+@media(max-width: 900px){
+  .sidebar { display:none; }
+  main { margin:0; width:100%; }
+  section { padding: 80px 24px; }
+}
+</style>
 </head>
 
 <body>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <nav>
-      <a href="#home">HOME</a>
-      <a href="#about">ABOUT</a>
-      <a href="#certificates">CERTIFICATES</a>
-      <a href="#experience">EXPERIENCE</a>
-      <a href="#portfolio">PORTFOLIO</a>
-      <a href="#skills">SKILLS</a>
-      <a href="#conferences">CONFERENCES</a>
-      <a href="#contact">CONTACT</a>
-    </nav>
-  </aside>
+<aside class="sidebar">
+  <a href="#home">HOME</a>
+  <a href="#about">ABOUT</a>
+  <a href="#experience">EXPERIENCE</a>
+  <a href="#projects">PROJECTS</a>
+  <a href="#skills">SKILLS</a>
+  <a href="#contact">CONTACT</a>
+</aside>
 
-  <!-- MAIN CONTENT -->
-  <main>
+<main>
 
-    <!-- HOME -->
-    <section id="home" class="hero">
-      <img src="assets/images/photo_fei.png" alt="Sami Bennane">
-      <h1>Sami <span>Bennane</span></h1>
-      <h3>Engineering Student · AI · Embedded Systems</h3>
-      <p>
-        Engineering student at Mines Saint-Étienne, passionate about artificial intelligence,
-        embedded systems, and building impactful technical projects at the intersection
-        of software and hardware.
-      </p>
-    </section>
+<section id="home" class="hero">
+  <img src="assets/images/photo_fei.png" alt="Sami Bennane">
+  <h1>Sami <span>Bennane</span></h1>
+  <h3>Engineering Student · AI · Embedded Systems</h3>
+  <p>
+    Engineering student at Mines Saint-Étienne passionate about artificial intelligence,
+    embedded systems, and building impactful technical projects.
+  </p>
+</section>
 
-    <!-- ABOUT -->
-    <section id="about">
-      <h2>About</h2>
-      <p>
-        I am an engineering student with a strong interest in AI, embedded systems,
-        and system-level design. I enjoy working on technically challenging projects
-        that combine theory and real-world applications.
-      </p>
-    </section>
+<section id="about">
+  <h2>About</h2>
+  <p>
+    I work at the intersection of software and hardware, focusing on embedded systems,
+    AI models, and real-world engineering problems.
+  </p>
+</section>
 
-    <!-- CERTIFICATES -->
-    <section id="certificates">
-      <h2>Certificates</h2>
-      <ul>
-        <li>• AI & Machine Learning – Online Certificate</li>
-        <li>• Embedded Systems Fundamentals</li>
-        <li>• Cloud Computing & DevOps Basics</li>
-      </ul>
-    </section>
+<section id="experience">
+  <h2>Experience</h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <h4>Engineering Student — Mines Saint-Étienne</h4>
+      <p>AI, Embedded Systems, Systems Engineering</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Technical Tutor / Project Lead</h4>
+      <p>Academic & associative technical projects</p>
+    </div>
+  </div>
+</section>
 
-    <!-- EXPERIENCE -->
-    <section id="experience">
-      <h2>Experience</h2>
-      <p>
-        Various academic and associative experiences including tutoring elite athletes,
-        technical projects in embedded systems, and organizational roles in student associations.
-      </p>
-    </section>
+<section id="projects">
+  <h2>Projects</h2>
+  <div class="projects">
+    <div class="project">
+      <h4>AI Task Planner</h4>
+      <span>Python · NLP · AI</span>
+      <p>Intelligent task scheduling using embeddings and optimization.</p>
+    </div>
+    <div class="project">
+      <h4>Embedded IoT Node</h4>
+      <span>C · STM32 · Sensors</span>
+      <p>Low-power connected sensor node with real-time processing.</p>
+    </div>
+    <div class="project">
+      <h4>Portfolio Website</h4>
+      <span>HTML · CSS · JS</span>
+      <p>Personal portfolio hosted on GitHub Pages.</p>
+    </div>
+  </div>
+</section>
 
-    <!-- PORTFOLIO -->
-    <section id="portfolio">
-      <h2>Portfolio</h2>
-      <p>
-        Selected projects in AI, embedded systems, and software engineering.
-        (You will add real projects here.)
-      </p>
-    </section>
+<section id="skills">
+  <h2>Skills</h2>
+  <div>
+    <span class="skill">Python</span>
+    <span class="skill">C / C++</span>
+    <span class="skill">AI / ML</span>
+    <span class="skill">Embedded Systems</span>
+    <span class="skill">Linux</span>
+    <span class="skill">Git</span>
+    <span class="skill">HTML / CSS</span>
+  </div>
+</section>
 
-    <!-- SKILLS -->
-    <section id="skills">
-      <h2>Skills</h2>
-      <div>
-        <span class="tag">Python</span>
-        <span class="tag">C / C++</span>
-        <span class="tag">Embedded Systems</span>
-        <span class="tag">AI / ML</span>
-        <span class="tag">Linux</span>
-        <span class="tag">Git</span>
-        <span class="tag">HTML / CSS</span>
-      </div>
-    </section>
+<section id="contact">
+  <h2>Contact</h2>
+  <p>
+    LinkedIn: linkedin.com/in/sami-bennane<br>
+    Email: sami.bennane@email.com
+  </p>
+</section>
 
-    <!-- CONFERENCES -->
-    <section id="conferences">
-      <h2>Conferences</h2>
-      <p>
-        Participation in engineering forums, tech conferences, and professional events.
-      </p>
-    </section>
+<footer>
+  © 2026 Sami Bennane — Portfolio
+</footer>
 
-    <!-- CONTACT -->
-    <section id="contact">
-      <h2>Contact</h2>
-      <p>
-        LinkedIn: <a href="#" style="color: var(--primary);">linkedin.com/in/sami-bennane</a><br>
-        Email: sami.bennane@email.com
-      </p>
-    </section>
+</main>
 
-    <footer>
-      © 2026 Sami Bennane · Portfolio
-    </footer>
+<script>
+const sections = document.querySelectorAll("section");
 
-  </main>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add("visible");
+    }
+  });
+},{ threshold: 0.2 });
+
+sections.forEach(section => observer.observe(section));
+</script>
 
 </body>
 </html>
