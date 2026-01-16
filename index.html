@@ -130,16 +130,19 @@
     .card h3 { margin-top: 0; }
     .card p { color: var(--text-muted); line-height: 1.5; }
 
-    /* === MODIFICATION ICI : AVATAR PLUS GRAND === */
+    /* === MODIFICATION TAILLE PHOTO === */
     .avatar { 
-      width: 220px; /* Taille augmentée (était 120px) */
-      height: 220px; 
+      /* Taille encore plus grande pour ordinateur */
+      width: 300px; 
+      height: 300px; 
+      
       border-radius: 50%; 
-      border: 4px solid var(--accent); 
+      border: 5px solid var(--accent); /* Bordure un peu plus épaisse */
       overflow: hidden; 
       margin-bottom: 30px;
-      /* Ajout d'une lueur stylée derrière la photo */
-      box-shadow: 0 0 50px rgba(79, 107, 255, 0.25);
+      
+      /* Lueur ajustée pour la grande taille */
+      box-shadow: 0 0 60px rgba(79, 107, 255, 0.3);
     }
     .avatar img { width: 100%; height: 100%; object-fit: cover; }
     
@@ -160,8 +163,8 @@
       
       main { margin-left: 0; width: 100%; padding-bottom: 100px; }
       
-      /* Ajustement mobile pour que ça ne soit pas trop énorme sur téléphone */
-      .avatar { width: 160px; height: 160px; }
+      /* Ajustement mobile : Plus grand ici aussi */
+      .avatar { width: 200px; height: 200px; }
     }
   </style>
 </head>
