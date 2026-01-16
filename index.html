@@ -7,7 +7,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
@@ -16,20 +16,27 @@
 
   <style>
     :root {
-      /* Palette */
-      --sidebar-bg: #4f46e5; /* Indigo Vibrant */
-      --sidebar-bg-gradient: linear-gradient(180deg, #4f46e5 0%, #3730a3 100%);
-      --sidebar-text: #ffffff;
-      --sidebar-text-muted: rgba(255, 255, 255, 0.6);
+      /* --- PALETTE DE COULEURS --- */
       
-      --main-bg: #ffffff;
-      --text-primary: #111827;
-      --text-secondary: #4b5563;
-      --line-color: #e5e7eb;
-      --accent: #4f46e5; /* Indigo pour les accents */
+      /* Sidebar Violette/Indigo */
+      --sidebar-bg: #4338ca; /* Indigo foncé */
+      --sidebar-bg-grad: linear-gradient(180deg, #4f46e5 0%, #3730a3 100%);
+      --sidebar-text: #ffffff;
+      --sidebar-hover: rgba(255, 255, 255, 0.15);
 
+      /* Contenu Principal (Clean White) */
+      --main-bg: #ffffff;
+      --text-main: #111827;       /* Noir presque pur */
+      --text-secondary: #4b5563;  /* Gris foncé */
+      --text-muted: #9ca3af;      /* Gris clair */
+      
+      /* Accents */
+      --accent: #4f46e5;          /* Le même violet que la sidebar pour les liens/boutons */
+      --timeline-line: #e5e7eb;   /* Ligne grise subtile */
+
+      /* Dimensions */
       --sidebar-width: 280px;
-      --max-w: 900px;
+      --container-width: 900px;
     }
 
     /* === RESET === */
@@ -37,283 +44,341 @@
     html { scroll-behavior: smooth; }
     
     body {
-      background-color: var(--main-bg);
-      color: var(--text-primary);
       font-family: 'Inter', sans-serif;
+      background-color: var(--main-bg);
+      color: var(--text-main);
       line-height: 1.6;
+      /* Flexbox pour mettre Sidebar à gauche et Contenu à droite */
       display: flex;
       min-height: 100vh;
     }
 
-    a { text-decoration: none; color: inherit; transition: 0.3s; }
+    a { text-decoration: none; color: inherit; transition: 0.2s ease; }
     ul { list-style: none; }
 
-    /* === SIDEBAR (INDIGO) === */
+    /* === 1. LA SIDEBAR (Gauche, Violette, Fixe) === */
     .sidebar {
       position: fixed;
-      top: 0; left: 0;
+      top: 0; 
+      left: 0;
+      bottom: 0;
       width: var(--sidebar-width);
-      height: 100vh;
-      background: var(--sidebar-bg-gradient);
+      background: var(--sidebar-bg-grad);
       color: var(--sidebar-text);
-      padding: 40px 30px;
       display: flex;
       flex-direction: column;
+      padding: 40px 30px;
       z-index: 1000;
-      box-shadow: 4px 0 24px rgba(79, 70, 229, 0.15);
+      box-shadow: 4px 0 20px rgba(0,0,0,0.1);
     }
 
+    /* Logo / Brand dans la sidebar */
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 50px;
+      gap: 15px;
+      margin-bottom: 60px;
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
+      letter-spacing: -0.5px;
     }
-    .brand img {
-      width: 40px; height: 40px;
-      border-radius: 8px;
-      background: rgba(255,255,255,0.1);
-      padding: 4px;
+    .brand-logo {
+      width: 42px; height: 42px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 10px;
+      padding: 6px;
+      object-fit: contain;
     }
 
+    /* Navigation Verticale */
     .nav {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
 
     .nav-link {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       padding: 12px 16px;
-      color: var(--sidebar-text-muted);
+      color: rgba(255, 255, 255, 0.7);
       border-radius: 12px;
       font-weight: 500;
-      transition: all 0.2s;
+      font-size: 0.95rem;
+      transition: all 0.3s;
     }
 
     .nav-link i { font-size: 20px; }
 
     .nav-link:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: var(--sidebar-hover);
       color: #fff;
-      transform: translateX(5px);
+      transform: translateX(4px);
     }
 
     .nav-link.active {
       background: #fff;
       color: var(--accent);
+      font-weight: 600;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .sidebar-footer {
       margin-top: auto;
       font-size: 0.8rem;
-      color: var(--sidebar-text-muted);
+      color: rgba(255,255,255,0.4);
     }
 
-    /* === MAIN CONTENT === */
+    /* === 2. LE CONTENU PRINCIPAL (A droite) === */
     main {
-      flex: 1;
-      margin-left: var(--sidebar-width);
-      padding: 80px 60px 120px;
-      max-width: 100%;
+      margin-left: var(--sidebar-width); /* On pousse le contenu pour laisser la place à la sidebar */
+      width: calc(100% - var(--sidebar-width));
+      padding: 80px 60px 120px; /* Aéré */
     }
 
     .container {
-      max-width: var(--max-w);
+      max-width: var(--container-width);
       margin: 0 auto;
     }
 
-    section { margin-bottom: 120px; scroll-margin-top: 100px; }
+    section { 
+      margin-bottom: 140px; 
+      scroll-margin-top: 100px; 
+    }
 
-    /* === TYPOGRAPHIE === */
+    /* Typography du contenu */
     h1 {
-      font-size: clamp(36px, 5vw, 64px);
+      font-size: clamp(42px, 5vw, 68px);
       font-weight: 800;
-      letter-spacing: -0.03em;
+      letter-spacing: -1.5px;
       line-height: 1.1;
-      margin-bottom: 16px;
-      color: var(--text-primary);
+      margin-bottom: 20px;
+      color: var(--text-main);
     }
 
     h2 {
-      font-size: 24px;
+      font-size: 28px;
       font-weight: 700;
       margin-bottom: 40px;
-      padding-bottom: 15px;
-      border-bottom: 2px solid var(--line-color);
-      color: var(--text-primary);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    /* Petite ligne décorative sous le H2 */
+    h2::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--timeline-line);
+      max-width: 200px;
     }
 
     p { color: var(--text-secondary); font-size: 1.05rem; }
 
-    /* === HERO SECTION === */
+    /* === 3. HERO SECTION (Photo Ronde) === */
     .hero {
-      text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-bottom: 60px;
+      text-align: center;
+      padding: 40px 0 80px;
     }
 
+    .avatar-wrapper {
+      position: relative;
+      margin-bottom: 30px;
+    }
+    
     .avatar {
-      width: 250px;
-      height: 250px;
+      width: 260px;
+      height: 260px;
       border-radius: 50%;
       overflow: hidden;
-      margin-bottom: 30px;
-      /* Ombre colorée subtile */
-      box-shadow: 0 20px 60px -10px rgba(79, 70, 229, 0.3);
-      border: 4px solid #fff;
+      border: 5px solid #fff; /* Bordure blanche propre */
+      box-shadow: 0 20px 50px rgba(79, 70, 229, 0.25); /* Ombre violette */
     }
     .avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-    .subtitle {
-      font-size: 1.2rem;
+    .hero-subtitle {
+      font-size: 1.25rem;
       color: var(--text-secondary);
       max-width: 600px;
-      margin-bottom: 30px;
+      margin-bottom: 35px;
     }
 
-    /* === TIMELINE (La fameuse ligne verticale) === */
+    /* Boutons */
+    .btn-group { display: flex; gap: 16px; justify-content: center; }
+    
+    .btn {
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-weight: 600;
+      display: inline-flex; align-items: center; gap: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: 2px solid var(--accent);
+    }
+    .btn-primary:hover {
+      background: #4338ca;
+      border-color: #4338ca;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(79, 70, 229, 0.2);
+    }
+    
+    .btn-outline {
+      background: transparent;
+      color: var(--text-main);
+      border: 2px solid var(--timeline-line);
+    }
+    .btn-outline:hover {
+      border-color: var(--text-main);
+      background: #fff;
+    }
+
+    /* === 4. TIMELINE VERTICALE (Style CV moderne) === */
     .timeline {
       position: relative;
-      padding-left: 24px;
+      padding-left: 20px;
     }
-
+    
+    /* La ligne grise verticale */
     .timeline::before {
       content: '';
       position: absolute;
-      left: 0; top: 8px; bottom: 0;
+      left: 0; top: 10px; bottom: 0;
       width: 2px;
-      background: var(--line-color);
+      background: var(--timeline-line);
       border-radius: 2px;
     }
 
     .timeline-item {
       position: relative;
+      padding-left: 40px; /* Espace entre ligne et texte */
       margin-bottom: 60px;
-      padding-left: 32px;
     }
     .timeline-item:last-child { margin-bottom: 0; }
 
+    /* Le point sur la ligne */
     .timeline-dot {
       position: absolute;
-      left: -5px; top: 6px;
+      left: -5px; top: 8px;
       width: 12px; height: 12px;
       background: #fff;
       border: 3px solid var(--accent);
       border-radius: 50%;
       z-index: 2;
-      transition: transform 0.3s;
+      transition: 0.3s;
     }
-
+    
     .timeline-item:hover .timeline-dot {
-      transform: scale(1.4);
       background: var(--accent);
+      transform: scale(1.3);
     }
 
-    .time-period {
+    /* Contenu Timeline */
+    .t-date {
+      display: inline-block;
       font-size: 0.85rem;
       font-weight: 700;
       color: var(--accent);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 6px;
-      display: inline-block;
-      background: rgba(79, 70, 229, 0.05);
-      padding: 4px 8px;
+      letter-spacing: 0.5px;
+      margin-bottom: 5px;
+      background: rgba(79, 70, 229, 0.06);
+      padding: 4px 10px;
       border-radius: 4px;
     }
 
-    .role-title {
-      font-size: 1.3rem;
+    .t-title {
+      font-size: 1.35rem;
       font-weight: 700;
+      color: var(--text-main);
       margin-bottom: 4px;
-      color: var(--text-primary);
     }
 
-    .company-name {
-      font-size: 1rem;
+    .t-company {
+      font-size: 1.05rem;
       font-weight: 500;
-      color: #374151;
+      color: #374151; /* Gris moyen */
       margin-bottom: 12px;
     }
 
-    .description {
+    .t-desc {
       font-size: 1rem;
-      line-height: 1.7;
       color: var(--text-secondary);
+      line-height: 1.7;
     }
 
-    /* === PROJECT GRID === */
-    .grid {
+    /* === 5. PROJETS (GRID) === */
+    .project-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 30px;
     }
+
     .project-card {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      padding: 24px;
-      border: 1px solid var(--line-color);
+      background: #f9fafb; /* Gris très très clair */
+      border: 1px solid var(--timeline-line);
       border-radius: 16px;
-      transition: 0.3s;
-      background: #fafafa;
+      padding: 30px;
+      transition: all 0.3s ease;
+      display: flex; flex-direction: column; gap: 10px;
     }
+
     .project-card:hover {
       transform: translateY(-5px);
       background: #fff;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
       border-color: var(--accent);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.06);
     }
-    .project-card h3 { font-size: 1.2rem; font-weight: 700; }
 
-    /* === BUTTONS === */
-    .btn-group { display: flex; gap: 16px; justify-content: center; }
-    .btn {
-      padding: 12px 28px;
-      border-radius: 50px;
-      font-weight: 600;
-      transition: 0.2s;
-      display: inline-flex; align-items: center; gap: 8px;
+    .project-card h3 { margin: 0; font-size: 1.25rem; }
+
+    /* === ANIMATIONS D'APPARITION === */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
-    .btn-primary { background: var(--accent); color: #fff; }
-    .btn-primary:hover { background: #4338ca; transform: translateY(-2px); }
-    .btn-outline { border: 2px solid var(--line-color); color: var(--text-primary); }
-    .btn-outline:hover { border-color: var(--text-primary); background: #fff; }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-    /* === ANIMATION REVEAL === */
-    .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* === MOBILE RESPONSIVE === */
+    /* === RESPONSIVE (MOBILE) === */
     @media (max-width: 900px) {
-      body { flex-direction: column; }
-      
+      /* Sidebar devient barre du bas sur mobile */
       .sidebar {
         width: 100%; height: auto;
-        position: fixed; bottom: 0; top: auto;
-        flex-direction: row; justify-content: space-around;
-        padding: 12px;
-        box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+        top: auto; bottom: 0;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 10px 20px;
+        box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
       }
+      
       .brand, .sidebar-footer { display: none; }
       
       .nav { flex-direction: row; width: 100%; justify-content: space-between; }
-      .nav-link { flex-direction: column; gap: 4px; padding: 6px; font-size: 10px; border-radius: 8px; }
-      .nav-link i { font-size: 20px; }
-      .nav-link:hover { transform: none; }
+      .nav-link { flex-direction: column; padding: 6px; font-size: 10px; gap: 4px; border-radius: 8px; }
+      .nav-link span { display: block; font-size: 10px; }
+      .nav-link:hover { background: transparent; color: #fff; transform: none; }
+      
+      main {
+        margin-left: 0;
+        width: 100%;
+        padding: 40px 20px 100px;
+      }
 
-      main { margin-left: 0; padding: 40px 20px 100px; }
-      .hero { padding-top: 40px; }
       .avatar { width: 180px; height: 180px; }
-      h1 { font-size: 36px; }
+      h1 { font-size: 42px; }
     }
   </style>
 </head>
@@ -322,11 +387,11 @@
 
   <aside class="sidebar">
     <div class="brand">
-      <img src="assets/images/b3n.png" alt="Logo">
-      <span>Sami B.</span>
+      <img src="assets/images/b3n.png" alt="Logo" class="brand-logo">
+      <span>Sami Bennane</span>
     </div>
 
-    <nav class="nav" id="nav">
+    <nav class="nav">
       <a href="#home" class="nav-link active">
         <i class="ph ph-house"></i> <span>Home</span>
       </a>
@@ -348,7 +413,7 @@
     </nav>
 
     <div class="sidebar-footer">
-      © <span id="year"></span> Sami Bennane
+      © <span id="year"></span>
     </div>
   </aside>
 
@@ -356,11 +421,14 @@
     <div class="container">
 
       <section id="home" class="hero reveal">
-        <div class="avatar">
-          <img src="assets/images/photo_fei.png" alt="Sami Bennane">
+        <div class="avatar-wrapper">
+          <div class="avatar">
+            <img src="assets/images/photo_fei.png" alt="Sami Bennane">
+          </div>
         </div>
+        
         <h1>Sami Bennane</h1>
-        <p class="subtitle">Engineering Student @ Mines Saint-Étienne <br> AI • Embedded Systems • Innovation</p>
+        <p class="hero-subtitle">Engineering Student @ Mines Saint-Étienne <br> AI • Embedded Systems • Innovation</p>
         
         <div class="btn-group">
           <a href="#contact" class="btn btn-primary">Contact Me</a>
@@ -377,15 +445,15 @@
       </section>
 
       <section id="education" class="reveal">
-        <h2>Education</h2>
+        <h2><i class="ph ph-graduation-cap" style="color:var(--accent)"></i> Education</h2>
         <div class="timeline">
           
           <div class="timeline-item">
             <span class="timeline-dot"></span>
-            <span class="time-period">2024 - 2027</span>
-            <div class="role-title">Diplôme d'Ingénieur (MSc)</div>
-            <div class="company-name">Mines Saint-Étienne</div>
-            <div class="description">
+            <span class="t-date">2024 - 2027</span>
+            <div class="t-title">Diplôme d'Ingénieur (MSc)</div>
+            <div class="t-company">Mines Saint-Étienne</div>
+            <div class="t-desc">
               Major in AI, Embedded & Secure Systems.<br>
               Rank: Top 10% (GPA 3.8/4.0).<br>
               Focus: IoT, Computer Architecture, Cryptography.
@@ -394,10 +462,10 @@
 
           <div class="timeline-item">
             <span class="timeline-dot"></span>
-            <span class="time-period">2022 - 2024</span>
-            <div class="role-title">CPGE - MPSI / PSI</div>
-            <div class="company-name">Lycée Pasteur (Neuilly-sur-Seine)</div>
-            <div class="description">
+            <span class="t-date">2022 - 2024</span>
+            <div class="t-title">CPGE - MPSI / PSI</div>
+            <div class="t-company">Lycée Pasteur (Neuilly-sur-Seine)</div>
+            <div class="t-desc">
               Intensive preparatory program for French "Grandes Écoles".<br>
               Focus on Advanced Mathematics, Physics and Engineering Sciences.
             </div>
@@ -405,10 +473,10 @@
 
           <div class="timeline-item">
             <span class="timeline-dot"></span>
-            <span class="time-period">2019 - 2022</span>
-            <div class="role-title">French Baccalaureate</div>
-            <div class="company-name">Lycée Lucie Aubrac</div>
-            <div class="description">
+            <span class="t-date">2019 - 2022</span>
+            <div class="t-title">French Baccalaureate</div>
+            <div class="t-company">Lycée Lucie Aubrac</div>
+            <div class="t-desc">
               Scientific Track with Highest Honors (Mention Très Bien).<br>
               Specializations in Mathematics & Physics-Chemistry.
             </div>
@@ -418,15 +486,15 @@
       </section>
 
       <section id="experience" class="reveal">
-        <h2>Experience</h2>
+        <h2><i class="ph ph-briefcase" style="color:var(--accent)"></i> Experience</h2>
         <div class="timeline">
           
           <div class="timeline-item">
             <span class="timeline-dot"></span>
-            <span class="time-period">Oct 2025 - Present</span>
-            <div class="role-title">Academic Tutor for Elite Athletes</div>
-            <div class="company-name">ECOLE SPORT ENTREPRENDRE</div>
-            <div class="description">
+            <span class="t-date">Oct 2025 - Present</span>
+            <div class="t-title">Academic Tutor for Elite Athletes</div>
+            <div class="t-company">ECOLE SPORT ENTREPRENDRE</div>
+            <div class="t-desc">
               Providing mathematics and physics tutoring for elite athletes competing in rugby, handball, and boxing. 
               Supporting their academic path alongside their sports career.
             </div>
@@ -434,21 +502,21 @@
 
           <div class="timeline-item">
             <span class="timeline-dot"></span>
-            <span class="time-period">Jul 2025 (1 mo)</span>
-            <div class="role-title">IT Asset Management Assistant</div>
-            <div class="company-name">Informatique CDC</div>
-            <div class="description">
-              Contributed to the management and tracking of IT assets, ensuring accurate monitoring of hardware infrastructure and optimization of resources.
+            <span class="t-date">Jul 2025 (1 mo)</span>
+            <div class="t-title">IT Asset Management Assistant</div>
+            <div class="t-company">Informatique CDC</div>
+            <div class="t-desc">
+              Contributed to the management and tracking of IT assets, ensuring accurate monitoring of hardware infrastructure.
             </div>
           </div>
 
           <div class="timeline-item">
             <span class="timeline-dot"></span>
-            <span class="time-period">Jan 2025 (1 mo)</span>
-            <div class="role-title">Cloud Computing Intern</div>
-            <div class="company-name">CDC Informatique</div>
-            <div class="description">
-              Data migration from on-premise to internal cloud (Lift-and-Shift) with a focus on performance optimization and system efficiency.
+            <span class="t-date">Jan 2025 (1 mo)</span>
+            <div class="t-title">Cloud Computing Intern</div>
+            <div class="t-company">CDC Informatique</div>
+            <div class="t-desc">
+              Data migration from on-premise to internal cloud (Lift-and-Shift) with a focus on performance optimization.
             </div>
           </div>
 
@@ -456,35 +524,35 @@
       </section>
 
       <section id="volunteering" class="reveal">
-        <h2>Volunteering</h2>
+        <h2><i class="ph ph-heart" style="color:var(--accent)"></i> Volunteering</h2>
         <div class="timeline">
           
           <div class="timeline-item">
             <span class="timeline-dot"></span>
-            <span class="time-period">Apr 2025 - Present</span>
-            <div class="role-title">Corporate Relations Officer</div>
-            <div class="company-name">Forum Entreprises Ingénieur</div>
-            <div class="description">
+            <span class="t-date">Apr 2025 - Present</span>
+            <div class="t-title">Corporate Relations Officer</div>
+            <div class="t-company">Forum Entreprises Ingénieur</div>
+            <div class="t-desc">
               In charge of outreach and relationship management with companies, organizing a large-scale career forum connecting students with industry leaders.
             </div>
           </div>
 
           <div class="timeline-item">
             <span class="timeline-dot"></span>
-            <span class="time-period">Mar 2025 - Present</span>
-            <div class="role-title">Football Team Manager</div>
-            <div class="company-name">BDS - Mines Saint-Étienne</div>
-            <div class="description">
+            <span class="t-date">Mar 2025 - Present</span>
+            <div class="t-title">Football Team Manager</div>
+            <div class="t-company">BDS - Mines Saint-Étienne</div>
+            <div class="t-desc">
               Responsible for coordinating team activities, managing organizational aspects, planning trainings and fostering team cohesion.
             </div>
           </div>
 
           <div class="timeline-item">
             <span class="timeline-dot"></span>
-            <span class="time-period">Feb 2025 - Jun 2025</span>
-            <div class="role-title">Volunteer</div>
-            <div class="company-name">École des XV</div>
-            <div class="description">
+            <span class="t-date">Feb 2025 - Jun 2025</span>
+            <div class="t-title">Volunteer</div>
+            <div class="t-company">École des XV</div>
+            <div class="t-desc">
               Supported primary and middle school students facing academic and social challenges in Marseille. Mentoring and academic support.
             </div>
           </div>
@@ -493,8 +561,8 @@
       </section>
 
       <section id="portfolio" class="reveal">
-        <h2>Selected Works</h2>
-        <div class="grid">
+        <h2><i class="ph ph-code" style="color:var(--accent)"></i> Selected Works</h2>
+        <div class="project-grid">
           <a href="#" class="project-card">
             <h3>🚁 AI Drone Project</h3>
             <p>Autonomous drone navigation system using computer vision and SLAM algorithms for real-time mapping.</p>
@@ -508,14 +576,18 @@
 
       <section id="contact" class="reveal">
         <h2>Contact</h2>
-        <p style="margin-bottom: 20px;">Open to opportunities. Feel free to reach out.</p>
-        <div class="btn-group" style="justify-content: flex-start;">
-          <a href="mailto:sami.bennane@gmail.com" class="btn btn-primary">
-            <i class="ph ph-envelope-simple"></i> sami.bennane@gmail.com
-          </a>
-          <a href="https://www.linkedin.com/in/sami-bennane-575380320" target="_blank" class="btn btn-outline">
-            <i class="ph ph-linkedin-logo"></i> LinkedIn
-          </a>
+        <div style="background: #f9fafb; padding: 40px; border-radius: 16px; text-align: center; border:1px solid var(--timeline-line);">
+          <p style="margin-bottom: 30px; color: var(--text-main); font-weight: 500;">
+            Open to new opportunities. Let's build something together.
+          </p>
+          <div class="btn-group">
+            <a href="mailto:sami.bennane@gmail.com" class="btn btn-primary">
+              <i class="ph ph-envelope-simple"></i> Email Me
+            </a>
+            <a href="https://www.linkedin.com/in/sami-bennane-575380320" target="_blank" class="btn btn-outline">
+              <i class="ph ph-linkedin-logo"></i> LinkedIn
+            </a>
+          </div>
         </div>
       </section>
 
@@ -523,9 +595,10 @@
   </main>
 
   <script>
+    // 1. Date auto
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Scroll Reveal
+    // 2. Scroll Animation (Reveal)
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -535,7 +608,7 @@
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // Active Link Sidebar
+    // 3. Active Link in Sidebar
     const sections = document.querySelectorAll("section");
     const navLinks = document.querySelectorAll(".nav-link");
 
