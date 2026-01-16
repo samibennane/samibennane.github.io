@@ -238,18 +238,17 @@
     }
     h2::after { content: ""; flex: 1; height: 1px; background: var(--timeline-line); max-width: 200px; }
 
-    /* === SPLIT LAYOUT (EDUCATION, EXPERIENCE, VOLUNTEERING) === */
+    /* === SPLIT LAYOUT === */
     .split-layout {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr; /* Texte légèrement plus large */
+      grid-template-columns: 1.2fr 0.8fr; /* Texte un peu plus large */
       gap: 50px;
       align-items: start;
     }
 
-    /* Le conteneur d'image qui reste en place (sticky) */
     .split-image-container {
       position: sticky;
-      top: 100px; /* Reste visible au scroll */
+      top: 100px;
       height: 400px;
       border-radius: 24px;
       overflow: hidden;
@@ -347,7 +346,6 @@
       .hero-title { font-size: 36px; }
       .geo-globe { width: 300px; height: 300px; }
       .tech-widget { display: none; }
-      /* Responsive Split Layout : Image disparait ou passe en dessous */
       .split-layout { grid-template-columns: 1fr; }
       .split-image-container { display: none; }
     }
@@ -428,9 +426,13 @@
               <div class="timeline-item">
                 <span class="timeline-dot"></span>
                 <span class="t-date">2024 - 2027</span>
-                <div class="t-title">Diplôme d'Ingénieur (MSc)</div>
+                <div class="t-title">MSc in Engineering</div>
                 <div class="t-company">Mines Saint-Étienne</div>
-                <div class="t-desc">Major in AI, Embedded & Secure Systems. Rank: Top 10% (GPA 3.8/4.0). Focus: IoT, Cryptography.</div>
+                <div class="t-desc">
+                  One of the most prestigious "Grandes Écoles" in France (Top 5%), dedicated to training elite engineers and industry leaders.<br>
+                  <strong>Major:</strong> AI, Embedded & Secure Systems. <strong>Rank:</strong> Top 10% (GPA 3.8/4.0).<br>
+                  <strong>Focus:</strong> IoT, Computer Architecture, Cryptography.
+                </div>
               </div>
               <div class="timeline-item" style="transition-delay: 0.1s;">
                 <span class="timeline-dot"></span>
