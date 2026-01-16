@@ -40,6 +40,7 @@
       
       /* Transition Standard */
       --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+      --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1); /* Pour le globe */
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -73,7 +74,6 @@
     .brand {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       gap: 15px; margin-bottom: 50px; text-align: center;
-      /* Animation entrée */
       opacity: 0; animation: fadeInDown 0.8s 0.2s forwards;
     }
     
@@ -132,15 +132,35 @@
       animation: pulseGrid 10s infinite alternate;
     }
 
-    /* GLOBE CSS */
+    /* === GLOBE CSS (MODIFIÉ) === */
     .geo-globe {
       position: absolute; width: 600px; height: 600px;
-      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      /* Position finale (Centré) est définie dans l'animation keyframes "100%" */
+      /* On définit ici l'état initial pour éviter le flash avant l'anim */
+      top: 50%; left: 50%; 
+      transform: translate(-50%, -50%); 
+      
       border-radius: 50%; opacity: 0.15; z-index: 0;
       perspective: 1000px; pointer-events: none;
-      /* Entrée zoom */
-      animation: zoomIn 1.5s var(--ease-out);
+      
+      /* L'animation d'entrée : Du bas-droite vers le centre */
+      animation: globeEnter 2.5s var(--ease-smooth) forwards;
     }
+
+    /* Animation Spécifique pour le mouvement du globe */
+    @keyframes globeEnter {
+      0% {
+        opacity: 0;
+        /* Départ : Décalé vers la droite (30vw) et le bas (30vh), et petit (scale 0.4) */
+        transform: translate(30vw, 30vh) scale(0.4); 
+      }
+      100% {
+        opacity: 0.15;
+        /* Arrivée : Parfaitement centré */
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
     .globe-ring {
       position: absolute; border: 1px solid var(--tech-cyan);
       border-radius: 50%; top: 0; left: 0; right: 0; bottom: 0;
@@ -151,7 +171,7 @@
     .ring-3 { width: 60%; height: 60%; top: 20%; left: 20%; animation: rotate1 30s linear infinite; border-style: dashed; }
     .ring-4 { width: 120%; height: 40%; top: 30%; left: -10%; border-color: rgba(255,255,255,0.1); transform: rotate(-45deg); }
 
-    /* WIDGETS HUD (Entrée animée) */
+    /* WIDGETS HUD */
     .tech-widget {
       position: absolute;
       background: rgba(15, 23, 42, 0.65);
@@ -170,14 +190,16 @@
     .tw-left { 
       top: 40%; left: 8%; 
       border-left-color: var(--tech-cyan); 
-      animation: slideInLeft 1s 0.8s forwards, floatWidget 6s 1.8s ease-in-out infinite;
+      /* Apparition retardée après le globe */
+      animation: slideInLeft 1s 1.5s forwards, floatWidget 6s 2.5s ease-in-out infinite;
     }
     .tw-right { 
       top: 45%; right: 8%; 
       border-left: 1px solid rgba(255,255,255,0.1); 
       border-right: 3px solid var(--tech-purple);
       text-align: right; align-items: flex-end;
-      animation: slideInRight 1s 1s forwards, floatWidget 6s 2s ease-in-out infinite;
+      /* Apparition encore plus retardée */
+      animation: slideInRight 1s 1.8s forwards, floatWidget 6s 2.8s ease-in-out infinite;
     }
 
     .tw-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
@@ -191,7 +213,7 @@
 
     .coordinate-text::after { content: " [LOCKED]"; animation: blinkText 2s infinite; color: var(--tech-purple); }
 
-    /* Hero Content Centré (Entrée animée) */
+    /* Hero Content Centré */
     .hero-content {
       position: relative; z-index: 10;
       display: flex; flex-direction: column; align-items: center; gap: 20px;
@@ -205,7 +227,8 @@
       background: rgba(255,255,255,0.05);
       backdrop-filter: blur(10px);
       margin-bottom: 20px;
-      opacity: 0; animation: zoomIn 1s 0.2s forwards;
+      /* Apparition en zoom après le globe */
+      opacity: 0; animation: zoomIn 1s 1s forwards;
       transition: transform 0.3s;
     }
     .hero-avatar:hover { transform: scale(1.05); border-color: var(--tech-cyan); box-shadow: 0 0 30px rgba(6, 182, 212, 0.3); }
@@ -216,16 +239,16 @@
       background: linear-gradient(135deg, #fff 30%, #94a3b8 100%);
       -webkit-background-clip: text; color: transparent;
       margin: 0; text-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      opacity: 0; animation: fadeInUp 1s 0.4s forwards;
+      opacity: 0; animation: fadeInUp 1s 1.2s forwards;
     }
     .hero-subtitle { 
       font-size: 1.25rem; color: #cbd5e1; font-weight: 300; max-width: 600px; 
-      opacity: 0; animation: fadeInUp 1s 0.6s forwards;
+      opacity: 0; animation: fadeInUp 1s 1.4s forwards;
     }
     
     .hero-btns { 
       margin-top: 30px; display: flex; gap: 16px; 
-      opacity: 0; animation: fadeInUp 1s 0.8s forwards;
+      opacity: 0; animation: fadeInUp 1s 1.6s forwards;
     }
     .btn-hero {
       padding: 14px 32px; border-radius: 100px; font-weight: 600;
@@ -351,8 +374,6 @@
       .content-wrapper { padding: 60px 20px 120px; }
       .hero-title { font-size: 36px; }
       .geo-globe { width: 300px; height: 300px; }
-      
-      /* Sur mobile, on cache les widgets complexes pour la perf */
       .tech-widget { display: none; } 
     }
   </style>
