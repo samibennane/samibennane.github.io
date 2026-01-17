@@ -723,7 +723,8 @@
       });
     }, { threshold: 0.15 });
 
-    document.querySelectorAll('.reveal, .timeline-item, .project-card, .lang-item, .split-image-container, .article-card, .philosophy-banner').forEach(el => observer.observe(el));
+    // CRITICAL FIX: ADD .skill-card to observer
+    document.querySelectorAll('.reveal, .timeline-item, .project-card, .lang-item, .split-image-container, .article-card, .philosophy-banner, .skill-card').forEach(el => observer.observe(el));
 
     const sections = document.querySelectorAll("section");
     const navLinks = document.querySelectorAll(".nav-link");
