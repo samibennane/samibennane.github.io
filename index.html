@@ -251,77 +251,56 @@
     .t-company { font-size: 1rem; font-weight: 500; color: #374151; margin-bottom: 8px; }
     .t-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; }
 
-    /* SKILLS STYLING */
-    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
-    
-    .skill-card {
-      background: #fff; border: 1px solid var(--timeline-line);
-      border-radius: 16px; padding: 30px; transition: 0.3s; 
-      display: flex; flex-direction: column; gap: 15px; 
-      opacity: 0; transform: translateY(20px);
+    /* SKILLS STYLING - UPDATED FOR LOGO GRID ONLY */
+    .skills-section-container {
+        display: grid; 
+        grid-template-columns: 1fr 1fr; 
+        gap: 50px; 
+        margin-bottom: 60px;
     }
-    .skill-card.visible { opacity: 1; transform: translateY(0); }
-    .skill-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.06); border-color: var(--accent); }
-    
-    .skill-header { display: flex; align-items: center; gap: 12px; margin-bottom: 5px; }
-    .skill-icon-box { width: 48px; height: 48px; background: rgba(79, 70, 229, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 24px; }
-    .skill-title { font-size: 1.1rem; font-weight: 700; color: var(--text-main); }
-    
-    .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-    .skill-tag { 
-      font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); 
-      background: #f3f4f6; padding: 6px 12px; border-radius: 20px; 
-      transition: 0.2s; border: 1px solid transparent; 
-    }
-    .skill-card:hover .skill-tag { background: #fff; border-color: #e5e7eb; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
-    .skill-tag:hover { color: var(--accent); border-color: var(--accent); background: rgba(79, 70, 229, 0.05); }
 
-    /* === TOOLS LOGOS GRID (NEW) === */
-    .tools-section-title {
-        font-size: 1.8rem; font-weight: 700; margin: 40px 0 10px 0;
-        background: linear-gradient(to right, #111827, #4f46e5);
-        -webkit-background-clip: text; color: transparent;
-        text-align: left;
+    .skill-category-title {
+        font-size: 1.5rem; font-weight: 700; 
+        margin-bottom: 20px;
+        color: var(--text-main);
+        display: flex; align-items: center; gap: 10px;
     }
-    
-    .tools-intro {
-        font-size: 1rem; color: #64748b; margin-bottom: 30px; 
-        max-width: 700px; text-align: left;
-    }
-    
-    .tools-logo-grid {
+    .skill-category-title i { color: var(--accent); }
+
+    /* === UNIFIED LOGO GRID STYLES === */
+    .skill-logo-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr; /* 2 Colonnes */
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
       gap: 20px;
     }
 
-    .tool-logo-item {
+    .skill-logo-item {
       background: transparent; border: none; box-shadow: none;
-      height: 120px; /* Bigger container */
-      display: flex; flex-direction: column; /* Stack image + name */
+      height: 120px; 
+      display: flex; flex-direction: column; 
       align-items: center; justify-content: center;
       gap: 12px;
       transition: all 0.3s ease;
       animation: floatLogo 4s ease-in-out infinite;
     }
 
-    .tool-logo-item:nth-child(odd) { animation-delay: 0s; }
-    .tool-logo-item:nth-child(even) { animation-delay: 2s; }
+    .skill-logo-item:nth-child(odd) { animation-delay: 0s; }
+    .skill-logo-item:nth-child(even) { animation-delay: 2s; }
 
-    .tool-logo-item img {
-      max-width: 100%; max-height: 70%;
+    .skill-logo-item img {
+      max-width: 64px; max-height: 64px; /* Consistent logo size */
       object-fit: contain;
       filter: grayscale(10%);
       transition: transform 0.3s;
     }
     
-    .tool-name {
-        font-size: 0.95rem; font-weight: 600; color: #4b5563;
+    .skill-name {
+        font-size: 0.9rem; font-weight: 600; color: #4b5563;
         transition: color 0.3s;
     }
 
-    .tool-logo-item:hover img { transform: scale(1.15); filter: grayscale(0%); }
-    .tool-logo-item:hover .tool-name { color: var(--accent); }
+    .skill-logo-item:hover img { transform: scale(1.15); filter: grayscale(0%); }
+    .skill-logo-item:hover .skill-name { color: var(--accent); }
 
     @keyframes floatLogo {
       0%, 100% { transform: translateY(0px); }
@@ -462,7 +441,7 @@
       .about-text h2 { font-size: 2rem; }
       .focus-card { text-align: left; }
       #about { padding: 40px 20px; height: auto; min-height: auto; }
-      .tools-logo-grid { grid-template-columns: 1fr 1fr; }
+      .skills-section-container, .tools-logo-grid, .skill-logo-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -588,43 +567,64 @@
         <section id="skills" class="reveal">
           <h2>Skills & Expertise</h2>
           
-          <div class="skills-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 40px;">
+          <div class="skills-section-container">
             
-            <div class="skill-card">
-              <div class="skill-header">
-                <div class="skill-icon-box"><i class="ph ph-code"></i></div>
-                <div class="skill-title">Software & AI</div>
-              </div>
-              <div class="skill-tags">
-                <span class="skill-tag">Python</span>
-                <span class="skill-tag">Machine Learning</span>
-                <span class="skill-tag">C</span>
-                <span class="skill-tag">C++</span>
-                <span class="skill-tag">Script Shell</span>
-                <span class="skill-tag">TensorFlow</span>
-              </div>
+            <div class="skill-category">
+                <h3 class="skill-category-title"><i class="ph ph-code"></i> Software & AI</h3>
+                <div class="skill-logo-grid">
+                  <div class="skill-logo-item">
+                    <img src="assets/images/c.png" alt="C">
+                    <span class="skill-name">C</span>
+                  </div>
+                  <div class="skill-logo-item">
+                    <img src="assets/images/c++.png" alt="C++">
+                    <span class="skill-name">C++</span>
+                  </div>
+                  <div class="skill-logo-item">
+                    <img src="assets/images/python.png" alt="Python">
+                    <span class="skill-name">Python</span>
+                  </div>
+                  <div class="skill-logo-item">
+                    <img src="assets/images/sql.png" alt="SQL">
+                    <span class="skill-name">SQL</span>
+                  </div>
+                  <div class="skill-logo-item">
+                    <img src="assets/images/bash.png" alt="Bash">
+                    <span class="skill-name">Bash</span>
+                  </div>
+                </div>
             </div>
 
-            <div class="skill-card">
-              <div class="skill-header">
-                <div class="skill-icon-box"><i class="ph ph-cpu"></i></div>
-                <div class="skill-title">Electronics & IoT</div>
-              </div>
-              <div class="skill-tags">
-                <span class="skill-tag">STM32</span>
-                <span class="skill-tag">Arduino</span>
-                <span class="skill-tag">Bus CAN</span>
-                <span class="skill-tag">SPI</span>
-                <span class="skill-tag">I2C</span>
-                <span class="skill-tag">STM32CubeIDE</span>
-                <span class="skill-tag">KiCad</span>
-                <span class="skill-tag">PartQuest</span>
-              </div>
+            <div class="skill-category">
+                <h3 class="skill-category-title"><i class="ph ph-cpu"></i> Electronics & IoT</h3>
+                <div class="skill-logo-grid">
+                  <div class="skill-logo-item">
+                    <img src="assets/images/kicad.png" alt="KiCad">
+                    <span class="skill-name">KiCad</span>
+                  </div>
+                  <div class="skill-logo-item">
+                    <img src="assets/images/stm32.png" alt="STM32">
+                    <span class="skill-name">STM32</span>
+                  </div>
+                  <div class="skill-logo-item">
+                    <img src="assets/images/pq.png" alt="PartQuest">
+                    <span class="skill-name">PartQuest</span>
+                  </div>
+                  <div class="skill-logo-item">
+                    <img src="assets/images/arduino.png" alt="Arduino">
+                    <span class="skill-name">Arduino</span>
+                  </div>
+                  <div class="skill-logo-item">
+                    <img src="assets/images/ttn.png" alt="The Things Network">
+                    <span class="skill-name">TTN</span>
+                  </div>
+                </div>
             </div>
+
           </div>
 
-          <div>
-            <h3 class="tools-section-title">Tools & Methods</h3>
+          <div style="margin-top: 50px;">
+            <h3 class="skill-category-title" style="font-size: 1.5rem;"><i class="ph ph-wrench"></i> Tools & Methods</h3>
             <p class="tools-intro">
                 A curated ecosystem of technologies and methodologies I leverage daily to architect scalable solutions and drive innovation.
             </p>
@@ -646,8 +646,8 @@
               </div>
 
               <div class="tool-logo-item">
-                <img src="assets/images/github.png" alt="GitHub">
-                <span class="tool-name">GitHub</span>
+                <img src="assets/images/jupyter.png" alt="Jupyter">
+                <span class="tool-name">Jupyter</span>
               </div>
 
               <div class="tool-logo-item">
@@ -908,7 +908,7 @@
     }, { threshold: 0.15 });
 
     // CRITICAL FIX: ADD .skill-card to observer
-    document.querySelectorAll('.reveal, .timeline-item, .project-card, .lang-item, .split-image-container, .article-card, .philosophy-banner, .skill-card').forEach(el => observer.observe(el));
+    document.querySelectorAll('.reveal, .timeline-item, .project-card, .lang-item, .split-image-container, .article-card, .philosophy-banner, .skill-card, .tool-logo-item').forEach(el => observer.observe(el));
 
     const sections = document.querySelectorAll("section");
     const navLinks = document.querySelectorAll(".nav-link");
