@@ -16,23 +16,35 @@
 
   <style>
     :root {
+      /* Sidebar Colors */
       --sidebar-text: #ffffff;
+      
+      /* Main Colors */
       --main-bg: #ffffff;
       --hero-bg: #020617;
+      
       --text-main: #111827;
       --text-secondary: #4b5563;
       --text-muted: #9ca3af;
+      
+      /* Accents */
       --accent: #4f46e5;
       --tech-cyan: #06b6d4;
       --tech-purple: #8b5cf6;
       --timeline-line: #e5e7eb;
+
+      /* Dimensions */
       --sidebar-width: 280px;
       --container-width: 1000px;
+      
+      /* Transitions */
       --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+      --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
       --transition-speed: 0.4s;
     }
 
     body.collapsed { --sidebar-width: 88px; }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     
@@ -54,11 +66,14 @@
       position: fixed; top: 0; left: 0; bottom: 0;
       width: var(--sidebar-width);
       background: rgba(15, 23, 42, 0.95); 
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-right: 1px solid rgba(255, 255, 255, 0.08);
       color: var(--sidebar-text);
-      display: flex; flex-direction: column; padding: 30px 20px; 
-      z-index: 2000; box-shadow: 10px 0 30px rgba(0,0,0,0.2);
+      display: flex; flex-direction: column;
+      padding: 30px 20px; 
+      z-index: 2000;
+      box-shadow: 10px 0 30px rgba(0,0,0,0.2);
       transition: width var(--transition-speed) var(--ease-out);
       overflow: hidden;
     }
@@ -176,7 +191,7 @@
     .focus-content h4 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
     .focus-content p { font-size: 0.85rem; color: var(--text-secondary); margin: 0; }
 
-    /* === SKILLS GRID & LOGOS (CLEAN & FIXED) === */
+    /* === SKILLS GRID & LOGOS === */
     .skills-block {
       margin-bottom: 60px;
       opacity: 0; transform: translateY(20px); transition: 0.6s;
@@ -184,11 +199,14 @@
     .skills-block.visible { opacity: 1; transform: translateY(0); }
 
     .skills-category-header {
-      font-size: 1.4rem; font-weight: 700; 
-      margin-bottom: 25px; color: var(--text-main);
+      font-size: 1.5rem; /* Réduit pour l'élégance */
+      font-weight: 700; 
+      margin-bottom: 25px; 
+      color: var(--text-main);
       display: flex; align-items: center; gap: 10px;
     }
-    .skills-category-header i { color: var(--accent); }
+    /* Plus d'icône ici car supprimée dans le HTML, mais style conservé au cas où */
+    
     .skills-intro { font-size: 1rem; color: #64748b; margin-bottom: 30px; max-width: 700px; }
 
     /* LOGO GRID UNIFIED STYLE */
@@ -430,7 +448,8 @@
           <h2>Skills & Expertise</h2>
 
           <div class="skills-block reveal">
-            <h3 class="skills-category-header"><i class="ph ph-code"></i> Software & AI</h3>
+            <h3 class="skills-category-header">Software & AI</h3>
+            <p class="skills-intro">Development of robust algorithms and intelligent systems using high-performance languages and modern frameworks.</p>
             <div class="logo-grid">
               <div class="logo-item"><img src="assets/images/c.png" alt="C"><span class="logo-name">C</span></div>
               <div class="logo-item"><img src="assets/images/c++.png" alt="C++"><span class="logo-name">C++</span></div>
@@ -441,7 +460,8 @@
           </div>
 
           <div class="skills-block reveal" style="transition-delay: 0.1s;">
-            <h3 class="skills-category-header"><i class="ph ph-cpu"></i> Electronics & IoT</h3>
+            <h3 class="skills-category-header">Electronics & IoT</h3>
+            <p class="skills-intro">Design and programming of embedded architectures, ensuring optimal communication between hardware and software layers.</p>
             <div class="logo-grid">
               <div class="logo-item"><img src="assets/images/stm32.png" alt="STM32"><span class="logo-name">STM32</span></div>
               <div class="logo-item"><img src="assets/images/kicad.png" alt="KiCad"><span class="logo-name">KiCad</span></div>
@@ -452,7 +472,7 @@
           </div>
 
           <div class="skills-block reveal" style="transition-delay: 0.2s;">
-            <h3 class="skills-category-header"><i class="ph ph-wrench"></i> Tools & Methods</h3>
+            <h3 class="skills-category-header">Tools & Methods</h3>
             <p class="skills-intro">A curated ecosystem of technologies and methodologies I leverage daily to architect scalable solutions and drive innovation.</p>
             <div class="logo-grid">
               <div class="logo-item"><img src="assets/images/tf2.png" alt="TensorFlow"><span class="logo-name">TensorFlow</span></div>
@@ -708,7 +728,7 @@
     }, { threshold: 0.15 });
 
     // IMPORTANT: observe .skills-block
-    document.querySelectorAll('.reveal, .timeline-item, .project-card, .lang-item, .split-image-container, .article-card, .philosophy-banner, .skills-block, .tool-logo-item').forEach(el => observer.observe(el));
+    document.querySelectorAll('.reveal, .timeline-item, .project-card, .lang-item, .split-image-container, .article-card, .philosophy-banner, .skills-block, .logo-item').forEach(el => observer.observe(el));
 
     const sections = document.querySelectorAll("section");
     const navLinks = document.querySelectorAll(".nav-link");
