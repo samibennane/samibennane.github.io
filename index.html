@@ -190,6 +190,19 @@
     .t-company { font-size: 1rem; font-weight: 500; color: #374151; margin-bottom: 8px; }
     .t-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; }
 
+    /* SKILLS */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+    .skill-card { background: #fff; border: 1px solid var(--timeline-line); border-radius: 16px; padding: 30px; transition: 0.3s; display: flex; flex-direction: column; gap: 15px; opacity: 0; transform: translateY(20px); }
+    .skill-card.visible { opacity: 1; transform: translateY(0); }
+    .skill-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.06); border-color: var(--accent); }
+    .skill-header { display: flex; align-items: center; gap: 12px; margin-bottom: 5px; }
+    .skill-icon-box { width: 48px; height: 48px; background: rgba(79, 70, 229, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 24px; }
+    .skill-title { font-size: 1.1rem; font-weight: 700; color: var(--text-main); }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill-tag { font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); background: #f3f4f6; padding: 6px 12px; border-radius: 20px; transition: 0.2s; border: 1px solid transparent; }
+    .skill-card:hover .skill-tag { background: #fff; border-color: #e5e7eb; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+    .skill-tag:hover { color: var(--accent); border-color: var(--accent); background: rgba(79, 70, 229, 0.05); }
+
     /* PHILOSOPHY */
     .philosophy-banner { margin: 80px 0; padding: 40px; border-left: 4px solid var(--accent); background: linear-gradient(90deg, rgba(79, 70, 229, 0.05) 0%, transparent 100%); font-size: 1.4rem; font-style: italic; color: var(--text-secondary); line-height: 1.6; opacity: 0; transform: translateY(20px); transition: 0.8s var(--ease-out); }
     .philosophy-banner.visible { opacity: 1; transform: translateY(0); }
@@ -340,6 +353,7 @@
     <nav class="nav">
       <a href="#home" class="nav-link active"><i class="ph ph-house"></i><span>Home</span></a>
       <a href="#about" class="nav-link"><i class="ph ph-user"></i><span>About</span></a>
+      <a href="#skills" class="nav-link"><i class="ph ph-lightning"></i><span>My Skills</span></a>
       <a href="#education" class="nav-link"><i class="ph ph-graduation-cap"></i><span>Education</span></a>
       <a href="#experience" class="nav-link"><i class="ph ph-briefcase"></i><span>Experience</span></a>
       <a href="#volunteering" class="nav-link"><i class="ph ph-heart"></i><span>Volunteering</span></a>
@@ -399,6 +413,58 @@
             <p>
               Beyond code and circuits, I advocate for a <strong>multidisciplinary approach</strong> to engineering. I am deeply invested in the <strong>geopolitics of technology</strong>, tackling challenges related to <strong>digital sovereignty</strong> and <strong>AI ethics</strong>. My goal is to design solutions that are not only technically flawless but also strategically autonomous and socially responsible.
             </p>
+          </div>
+        </section>
+
+        <section id="skills" class="reveal">
+          <h2>Skills & Expertise</h2>
+          <div class="skills-grid">
+            
+            <div class="skill-card">
+              <div class="skill-header">
+                <div class="skill-icon-box"><i class="ph ph-cpu"></i></div>
+                <div class="skill-title">Embedded Systems</div>
+              </div>
+              <div class="skill-tags">
+                <span class="skill-tag">C / C++</span>
+                <span class="skill-tag">STM32</span>
+                <span class="skill-tag">Microcontrollers</span>
+                <span class="skill-tag">IoT Protocols</span>
+                <span class="skill-tag">Analog Electronics</span>
+                <span class="skill-tag">VHDL</span>
+              </div>
+            </div>
+
+            <div class="skill-card" style="transition-delay: 0.1s;">
+              <div class="skill-header">
+                <div class="skill-icon-box"><i class="ph ph-brain"></i></div>
+                <div class="skill-title">Data & AI</div>
+              </div>
+              <div class="skill-tags">
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">Machine Learning</span>
+                <span class="skill-tag">Computer Vision</span>
+                <span class="skill-tag">Pandas / NumPy</span>
+                <span class="skill-tag">Matlab</span>
+                <span class="skill-tag">Signal Processing</span>
+              </div>
+            </div>
+
+            <div class="skill-card" style="transition-delay: 0.2s;">
+              <div class="skill-header">
+                <div class="skill-icon-box"><i class="ph ph-wrench"></i></div>
+                <div class="skill-title">Tools & Strategy</div>
+              </div>
+              <div class="skill-tags">
+                <span class="skill-tag">Git / GitHub</span>
+                <span class="skill-tag">Linux</span>
+                <span class="skill-tag">Project Management</span>
+                <span class="skill-tag">Technical Writing</span>
+                <span class="skill-tag">Geopolitics Analysis</span>
+                <span class="skill-tag">Team Leadership</span>
+              </div>
+            </div>
+
           </div>
         </section>
 
