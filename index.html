@@ -16,35 +16,23 @@
 
   <style>
     :root {
-      /* Sidebar Colors */
       --sidebar-text: #ffffff;
-      
-      /* Main Colors */
       --main-bg: #ffffff;
       --hero-bg: #020617;
-      
       --text-main: #111827;
       --text-secondary: #4b5563;
       --text-muted: #9ca3af;
-      
-      /* Accents */
       --accent: #4f46e5;
       --tech-cyan: #06b6d4;
       --tech-purple: #8b5cf6;
       --timeline-line: #e5e7eb;
-
-      /* Dimensions */
       --sidebar-width: 280px;
       --container-width: 1000px;
-      
-      /* Transitions */
       --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
-      --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
       --transition-speed: 0.4s;
     }
 
     body.collapsed { --sidebar-width: 88px; }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     
@@ -66,14 +54,11 @@
       position: fixed; top: 0; left: 0; bottom: 0;
       width: var(--sidebar-width);
       background: rgba(15, 23, 42, 0.95); 
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
       border-right: 1px solid rgba(255, 255, 255, 0.08);
       color: var(--sidebar-text);
-      display: flex; flex-direction: column;
-      padding: 30px 20px; 
-      z-index: 2000;
-      box-shadow: 10px 0 30px rgba(0,0,0,0.2);
+      display: flex; flex-direction: column; padding: 30px 20px; 
+      z-index: 2000; box-shadow: 10px 0 30px rgba(0,0,0,0.2);
       transition: width var(--transition-speed) var(--ease-out);
       overflow: hidden;
     }
@@ -171,15 +156,18 @@
     h2 { font-size: 28px; font-weight: 700; margin-bottom: 40px; color: var(--text-main); display: flex; align-items: center; gap: 12px; }
     h2::after { content: ""; flex: 1; height: 1px; background: var(--timeline-line); max-width: 200px; }
 
-    /* === FULL-SCREEN ABOUT SECTION === */
+    /* === FULL-SCREEN ABOUT SECTION (NEURAL NETWORK BG) === */
     #about {
       min-height: 100vh; display: flex; align-items: center; justify-content: center;
       position: relative; padding: 0 60px; overflow: hidden; margin-bottom: 0;
     }
-    .about-blob { position: absolute; border-radius: 50%; filter: blur(80px); z-index: 0; opacity: 0.4; animation: floatBlob 10s infinite ease-in-out alternate; }
-    .blob-1 { top: 10%; right: 10%; width: 300px; height: 300px; background: var(--accent); }
-    .blob-2 { bottom: 10%; left: 10%; width: 250px; height: 250px; background: var(--tech-cyan); animation-delay: -5s; }
-    @keyframes floatBlob { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(20px, -20px) scale(1.1); } }
+    
+    /* Le Canvas du Réseau de Neurones */
+    #neural-canvas {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 0; pointer-events: none; /* Laisse passer les clics */
+    }
+
     .about-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 60px; position: relative; z-index: 2; max-width: 1100px; width: 100%; align-items: center; }
     .about-text h2 { font-size: 3rem; margin-bottom: 30px; background: linear-gradient(to right, #111827, #4f46e5); -webkit-background-clip: text; color: transparent; line-height: 1.2; }
     .about-text p { font-size: 1.1rem; color: #374151; margin-bottom: 20px; line-height: 1.7; }
@@ -199,14 +187,10 @@
     .skills-block.visible { opacity: 1; transform: translateY(0); }
 
     .skills-category-header {
-      font-size: 1.5rem; /* Réduit pour l'élégance */
-      font-weight: 700; 
-      margin-bottom: 25px; 
-      color: var(--text-main);
+      font-size: 1.4rem; font-weight: 700; 
+      margin-bottom: 25px; color: var(--text-main);
       display: flex; align-items: center; gap: 10px;
     }
-    /* Plus d'icône ici car supprimée dans le HTML, mais style conservé au cas où */
-    
     .skills-intro { font-size: 1rem; color: #64748b; margin-bottom: 30px; max-width: 700px; }
 
     /* LOGO GRID UNIFIED STYLE */
@@ -409,9 +393,7 @@
       <div class="container">
 
         <section id="about" class="reveal">
-          <div class="about-blob blob-1"></div>
-          <div class="about-blob blob-2"></div>
-          <div class="about-grid">
+          <canvas id="neural-canvas"></canvas> <div class="about-grid">
             <div class="about-text">
               <h2>Bridging Hardware <br> & Strategic Vision.</h2>
               <p>I am an engineering student at <strong>Mines Saint-Étienne</strong>, bridging the gap between <span class="about-highlight">hardware reliability</span> and <span class="about-highlight">AI innovation</span>.</p>
@@ -727,7 +709,7 @@
       });
     }, { threshold: 0.15 });
 
-    // IMPORTANT: observe .skills-block
+    // CRITICAL FIX: ADD .skill-card to observer
     document.querySelectorAll('.reveal, .timeline-item, .project-card, .lang-item, .split-image-container, .article-card, .philosophy-banner, .skills-block, .logo-item').forEach(el => observer.observe(el));
 
     const sections = document.querySelectorAll("section");
@@ -742,6 +724,79 @@
         if (link.getAttribute("href").includes(current)) link.classList.add("active");
       });
     });
+
+    // --- NEURAL NETWORK ANIMATION SCRIPT ---
+    (function() {
+      const canvas = document.getElementById('neural-canvas');
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      let particles = [];
+
+      function resize() {
+        width = canvas.width = canvas.parentElement.offsetWidth;
+        height = canvas.height = canvas.parentElement.offsetHeight;
+      }
+
+      class Particle {
+        constructor() {
+          this.x = Math.random() * width;
+          this.y = Math.random() * height;
+          this.vx = (Math.random() - 0.5) * 0.5; // Vitesse lente
+          this.vy = (Math.random() - 0.5) * 0.5;
+          this.size = Math.random() * 2 + 1;
+        }
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          if (this.x < 0 || this.x > width) this.vx *= -1;
+          if (this.y < 0 || this.y > height) this.vy *= -1;
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(79, 70, 229, 0.5)'; // Couleur accent (violet)
+          ctx.fill();
+        }
+      }
+
+      function init() {
+        particles = [];
+        for (let i = 0; i < 60; i++) { // Nombre de particules
+          particles.push(new Particle());
+        }
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        
+        for (let i = 0; i < particles.length; i++) {
+          particles[i].update();
+          particles[i].draw();
+          
+          // Dessiner les connexions
+          for (let j = i; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < 120) { // Distance de connexion
+              ctx.beginPath();
+              ctx.strokeStyle = `rgba(6, 182, 212, ${1 - distance / 120})`; // Cyan fading
+              ctx.lineWidth = 0.5;
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(animate);
+      }
+
+      window.addEventListener('resize', () => { resize(); init(); });
+      resize();
+      init();
+      animate();
+    })();
   </script>
 </body>
 </html>
