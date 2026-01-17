@@ -251,8 +251,9 @@
     .t-company { font-size: 1rem; font-weight: 500; color: #374151; margin-bottom: 8px; }
     .t-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; }
 
-    /* SKILLS STYLING */
+    /* SKILLS STYLING (MODIFIED FOR BIG LOGOS) */
     .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+    
     .skill-card {
       background: #fff; border: 1px solid var(--timeline-line);
       border-radius: 16px; padding: 30px; transition: 0.3s; 
@@ -275,55 +276,43 @@
     .skill-card:hover .skill-tag { background: #fff; border-color: #e5e7eb; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
     .skill-tag:hover { color: var(--accent); border-color: var(--accent); background: rgba(79, 70, 229, 0.05); }
 
-    /* === NOUVEAU STYLE POUR LA GRILLE DE LOGOS (TOOLS) === */
+    /* === TOOLS LOGOS GRID (NEW) === */
+    .tools-section-title {
+        font-size: 1.8rem; font-weight: 700; margin: 40px 0 25px 0;
+        background: linear-gradient(to right, #111827, #4f46e5);
+        -webkit-background-clip: text; color: transparent;
+        text-align: left;
+    }
+    
     .tools-logo-grid {
       display: grid;
       grid-template-columns: 1fr 1fr; /* 2 Colonnes */
-      gap: 15px;
-      margin-top: 10px;
+      gap: 20px;
     }
 
     .tool-logo-item {
-      background: #f8fafc; /* Fond très léger */
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      height: 70px; /* Hauteur fixe pour l'uniformité */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px;
+      /* NO BOX STYLE */
+      background: transparent; border: none; box-shadow: none;
+      height: 100px; /* Bigger height for visibility */
+      display: flex; align-items: center; justify-content: center;
       transition: all 0.3s ease;
-      /* Animation flottante "Dynamique" */
       animation: floatLogo 4s ease-in-out infinite;
     }
 
-    /* Décalage de l'animation pour que ça ne bouge pas tout en même temps */
     .tool-logo-item:nth-child(odd) { animation-delay: 0s; }
     .tool-logo-item:nth-child(even) { animation-delay: 2s; }
 
     .tool-logo-item img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain; /* L'image s'adapte sans être coupée */
+      max-width: 100%; max-height: 100%;
+      object-fit: contain;
+      filter: grayscale(10%);
       transition: transform 0.3s;
-      filter: grayscale(20%); /* Légèrement gris par défaut pour l'élégance */
     }
-
-    /* Effet au survol */
-    .tool-logo-item:hover {
-      background: #fff;
-      border-color: var(--accent);
-      box-shadow: 0 5px 15px rgba(79, 70, 229, 0.15);
-      transform: translateY(-2px);
-    }
-    .tool-logo-item:hover img {
-      transform: scale(1.1);
-      filter: grayscale(0%); /* Couleurs vives au survol */
-    }
+    .tool-logo-item:hover img { transform: scale(1.15); filter: grayscale(0%); }
 
     @keyframes floatLogo {
       0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-4px); }
+      50% { transform: translateY(-6px); }
     }
 
     /* PHILOSOPHY */
@@ -460,6 +449,7 @@
       .about-text h2 { font-size: 2rem; }
       .focus-card { text-align: left; }
       #about { padding: 40px 20px; height: auto; min-height: auto; }
+      .tools-logo-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
@@ -584,7 +574,8 @@
 
         <section id="skills" class="reveal">
           <h2>Skills & Expertise</h2>
-          <div class="skills-grid">
+          
+          <div class="skills-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 40px;">
             
             <div class="skill-card">
               <div class="skill-header">
@@ -601,7 +592,7 @@
               </div>
             </div>
 
-            <div class="skill-card" style="transition-delay: 0.1s;">
+            <div class="skill-card">
               <div class="skill-header">
                 <div class="skill-icon-box"><i class="ph ph-cpu"></i></div>
                 <div class="skill-title">Electronics & IoT</div>
@@ -617,24 +608,20 @@
                 <span class="skill-tag">PartQuest</span>
               </div>
             </div>
-
-            <div class="skill-card" style="transition-delay: 0.2s;">
-              <div class="skill-header">
-                <div class="skill-icon-box"><i class="ph ph-wrench"></i></div>
-                <div class="skill-title">Tools & Methods</div>
-              </div>
-              
-              <div class="tools-logo-grid">
-                <div class="tool-logo-item"><img src="assets/images/tf2.png" alt="TensorFlow"></div>
-                <div class="tool-logo-item"><img src="assets/images/linux3.png" alt="Linux"></div>
-                <div class="tool-logo-item"><img src="assets/images/devops.png" alt="DevOps"></div>
-                <div class="tool-logo-item"><img src="assets/images/github.png" alt="GitHub"></div>
-                <div class="tool-logo-item"><img src="assets/images/sklearn.png" alt="Scikit-Learn"></div>
-                <div class="tool-logo-item"><img src="assets/images/vscode.png" alt="VS Code"></div>
-              </div>
-            </div>
-
           </div>
+
+          <div>
+            <h3 class="tools-section-title">Tools & Methods</h3>
+            <div class="tools-logo-grid">
+              <div class="tool-logo-item"><img src="assets/images/tf2.png" alt="TensorFlow"></div>
+              <div class="tool-logo-item"><img src="assets/images/linux3.webp" alt="Linux"></div>
+              <div class="tool-logo-item"><img src="assets/images/devops.png" alt="DevOps"></div>
+              <div class="tool-logo-item"><img src="assets/images/github.png" alt="GitHub"></div>
+              <div class="tool-logo-item"><img src="assets/images/sklearn.png" alt="Scikit-Learn"></div>
+              <div class="tool-logo-item"><img src="assets/images/vscode.png" alt="VS Code"></div>
+            </div>
+          </div>
+
         </section>
 
         <section id="education" class="reveal">
@@ -815,7 +802,7 @@
 
         <div class="reveal" style="margin-bottom: 120px; display: flex; justify-content: center;">
           <img src="assets/images/micro.png" alt="Microphone Close-up" 
-               style="width: 100%; max-width: 600px; height: 500px; object-fit: cover; object-position: center; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.15);">
+               style="width: 100%; max-width: 500px; height: 550px; object-fit: cover; object-position: 50% 20%; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.15);">
         </div>
 
         <section id="contact" class="reveal">
