@@ -251,7 +251,7 @@
     .t-company { font-size: 1rem; font-weight: 500; color: #374151; margin-bottom: 8px; }
     .t-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; }
 
-    /* SKILLS STYLING (MODIFIED FOR BIG LOGOS) */
+    /* SKILLS STYLING */
     .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
     
     .skill-card {
@@ -278,10 +278,15 @@
 
     /* === TOOLS LOGOS GRID (NEW) === */
     .tools-section-title {
-        font-size: 1.8rem; font-weight: 700; margin: 40px 0 25px 0;
+        font-size: 1.8rem; font-weight: 700; margin: 40px 0 10px 0;
         background: linear-gradient(to right, #111827, #4f46e5);
         -webkit-background-clip: text; color: transparent;
         text-align: left;
+    }
+    
+    .tools-intro {
+        font-size: 1rem; color: #64748b; margin-bottom: 30px; 
+        max-width: 700px; text-align: left;
     }
     
     .tools-logo-grid {
@@ -291,10 +296,11 @@
     }
 
     .tool-logo-item {
-      /* NO BOX STYLE */
       background: transparent; border: none; box-shadow: none;
-      height: 100px; /* Bigger height for visibility */
-      display: flex; align-items: center; justify-content: center;
+      height: 120px; /* Bigger container */
+      display: flex; flex-direction: column; /* Stack image + name */
+      align-items: center; justify-content: center;
+      gap: 12px;
       transition: all 0.3s ease;
       animation: floatLogo 4s ease-in-out infinite;
     }
@@ -303,12 +309,19 @@
     .tool-logo-item:nth-child(even) { animation-delay: 2s; }
 
     .tool-logo-item img {
-      max-width: 100%; max-height: 100%;
+      max-width: 100%; max-height: 70%;
       object-fit: contain;
       filter: grayscale(10%);
       transition: transform 0.3s;
     }
+    
+    .tool-name {
+        font-size: 0.95rem; font-weight: 600; color: #4b5563;
+        transition: color 0.3s;
+    }
+
     .tool-logo-item:hover img { transform: scale(1.15); filter: grayscale(0%); }
+    .tool-logo-item:hover .tool-name { color: var(--accent); }
 
     @keyframes floatLogo {
       0%, 100% { transform: translateY(0px); }
@@ -612,13 +625,41 @@
 
           <div>
             <h3 class="tools-section-title">Tools & Methods</h3>
+            <p class="tools-intro">
+                A curated ecosystem of technologies and methodologies I leverage daily to architect scalable solutions and drive innovation.
+            </p>
             <div class="tools-logo-grid">
-              <div class="tool-logo-item"><img src="assets/images/tf2.png" alt="TensorFlow"></div>
-              <div class="tool-logo-item"><img src="assets/images/linux3.webp" alt="Linux"></div>
-              <div class="tool-logo-item"><img src="assets/images/devops.png" alt="DevOps"></div>
-              <div class="tool-logo-item"><img src="assets/images/github.png" alt="GitHub"></div>
-              <div class="tool-logo-item"><img src="assets/images/sklearn.png" alt="Scikit-Learn"></div>
-              <div class="tool-logo-item"><img src="assets/images/vscode.png" alt="VS Code"></div>
+              
+              <div class="tool-logo-item">
+                <img src="assets/images/tf2.png" alt="TensorFlow">
+                <span class="tool-name">TensorFlow</span>
+              </div>
+
+              <div class="tool-logo-item">
+                <img src="assets/images/linux3.webp" alt="Linux">
+                <span class="tool-name">Linux</span>
+              </div>
+
+              <div class="tool-logo-item">
+                <img src="assets/images/devops.png" alt="DevOps">
+                <span class="tool-name">DevOps</span>
+              </div>
+
+              <div class="tool-logo-item">
+                <img src="assets/images/github.png" alt="GitHub">
+                <span class="tool-name">GitHub</span>
+              </div>
+
+              <div class="tool-logo-item">
+                <img src="assets/images/sklearn.png" alt="Scikit-Learn">
+                <span class="tool-name">Scikit-Learn</span>
+              </div>
+
+              <div class="tool-logo-item">
+                <img src="assets/images/vscode.png" alt="VS Code">
+                <span class="tool-name">VS Code</span>
+              </div>
+
             </div>
           </div>
 
