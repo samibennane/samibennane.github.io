@@ -190,16 +190,25 @@
     .t-company { font-size: 1rem; font-weight: 500; color: #374151; margin-bottom: 8px; }
     .t-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; }
 
-    /* SKILLS (Filled with Resume Data) */
+    /* SKILLS STYLING */
     .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
-    .skill-card { background: #fff; border: 1px solid var(--timeline-line); border-radius: 16px; padding: 30px; transition: 0.3s; display: flex; flex-direction: column; gap: 15px; opacity: 0; transform: translateY(20px); }
+    .skill-card {
+      background: #fff; border: 1px solid var(--timeline-line);
+      border-radius: 16px; padding: 30px; transition: 0.3s; 
+      display: flex; flex-direction: column; gap: 15px; 
+      opacity: 0; transform: translateY(20px);
+    }
     .skill-card.visible { opacity: 1; transform: translateY(0); }
     .skill-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.06); border-color: var(--accent); }
     .skill-header { display: flex; align-items: center; gap: 12px; margin-bottom: 5px; }
     .skill-icon-box { width: 48px; height: 48px; background: rgba(79, 70, 229, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 24px; }
     .skill-title { font-size: 1.1rem; font-weight: 700; color: var(--text-main); }
     .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-    .skill-tag { font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); background: #f3f4f6; padding: 6px 12px; border-radius: 20px; transition: 0.2s; border: 1px solid transparent; }
+    .skill-tag { 
+      font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); 
+      background: #f3f4f6; padding: 6px 12px; border-radius: 20px; 
+      transition: 0.2s; border: 1px solid transparent; 
+    }
     .skill-card:hover .skill-tag { background: #fff; border-color: #e5e7eb; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
     .skill-tag:hover { color: var(--accent); border-color: var(--accent); background: rgba(79, 70, 229, 0.05); }
 
@@ -428,8 +437,8 @@
               <div class="skill-tags">
                 <span class="skill-tag">Python</span>
                 <span class="skill-tag">Machine Learning</span>
-                <span class="skill-tag">C++</span>
                 <span class="skill-tag">C</span>
+                <span class="skill-tag">C++</span>
                 <span class="skill-tag">Script Shell</span>
                 <span class="skill-tag">TensorFlow</span>
               </div>
@@ -444,28 +453,28 @@
                 <span class="skill-tag">STM32</span>
                 <span class="skill-tag">Arduino</span>
                 <span class="skill-tag">Bus CAN</span>
-                <span class="skill-tag">SPI / I2C</span>
+                <span class="skill-tag">SPI</span>
+                <span class="skill-tag">I2C</span>
                 <span class="skill-tag">STM32CubeIDE</span>
                 <span class="skill-tag">KiCad</span>
                 <span class="skill-tag">PartQuest</span>
-                <span class="skill-tag">Comsol</span>
               </div>
             </div>
 
             <div class="skill-card" style="transition-delay: 0.2s;">
               <div class="skill-header">
                 <div class="skill-icon-box"><i class="ph ph-wrench"></i></div>
-                <div class="skill-title">DevOps & Tools</div>
+                <div class="skill-title">Tools & Methods</div>
               </div>
               <div class="skill-tags">
+                <span class="skill-tag">Git</span>
+                <span class="skill-tag">DevOps</span>
+                <span class="skill-tag">Agile</span>
                 <span class="skill-tag">Linux / Ubuntu</span>
                 <span class="skill-tag">WSL</span>
-                <span class="skill-tag">Git</span>
-                <span class="skill-tag">Agile</span>
-                <span class="skill-tag">DevOps</span>
+                <span class="skill-tag">Réseaux</span>
                 <span class="skill-tag">VS Code</span>
-                <span class="skill-tag">Jupyter Notebook</span>
-                <span class="skill-tag">Networking</span>
+                <span class="skill-tag">Comsol</span>
               </div>
             </div>
 
@@ -648,9 +657,9 @@
           </div>
         </section>
 
-        <div class="reveal" style="margin-bottom: 120px;">
+        <div class="reveal" style="margin-bottom: 120px; display: flex; justify-content: center;">
           <img src="assets/images/micro.png" alt="Microphone Close-up" 
-               style="width: 100%; height: 320px; object-fit: cover; object-position: 50% 25%; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.15);">
+               style="width: 100%; max-width: 600px; height: 500px; object-fit: cover; object-position: top center; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.15);">
         </div>
 
         <section id="contact" class="reveal">
