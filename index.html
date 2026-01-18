@@ -16,35 +16,23 @@
 
   <style>
     :root {
-      /* Sidebar Colors */
       --sidebar-text: #ffffff;
-      
-      /* Main Colors */
       --main-bg: #ffffff;
       --hero-bg: #020617;
-      
       --text-main: #111827;
       --text-secondary: #4b5563;
       --text-muted: #9ca3af;
-      
-      /* Accents */
       --accent: #4f46e5;
       --tech-cyan: #06b6d4;
       --tech-purple: #8b5cf6;
       --timeline-line: #e5e7eb;
-
-      /* Dimensions */
       --sidebar-width: 280px;
       --container-width: 1000px;
-      
-      /* Transitions */
       --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
-      --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
       --transition-speed: 0.4s;
     }
 
     body.collapsed { --sidebar-width: 88px; }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     
@@ -66,14 +54,11 @@
       position: fixed; top: 0; left: 0; bottom: 0;
       width: var(--sidebar-width);
       background: rgba(15, 23, 42, 0.95); 
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
       border-right: 1px solid rgba(255, 255, 255, 0.08);
       color: var(--sidebar-text);
-      display: flex; flex-direction: column;
-      padding: 30px 20px; 
-      z-index: 2000;
-      box-shadow: 10px 0 30px rgba(0,0,0,0.2);
+      display: flex; flex-direction: column; padding: 30px 20px; 
+      z-index: 2000; box-shadow: 10px 0 30px rgba(0,0,0,0.2);
       transition: width var(--transition-speed) var(--ease-out);
       overflow: hidden;
     }
@@ -132,10 +117,9 @@
     .hero-bg-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px); background-size: 50px 50px; mask-image: radial-gradient(circle at center, black 30%, transparent 80%); z-index: 1; animation: pulseGrid 10s infinite alternate; }
     
     /* CANVAS NEURAL NET (HERO) */
-    #neural-canvas {
+    #hero-canvas {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      z-index: 2; /* Juste au-dessus de la grille mais sous le contenu */
-      pointer-events: none;
+      z-index: 2; pointer-events: none;
     }
 
     .geo-globe { position: absolute; width: 600px; height: 600px; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; opacity: 0.15; z-index: 0; perspective: 1000px; pointer-events: none; animation: globeEnter 2.5s var(--ease-smooth) forwards; }
@@ -166,22 +150,20 @@
     h2 { font-size: 28px; font-weight: 700; margin-bottom: 40px; color: var(--text-main); display: flex; align-items: center; gap: 12px; }
     h2::after { content: ""; flex: 1; height: 1px; background: var(--timeline-line); max-width: 200px; }
 
-    /* === FULL-SCREEN ABOUT SECTION === */
+    /* === FULL-SCREEN ABOUT SECTION (WITH ANIMATION) === */
     #about {
       min-height: 100vh; /* Prend toute la hauteur de l'écran */
       display: flex; align-items: center; justify-content: center;
       position: relative; padding: 0 60px; overflow: hidden;
       margin-bottom: 0;
-      background: linear-gradient(to bottom right, #ffffff, #f8fafc); /* Subtil dégradé */
+      background: linear-gradient(to bottom right, #ffffff, #f8fafc);
     }
 
-    /* Layout Grille (Texte + Cartes Focus) */
     .about-grid {
-      display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 60px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
       position: relative; z-index: 2; max-width: 1100px; width: 100%; align-items: center;
     }
 
-    /* Colonne Texte */
     .about-text h2 {
       font-size: 3rem; margin-bottom: 30px;
       background: linear-gradient(to right, #111827, #4f46e5);
@@ -190,58 +172,35 @@
     .about-text p { font-size: 1.1rem; color: #374151; margin-bottom: 20px; line-height: 1.7; }
     .about-highlight { color: var(--accent); font-weight: 600; }
 
-    /* === NEW "ELEGANT" CARDS FOR ABOUT === */
-    .about-focus-cards { display: flex; flex-direction: column; gap: 24px; }
-
-    .focus-card {
-      /* Design plus moderne et épuré */
-      background: rgba(255, 255, 255, 0.8); 
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(0, 0, 0, 0.05);
-      border-radius: 16px;
-      padding: 24px 30px;
-      display: flex; align-items: center; gap: 20px;
-      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    /* CONTAINER ANIMATION ABOUT (NEXUS) */
+    .about-animation-container {
+        position: relative; width: 100%; height: 450px;
+        display: flex; justify-content: center; align-items: center;
     }
+    #nexus-canvas { width: 100%; height: 100%; }
 
-    .focus-card:hover {
-      transform: translateX(10px) translateY(-2px);
-      background: #fff;
-      box-shadow: 0 15px 35px rgba(79, 70, 229, 0.1);
-      border-color: rgba(79, 70, 229, 0.3);
-    }
+    /* === SKILLS (CLEAN STACK LAYOUT) === */
+    .skills-block { margin-bottom: 60px; opacity: 0; transform: translateY(20px); transition: 0.6s; }
+    .skills-block.visible { opacity: 1; transform: translateY(0); }
+    .skills-category-header { font-size: 1.4rem; font-weight: 700; margin-bottom: 25px; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
+    .skills-intro { font-size: 1rem; color: #64748b; margin-bottom: 30px; max-width: 700px; line-height: 1.6; }
 
-    /* Numérotation de fond élégante */
-    .focus-number {
-      font-size: 4rem; font-weight: 900; color: rgba(0,0,0,0.03);
-      position: absolute; right: 20px; bottom: -10px;
-      line-height: 1; pointer-events: none; transition: 0.3s;
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .focus-card:hover .focus-number { color: rgba(79, 70, 229, 0.08); transform: scale(1.1); }
+    .logo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 20px; }
+    .logo-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; height: 110px; transition: all 0.3s ease; animation: floatLogo 4s ease-in-out infinite; }
+    .logo-item:nth-child(odd) { animation-delay: 0s; }
+    .logo-item:nth-child(even) { animation-delay: 2s; }
+    .logo-item img { height: 60px; width: auto; max-width: 100%; object-fit: contain; filter: grayscale(10%); transition: transform 0.3s, filter 0.3s; }
+    .logo-name { font-size: 0.9rem; font-weight: 600; color: #6b7280; transition: color 0.3s; }
+    .logo-item:hover img { transform: scale(1.15); filter: grayscale(0%); }
+    .logo-item:hover .logo-name { color: var(--accent); }
+    @keyframes floatLogo { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-5px); } }
 
-    .focus-icon {
-      font-size: 32px; color: var(--text-main);
-      transition: 0.3s; min-width: 40px; display: flex; justify-content: center;
-    }
-    .focus-card:hover .focus-icon { color: var(--accent); transform: scale(1.1) rotate(5deg); }
-    
-    .focus-content { flex: 1; position: relative; z-index: 1; }
-    .focus-content h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; color: var(--text-main); }
-    .focus-content p { font-size: 0.95rem; color: var(--text-secondary); margin: 0; line-height: 1.5; font-weight: 400; }
-
-    /* SPLIT */
+    /* TIMELINE & SPLIT */
     .split-layout { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 50px; align-items: start; }
     .split-image-container { position: sticky; top: 100px; height: 400px; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); opacity: 0; transform: translateX(30px); transition: 0.8s var(--ease-out); }
     .split-image-container.visible { opacity: 1; transform: translateX(0); }
     .split-image-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
     .split-image-container:hover img { transform: scale(1.05); }
-
-    /* TIMELINE */
     .timeline { position: relative; padding-left: 20px; }
     .timeline::before { content: ''; position: absolute; left: 0; top: 10px; bottom: 0; width: 2px; background: var(--timeline-line); border-radius: 2px; }
     .timeline-item { position: relative; padding-left: 40px; margin-bottom: 50px; opacity: 0; transform: translateY(20px); transition: 0.6s; }
@@ -253,74 +212,55 @@
     .t-company { font-size: 1rem; font-weight: 500; color: #374151; margin-bottom: 8px; }
     .t-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; }
 
-    /* SKILLS GRID & LOGOS (CLEAN & FIXED) */
-    .skills-block {
-      margin-bottom: 60px;
-      opacity: 0; transform: translateY(20px); transition: 0.6s;
-    }
-    .skills-block.visible { opacity: 1; transform: translateY(0); }
-
-    .skills-category-header {
-      font-size: 1.4rem; font-weight: 700; 
-      margin-bottom: 25px; color: var(--text-main);
-      display: flex; align-items: center; gap: 10px;
-    }
-    .skills-intro { font-size: 1rem; color: #64748b; margin-bottom: 30px; max-width: 700px; line-height: 1.6; }
-
-    /* LOGO GRID UNIFIED STYLE */
-    .logo-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 20px;
-    }
-
-    .logo-item {
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 12px; height: 110px;
-      transition: all 0.3s ease;
-      animation: floatLogo 4s ease-in-out infinite;
-    }
-    .logo-item:nth-child(odd) { animation-delay: 0s; }
-    .logo-item:nth-child(even) { animation-delay: 2s; }
-
-    .logo-item img {
-      height: 60px; width: auto; max-width: 100%;
-      object-fit: contain; filter: grayscale(10%);
-      transition: transform 0.3s, filter 0.3s;
-    }
-    .logo-name {
-      font-size: 0.9rem; font-weight: 600; color: #6b7280;
-      transition: color 0.3s;
-    }
-
-    .logo-item:hover img { transform: scale(1.15); filter: grayscale(0%); }
-    .logo-item:hover .logo-name { color: var(--accent); }
-
-    @keyframes floatLogo {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-5px); }
-    }
-
-    /* PHILOSOPHY & CARDS */
+    /* PHILOSOPHY & PROJECTS (NEW CARD DESIGN) */
     .philosophy-banner { margin: 80px 0; padding: 40px; border-left: 4px solid var(--accent); background: linear-gradient(90deg, rgba(79, 70, 229, 0.05) 0%, transparent 100%); font-size: 1.4rem; font-style: italic; color: var(--text-secondary); line-height: 1.6; opacity: 0; transform: translateY(20px); transition: 0.8s var(--ease-out); }
     .philosophy-banner.visible { opacity: 1; transform: translateY(0); }
     .philosophy-banner span { font-weight: 600; color: var(--text-main); }
-    .article-grid, .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-    .project-card, .article-card { background: #f9fafb; border: 1px solid var(--timeline-line); border-radius: 16px; padding: 24px; transition: 0.4s; display: flex; flex-direction: column; gap: 8px; opacity: 0; transform: translateY(30px); position: relative; }
-    .article-card { background: #fff; border-radius: 12px; }
+    
+    .article-grid, .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
+    
+    /* MODERN PROJECT CARD */
+    .project-card, .article-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 30px;
+      display: flex; flex-direction: column; gap: 15px;
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      opacity: 0; transform: translateY(30px); position: relative;
+      overflow: hidden;
+    }
     .project-card.visible, .article-card.visible { opacity: 1; transform: translateY(0); }
-    .project-card:hover { transform: translateY(-8px); border-color: var(--accent); background: #fff; box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
-    .article-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.06); }
-    .project-links { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
-    .btn-card { padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px; transition: 0.3s; }
+    
+    .project-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+      border-color: var(--accent);
+    }
+    
+    /* Project Header (Icon + Title) */
+    .project-header { display: flex; align-items: center; gap: 12px; margin-bottom: 5px; }
+    .project-icon { font-size: 1.5rem; }
+    .project-card h3 { font-size: 1.25rem; margin: 0; color: var(--text-main); font-weight: 700; }
+    
+    .project-card p { font-size: 0.95rem; color: #4b5563; line-height: 1.6; flex: 1; }
+    
+    /* Tech Tags inside card */
+    .project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .pt-tag { font-size: 0.75rem; background: #f3f4f6; color: #6b7280; padding: 4px 10px; border-radius: 20px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .project-links { display: flex; gap: 10px; margin-top: 20px; }
+    .btn-card { padding: 10px 20px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px; transition: 0.3s; }
     .btn-card-primary { background: rgba(79, 70, 229, 0.1); color: var(--accent); }
     .btn-card-primary:hover { background: var(--accent); color: #fff; }
-    .btn-card-secondary { background: #f3f4f6; color: var(--text-secondary); border: 1px solid #e5e7eb; }
+    .btn-card-secondary { background: #f9fafb; color: var(--text-secondary); border: 1px solid #e5e7eb; }
     .btn-card-secondary:hover { background: #e5e7eb; color: #000; }
+
+    /* Essay Card Specifics */
+    .article-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.06); }
     .article-card::before { content: ""; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--text-secondary); transition: 0.3s; }
     .article-card:hover::before { background: var(--accent); }
-    .article-icon { font-size: 28px; margin-bottom: 15px; color: var(--accent); }
+    .article-icon { font-size: 28px; margin-bottom: 10px; color: var(--accent); }
     .article-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
     .article-desc { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 15px; }
     .article-link { font-size: 0.9rem; font-weight: 600; color: var(--accent); display: flex; align-items: center; gap: 5px; text-decoration: none; margin-top: auto; }
@@ -334,13 +274,7 @@
     .lang-level { color: var(--text-muted); font-size: 0.85rem; font-weight: 400; }
     .progress-track { width: 100%; height: 8px; background: #e2e8f0; border-radius: 10px; overflow: hidden; }
     .progress-fill { height: 100%; background: var(--accent); border-radius: 10px; width: 0; transition: width 1.5s cubic-bezier(0.65, 0, 0.35, 1); }
-    
-    /* NEW: Language Quote */
-    .lang-quote {
-      margin-bottom: 40px; margin-top: -10px;
-      font-style: italic; color: var(--text-secondary); font-size: 1rem;
-      line-height: 1.6; max-width: 800px;
-    }
+    .lang-quote { margin-bottom: 40px; margin-top: -10px; font-style: italic; color: var(--text-secondary); font-size: 1rem; line-height: 1.6; max-width: 800px; }
     .lang-quote span { color: var(--accent); font-weight: 600; }
 
     /* CONTACT & MISC */
@@ -389,8 +323,8 @@
       .contact-title { font-size: 1.8rem; }
       .about-grid { grid-template-columns: 1fr; gap: 40px; text-align: center; }
       .about-text h2 { font-size: 2rem; }
-      .focus-card { padding: 20px; text-align: left; }
       #about { padding: 40px 20px; height: auto; min-height: auto; }
+      .about-animation-container { height: 300px; order: -1; }
       .logo-grid { grid-template-columns: repeat(3, 1fr); }
     }
   </style>
@@ -423,7 +357,7 @@
     <section id="home" class="hero-section">
       <div class="hero-bg-grid"></div>
       
-      <canvas id="neural-canvas"></canvas>
+      <canvas id="hero-canvas"></canvas>
 
       <div class="geo-globe">
         <div class="globe-ring ring-1"></div>
@@ -460,35 +394,8 @@
               <p>Deeply invested in the <strong>geopolitics of technology</strong>, I tackle challenges related to digital sovereignty and AI ethics. My goal: design solutions that are technically flawless, strategically autonomous, and socially responsible.</p>
             </div>
             
-            <div class="about-focus-cards">
-              
-              <div class="focus-card">
-                <div class="focus-number">01</div>
-                <div class="focus-icon"><i class="ph ph-cpu"></i></div>
-                <div class="focus-content">
-                  <h4>Embedded Engineering</h4>
-                  <p>Mastering low-level systems, from STM32 to real-time OS.</p>
-                </div>
-              </div>
-
-              <div class="focus-card">
-                <div class="focus-number">02</div>
-                <div class="focus-icon"><i class="ph ph-brain"></i></div>
-                <div class="focus-content">
-                  <h4>AI & Data Strategy</h4>
-                  <p>Applying ML not just as a tool, but as a strategic asset.</p>
-                </div>
-              </div>
-
-              <div class="focus-card">
-                <div class="focus-number">03</div>
-                <div class="focus-icon"><i class="ph ph-globe-hemisphere-west"></i></div>
-                <div class="focus-content">
-                  <h4>Tech Geopolitics</h4>
-                  <p>Analyzing sovereignty, ethics, and global tech dynamics.</p>
-                </div>
-              </div>
-
+            <div class="about-animation-container">
+                <canvas id="nexus-canvas"></canvas>
             </div>
           </div>
         </section>
@@ -655,34 +562,50 @@
           <div class="project-grid">
             
             <div class="project-card">
-              <h3>⚽ Ligue 1 Match Prediction</h3>
+              <div class="project-header">
+                <div class="project-icon">⚽</div>
+                <h3>Ligue 1 Match Prediction</h3>
+              </div>
               <p>
                 A pedagogical machine learning project predicting football match outcomes. 
-                Focuses on the <strong>mathematical foundations</strong> (Linear Algebra, Probability) behind the algorithms rather than just using high-level libraries.
+                Focuses on the mathematical foundations (Linear Algebra, Probability) behind the algorithms rather than just using high-level libraries.
               </p>
+              <div class="project-tags">
+                <span class="pt-tag">Python</span>
+                <span class="pt-tag">Pandas</span>
+                <span class="pt-tag">Scikit-learn</span>
+                <span class="pt-tag">Maths</span>
+              </div>
               <div class="project-links">
                 <a href="assets/docs/french_league_predictions_sami_bennane.pdf" target="_blank" class="btn-card btn-card-primary">
                   <i class="ph ph-file-pdf"></i> Report
                 </a>
-                <a href="assets/docs/l1c.csv" target="_blank" class="btn-card btn-card-secondary">
-                  <i class="ph ph-table"></i> Dataset
-                </a>
                 <a href="assets/docs/ligue1.py" target="_blank" class="btn-card btn-card-secondary">
                   <i class="ph ph-code"></i> Python
-                </a>
-                <a href="assets/docs/README.md" target="_blank" class="btn-card btn-card-secondary">
-                  <i class="ph ph-file-text"></i> Readme
                 </a>
               </div>
             </div>
 
-            <a href="assets/docs/pcp.pdf" target="_blank" class="project-card" style="transition-delay: 0.1s;">
-              <h3>🔊 Acoustic Transduction & Amplification</h3>
+            <div class="project-card" style="transition-delay: 0.1s;">
+              <div class="project-header">
+                <div class="project-icon">🔊</div>
+                <h3>Acoustic Transduction</h3>
+              </div>
               <p>
                 Design and analysis of an analog signal chain for sound capture.
-                <strong>Key skills:</strong> Analog Electronics (AD8542), Signal Conditioning, Bode Analysis (PartQuest), and Hardware Validation (FFT).
+                Validation of the acquisition chain through Fast Fourier Transform (FFT) analysis.
               </p>
-            </a>
+              <div class="project-tags">
+                <span class="pt-tag">Analog Electronics</span>
+                <span class="pt-tag">Signal Processing</span>
+                <span class="pt-tag">Bode Plot</span>
+              </div>
+              <div class="project-links">
+                <a href="assets/docs/pcp.pdf" target="_blank" class="btn-card btn-card-primary">
+                  <i class="ph ph-file-pdf"></i> View Project
+                </a>
+              </div>
+            </div>
 
           </div>
         </section>
@@ -798,9 +721,10 @@
       });
     });
 
-    // --- NEURAL NETWORK ANIMATION SCRIPT ---
+    // --- HERO NEURAL NETWORK ANIMATION SCRIPT ---
     (function() {
-      const canvas = document.getElementById('neural-canvas');
+      const canvas = document.getElementById('hero-canvas'); // Correct ID
+      if(!canvas) return;
       const ctx = canvas.getContext('2d');
       let width, height;
       let particles = [];
@@ -814,7 +738,7 @@
         constructor() {
           this.x = Math.random() * width;
           this.y = Math.random() * height;
-          this.vx = (Math.random() - 0.5) * 0.5; // Vitesse lente
+          this.vx = (Math.random() - 0.5) * 0.5;
           this.vy = (Math.random() - 0.5) * 0.5;
           this.size = Math.random() * 2 + 1;
         }
@@ -827,34 +751,28 @@
         draw() {
           ctx.beginPath();
           ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(6, 182, 212, 0.6)'; // Couleur CYAN lumineux
+          ctx.fillStyle = 'rgba(6, 182, 212, 0.6)'; 
           ctx.fill();
         }
       }
 
       function init() {
         particles = [];
-        for (let i = 0; i < 60; i++) { // Nombre de particules
-          particles.push(new Particle());
-        }
+        for (let i = 0; i < 60; i++) { particles.push(new Particle()); }
       }
 
       function animate() {
         ctx.clearRect(0, 0, width, height);
-        
         for (let i = 0; i < particles.length; i++) {
           particles[i].update();
           particles[i].draw();
-          
-          // Dessiner les connexions
           for (let j = i; j < particles.length; j++) {
             const dx = particles[i].x - particles[j].x;
             const dy = particles[i].y - particles[j].y;
             const distance = Math.sqrt(dx * dx + dy * dy);
-            
-            if (distance < 120) { // Distance de connexion
+            if (distance < 120) {
               ctx.beginPath();
-              ctx.strokeStyle = `rgba(6, 182, 212, ${1 - distance / 120})`; // Cyan fading
+              ctx.strokeStyle = `rgba(6, 182, 212, ${1 - distance / 120})`;
               ctx.lineWidth = 0.5;
               ctx.moveTo(particles[i].x, particles[i].y);
               ctx.lineTo(particles[j].x, particles[j].y);
@@ -864,11 +782,97 @@
         }
         requestAnimationFrame(animate);
       }
-
       window.addEventListener('resize', () => { resize(); init(); });
-      resize();
-      init();
-      animate();
+      resize(); init(); animate();
+    })();
+
+    // --- ABOUT SECTION ANIMATION SCRIPT ("STRATEGIC NEXUS") ---
+    (function() {
+        const canvas = document.getElementById('nexus-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let width, height, centerX, centerY;
+        let particles = [];
+        let time = 0;
+
+        function resize() {
+            width = canvas.width = canvas.parentElement.offsetWidth;
+            height = canvas.height = canvas.parentElement.offsetHeight;
+            centerX = width / 2;
+            centerY = height / 2;
+        }
+
+        class NexusParticle {
+            constructor(orbitRadius, speed, offsetAngle, color) {
+                this.orbitRadius = orbitRadius;
+                this.speed = speed;
+                this.angle = offsetAngle;
+                this.color = color;
+                this.size = Math.random() * 2 + 1.5;
+            }
+            update() {
+                this.angle += this.speed;
+                const currentRadiusX = this.orbitRadius * (1 + 0.1 * Math.sin(time * 0.5));
+                const currentRadiusY = this.orbitRadius * 0.7 * (1 + 0.1 * Math.cos(time * 0.5));
+                this.x = centerX + currentRadiusX * Math.cos(this.angle);
+                this.y = centerY + currentRadiusY * Math.sin(this.angle);
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = this.color;
+                ctx.fillStyle = this.color;
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0; 
+            }
+        }
+
+        function init() {
+            particles = [];
+            for(let i=0; i<8; i++) particles.push(new NexusParticle(120, 0.008, i * (Math.PI/4), '#06b6d4'));
+            for(let i=0; i<8; i++) particles.push(new NexusParticle(80, -0.012, i * (Math.PI/4) + 1, '#8b5cf6'));
+            for(let i=0; i<6; i++) particles.push(new NexusParticle(160, 0.005, i * (Math.PI/3) + 2, '#4f46e5'));
+        }
+
+        function drawCore() {
+            const coreRadius = 30 + 5 * Math.sin(time * 1.5);
+            const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, coreRadius);
+            gradient.addColorStop(0, 'rgba(79, 70, 229, 0.8)'); 
+            gradient.addColorStop(0.6, 'rgba(6, 182, 212, 0.4)'); 
+            gradient.addColorStop(1, 'rgba(0,0,0,0)'); 
+
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, coreRadius, 0, Math.PI * 2);
+            ctx.fillStyle = gradient;
+            ctx.fill();
+        }
+
+        function drawOrbits() {
+             ctx.strokeStyle = 'rgba(79, 70, 229, 0.1)'; // Subtle purple lines
+             ctx.lineWidth = 1;
+             ctx.beginPath();
+             ctx.ellipse(centerX, centerY, 120 * (1 + 0.1 * Math.sin(time * 0.5)), 120 * 0.7 * (1 + 0.1 * Math.cos(time * 0.5)), 0, 0, 2 * Math.PI);
+             ctx.stroke();
+             ctx.beginPath();
+             ctx.ellipse(centerX, centerY, 80 * (1 + 0.1 * Math.sin(time * 0.5)), 80 * 0.7 * (1 + 0.1 * Math.cos(time * 0.5)), 0, 0, 2 * Math.PI);
+             ctx.stroke();
+             ctx.beginPath();
+             ctx.ellipse(centerX, centerY, 160 * (1 + 0.1 * Math.sin(time * 0.5)), 160 * 0.7 * (1 + 0.1 * Math.cos(time * 0.5)), 0, 0, 2 * Math.PI);
+             ctx.stroke();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            time += 0.01;
+            drawCore();
+            drawOrbits();
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => { resize(); init(); });
+        resize(); init(); animate();
     })();
   </script>
 </body>
