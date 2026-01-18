@@ -16,23 +16,35 @@
 
   <style>
     :root {
+      /* Sidebar Colors */
       --sidebar-text: #ffffff;
+      
+      /* Main Colors */
       --main-bg: #ffffff;
       --hero-bg: #020617;
+      
       --text-main: #111827;
       --text-secondary: #4b5563;
       --text-muted: #9ca3af;
+      
+      /* Accents */
       --accent: #4f46e5;
       --tech-cyan: #06b6d4;
       --tech-purple: #8b5cf6;
       --timeline-line: #e5e7eb;
+
+      /* Dimensions */
       --sidebar-width: 280px;
       --container-width: 1000px;
+      
+      /* Transitions */
       --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+      --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
       --transition-speed: 0.4s;
     }
 
     body.collapsed { --sidebar-width: 88px; }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     
@@ -54,11 +66,14 @@
       position: fixed; top: 0; left: 0; bottom: 0;
       width: var(--sidebar-width);
       background: rgba(15, 23, 42, 0.95); 
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-right: 1px solid rgba(255, 255, 255, 0.08);
       color: var(--sidebar-text);
-      display: flex; flex-direction: column; padding: 30px 20px; 
-      z-index: 2000; box-shadow: 10px 0 30px rgba(0,0,0,0.2);
+      display: flex; flex-direction: column;
+      padding: 30px 20px; 
+      z-index: 2000;
+      box-shadow: 10px 0 30px rgba(0,0,0,0.2);
       transition: width var(--transition-speed) var(--ease-out);
       overflow: hidden;
     }
@@ -211,7 +226,7 @@
     .t-company { font-size: 1rem; font-weight: 500; color: #374151; margin-bottom: 8px; }
     .t-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; }
 
-    /* === NEW CAROUSEL PROJECTS SECTION (LIGHT THEME) === */
+    /* === NEW CAROUSEL PROJECTS SECTION (UPDATED LAYOUT) === */
     .projects-section-interactive {
         background-color: transparent; /* Light theme match */
         padding: 40px 0;
@@ -219,17 +234,17 @@
         overflow: hidden;
     }
 
-    .projects-container-flex {
-        display: flex; gap: 60px; align-items: center; width: 100%;
+    /* Header Centered above Carousel */
+    .projects-header-centered {
+        text-align: left;
+        max-width: 800px;
+        margin-bottom: 40px;
     }
+    .projects-header-centered h2 { margin-bottom: 15px; }
+    .projects-header-centered p { font-size: 1rem; color: #64748b; line-height: 1.6; }
 
-    .projects-intro-text { flex: 1; max-width: 400px; }
-    .projects-intro-text h2 { font-size: 2.5rem; margin-bottom: 20px; }
-    .github-link { color: var(--accent); font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 15px; }
-    .github-link:hover { text-decoration: underline; }
-
-    .projects-carousel-wrapper { flex: 2; position: relative; display: flex; align-items: center; }
-    .carousel-track-box { overflow-x: auto; scroll-behavior: smooth; width: 100%; padding: 20px 0; }
+    .projects-carousel-wrapper { position: relative; display: flex; align-items: center; }
+    .carousel-track-box { overflow-x: auto; scroll-behavior: smooth; width: 100%; padding: 20px 5px; } /* Added padding for shadow */
     .carousel-track-box::-webkit-scrollbar { height: 0; } 
     
     .carousel-track-flex { display: flex; gap: 30px; }
@@ -254,10 +269,21 @@
     .project-card-interactive:hover .pc-image-box img { transform: scale(1.05); filter: brightness(1.05); }
 
     .pc-content { padding: 24px; }
-    .pc-content h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 12px; }
+    .pc-content h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 12px; color: var(--text-main); }
     
-    .pc-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+    .pc-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; margin-bottom: 20px; }
     .pc-tag { font-size: 0.75rem; background: #f3f4f6; color: #4b5563; padding: 5px 12px; border-radius: 100px; font-weight: 600; text-transform: uppercase; }
+
+    /* Links area */
+    .pc-links { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-small { 
+        padding: 8px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; text-decoration: none; 
+        display: inline-flex; align-items: center; gap: 5px; transition: 0.2s;
+        border: 1px solid #e5e7eb; background: #fff; color: var(--text-secondary);
+    }
+    .btn-small:hover { background: var(--text-main); color: #fff; border-color: var(--text-main); }
+    .btn-small.highlight { background: rgba(79, 70, 229, 0.1); color: var(--accent); border-color: transparent; }
+    .btn-small.highlight:hover { background: var(--accent); color: #fff; }
 
     .nav-arrow {
         background: #fff; border: 1px solid #e5e7eb;
@@ -290,6 +316,12 @@
     .lang-quote { margin-bottom: 40px; margin-top: -10px; font-style: italic; color: var(--text-secondary); font-size: 1rem; line-height: 1.6; max-width: 800px; }
     .lang-quote span { color: var(--accent); font-weight: 600; }
 
+    /* PHILOSOPHY */
+    .philosophy-banner { margin: 80px 0; padding: 40px; border-left: 4px solid var(--accent); background: linear-gradient(90deg, rgba(79, 70, 229, 0.05) 0%, transparent 100%); font-size: 1.4rem; font-style: italic; color: var(--text-secondary); line-height: 1.6; opacity: 0; transform: translateY(20px); transition: 0.8s var(--ease-out); }
+    .philosophy-banner.visible { opacity: 1; transform: translateY(0); }
+    .philosophy-banner span { font-weight: 600; color: var(--text-main); }
+    .article-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
+
     /* CONTACT & MISC */
     .contact-container { position: relative; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 60px 40px; text-align: center; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
     .contact-glow { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at center, rgba(79, 70, 229, 0.15), transparent 60%); pointer-events: none; z-index: 0; animation: rotateGlow 20s linear infinite; }
@@ -302,14 +334,6 @@
     .btn-big-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(79, 70, 229, 0.5); }
     .btn-big-outline { padding: 16px 36px; border-radius: 12px; font-weight: 700; font-size: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; display: flex; align-items: center; gap: 10px; transition: 0.3s; text-decoration: none; }
     .btn-big-outline:hover { background: rgba(255,255,255,0.1); transform: translateY(-3px); }
-
-    /* PHILOSOPHY */
-    .philosophy-banner { margin: 80px 0; padding: 40px; border-left: 4px solid var(--accent); background: linear-gradient(90deg, rgba(79, 70, 229, 0.05) 0%, transparent 100%); font-size: 1.4rem; font-style: italic; color: var(--text-secondary); line-height: 1.6; opacity: 0; transform: translateY(20px); transition: 0.8s var(--ease-out); }
-    .philosophy-banner.visible { opacity: 1; transform: translateY(0); }
-    .philosophy-banner span { font-weight: 600; color: var(--text-main); }
-
-    /* GRID FOR ESSAYS */
-    .article-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
 
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
@@ -344,12 +368,11 @@
       .contact-title { font-size: 1.8rem; }
       .about-grid { grid-template-columns: 1fr; gap: 40px; text-align: center; }
       .about-text h2 { font-size: 2rem; }
-      .focus-card { text-align: left; }
       #about { padding: 40px 20px; height: auto; min-height: auto; }
+      .about-animation-container { height: 300px; order: -1; }
       .logo-grid { grid-template-columns: repeat(3, 1fr); }
       
-      .projects-container-flex { flex-direction: column; gap: 30px; }
-      .nav-arrow { display: none; }
+      .nav-arrow { display: none; } /* Hide navigation arrows on mobile */
     }
   </style>
 </head>
@@ -582,84 +605,83 @@
         </section>
 
         <section id="portfolio" class="projects-section-interactive reveal">
-          <div class="projects-container-flex">
-            <div class="projects-intro-text">
-                <a href="https://github.com/samibennane" target="_blank" class="github-link">
-                    See more on my GitHub page here <i class="ph ph-arrow-right"></i>
-                </a>
-                <h2>My Projects</h2>
-                <p style="color:#64748b; line-height:1.6;">
-                    Here are some projects I made during my studies or personal projects that reflect my skills and the types of challenges I enjoy solving.
-                </p>
-            </div>
+          
+          <div class="projects-header-centered">
+              <h2>Technical Projects</h2>
+              <p>
+                  Here are some projects I made during my studies or personal projects that reflect my skills and the types of challenges I enjoy solving.
+              </p>
+          </div>
 
-            <div class="projects-carousel-wrapper">
-                <button class="nav-arrow prev" onclick="scrollCarousel(-400)"><i class="ph ph-caret-left"></i></button>
-                
-                <div class="carousel-track-box" id="projectTrack">
-                    <div class="carousel-track-flex">
-                        
-                        <div class="project-card-interactive">
-                            <div class="pc-image-box">
-                                <img src="assets/images/ligue1.png" alt="Ligue 1 Project">
-                            </div>
-                            <div class="pc-content">
-                                <h3>Ligue 1 Match Prediction</h3>
-                                <p style="font-size:0.9rem; color:#6b7280; margin-bottom:10px;">
-                                    ML project predicting football outcomes using mathematical foundations rather than just libraries.
-                                </p>
-                                <div class="pc-tags">
-                                    <span class="pc-tag">PYTHON</span>
-                                    <span class="pc-tag">PANDAS</span>
-                                    <span class="pc-tag">MATHS</span>
-                                </div>
-                                <div style="margin-top:20px;">
-                                    <a href="assets/docs/french_league_predictions_sami_bennane.pdf" target="_blank" style="color:var(--accent); font-weight:600; font-size:0.9rem;">View Report <i class="ph ph-arrow-right"></i></a>
-                                </div>
-                            </div>
-                        </div>
+          <div class="projects-carousel-wrapper">
+              <button class="nav-arrow prev" onclick="scrollCarousel(-400)"><i class="ph ph-caret-left"></i></button>
+              
+              <div class="carousel-track-box" id="projectTrack">
+                  <div class="carousel-track-flex">
+                      
+                      <div class="project-card-interactive">
+                          <div class="pc-image-box">
+                              <img src="assets/images/ligue1.png" alt="Ligue 1 Match Prediction">
+                          </div>
+                          <div class="pc-content">
+                              <h3>Ligue 1 Match Prediction</h3>
+                              <p style="font-size:0.9rem; color:#6b7280; margin-bottom:10px;">
+                                  ML project predicting football outcomes using mathematical foundations rather than just libraries.
+                              </p>
+                              <div class="pc-tags">
+                                  <span class="pc-tag">PYTHON</span>
+                                  <span class="pc-tag">PANDAS</span>
+                                  <span class="pc-tag">MATHS</span>
+                              </div>
+                              <div class="pc-links">
+                                  <a href="assets/docs/french_league_predictions_sami_bennane.pdf" target="_blank" class="btn-small highlight">Report</a>
+                                  <a href="assets/docs/l1c.csv" target="_blank" class="btn-small">Dataset</a>
+                                  <a href="assets/docs/ligue1.py" target="_blank" class="btn-small">Python</a>
+                                  <a href="assets/docs/README.md" target="_blank" class="btn-small">Readme</a>
+                              </div>
+                          </div>
+                      </div>
 
-                        <div class="project-card-interactive">
-                            <div class="pc-image-box">
-                                <img src="assets/images/pcp.png" alt="Acoustic Project">
-                            </div>
-                            <div class="pc-content">
-                                <h3>Acoustic Transduction</h3>
-                                <p style="font-size:0.9rem; color:#6b7280; margin-bottom:10px;">
-                                    Analog signal chain design for sound capture & FFT validation.
-                                </p>
-                                <div class="pc-tags">
-                                    <span class="pc-tag">ANALOG</span>
-                                    <span class="pc-tag">SIGNAL PROC</span>
-                                    <span class="pc-tag">BODE</span>
-                                </div>
-                                <div style="margin-top:20px;">
-                                    <a href="assets/docs/pcp.pdf" target="_blank" style="color:var(--accent); font-weight:600; font-size:0.9rem;">View Project <i class="ph ph-arrow-right"></i></a>
-                                </div>
-                            </div>
-                        </div>
+                      <div class="project-card-interactive">
+                          <div class="pc-image-box">
+                              <img src="assets/images/pcp.png" alt="Acoustic Transduction">
+                          </div>
+                          <div class="pc-content">
+                              <h3>Acoustic Transduction</h3>
+                              <p style="font-size:0.9rem; color:#6b7280; margin-bottom:10px;">
+                                  Analog signal chain design for sound capture & FFT validation.
+                              </p>
+                              <div class="pc-tags">
+                                  <span class="pc-tag">ANALOG</span>
+                                  <span class="pc-tag">SIGNAL PROC</span>
+                                  <span class="pc-tag">BODE</span>
+                              </div>
+                              <div class="pc-links">
+                                  <a href="assets/docs/pcp.pdf" target="_blank" class="btn-small highlight">View Project</a>
+                              </div>
+                          </div>
+                      </div>
 
-                        <div class="project-card-interactive">
-                            <div class="pc-image-box" style="background:#f3f4f6; display:flex; align-items:center; justify-content:center;">
-                                <i class="ph ph-code" style="font-size:3rem; color:#cbd5e1;"></i>
-                            </div>
-                            <div class="pc-content">
-                                <h3>Upcoming Project</h3>
-                                <p style="font-size:0.9rem; color:#6b7280; margin-bottom:10px;">
-                                    Currently working on advanced embedded security protocols.
-                                </p>
-                                <div class="pc-tags">
-                                    <span class="pc-tag">C++</span>
-                                    <span class="pc-tag">STM32</span>
-                                </div>
-                            </div>
-                        </div>
+                      <div class="project-card-interactive">
+                          <div class="pc-image-box" style="background:#f3f4f6; display:flex; align-items:center; justify-content:center;">
+                              <i class="ph ph-code" style="font-size:3rem; color:#cbd5e1;"></i>
+                          </div>
+                          <div class="pc-content">
+                              <h3>Upcoming Project</h3>
+                              <p style="font-size:0.9rem; color:#6b7280; margin-bottom:10px;">
+                                  Currently working on advanced embedded security protocols.
+                              </p>
+                              <div class="pc-tags">
+                                  <span class="pc-tag">C++</span>
+                                  <span class="pc-tag">STM32</span>
+                              </div>
+                          </div>
+                      </div>
 
-                    </div>
-                </div>
+                  </div>
+              </div>
 
-                <button class="nav-arrow next" onclick="scrollCarousel(400)"><i class="ph ph-caret-right"></i></button>
-            </div>
+              <button class="nav-arrow next" onclick="scrollCarousel(400)"><i class="ph ph-caret-right"></i></button>
           </div>
         </section>
 
