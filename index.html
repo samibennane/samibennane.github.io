@@ -324,7 +324,7 @@
     .philosophy-banner span { font-weight: 600; color: var(--text-main); }
     .article-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
 
-    /* === NEW MODERN CONTACT (NO BOX) === */
+    /* === NEW MODERN CONTACT (NO BOX - CLEAN GRID) === */
     .contact-clean-grid {
       display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
       align-items: center; margin-bottom: 80px;
@@ -338,11 +338,17 @@
     }
     
     .ci-item { display: flex; align-items: center; gap: 15px; }
-    .ci-icon { width: 50px; height: 50px; background: rgba(79, 70, 229, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 24px; }
+    .ci-icon { width: 50px; height: 50px; background: rgba(79, 70, 229, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 24px; flex-shrink: 0; }
     
-    .ci-text { display: flex; flex-direction: column; }
+    .ci-text { display: flex; flex-direction: column; overflow: hidden; }
     .ci-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #9ca3af; font-weight: 600; }
-    .ci-value { font-size: 1rem; font-weight: 600; color: var(--text-main); }
+    
+    /* Force single line text */
+    .ci-value { 
+        font-size: 1rem; font-weight: 600; color: var(--text-main);
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    
     .ci-value.link { text-decoration: none; transition: color 0.2s; }
     .ci-value.link:hover { color: var(--accent); }
 
@@ -758,7 +764,7 @@
                   <div class="ci-icon"><i class="ph ph-map-pin"></i></div>
                   <div class="ci-text">
                      <span class="ci-label">Location</span>
-                     <span class="ci-value">Paris / Aix-en-Provence</span>
+                     <span class="ci-value">Paris, Aix-en-Provence</span>
                   </div>
                </div>
                <div class="ci-item">
