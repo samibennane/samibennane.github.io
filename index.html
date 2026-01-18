@@ -226,9 +226,9 @@
     .t-company { font-size: 1rem; font-weight: 500; color: #374151; margin-bottom: 8px; }
     .t-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; }
 
-    /* === NEW CAROUSEL PROJECTS SECTION (UPDATED LAYOUT) === */
+    /* === NEW CAROUSEL PROJECTS SECTION (UPDATED LAYOUT - LIGHT) === */
     .projects-section-interactive {
-        background-color: transparent; /* Light theme match */
+        background-color: transparent; /* Light theme */
         padding: 40px 0;
         margin-bottom: 120px;
         overflow: hidden;
@@ -242,9 +242,11 @@
     }
     .projects-header-centered h2 { margin-bottom: 15px; }
     .projects-header-centered p { font-size: 1rem; color: #64748b; line-height: 1.6; }
+    .projects-header-centered .gh-link { color: var(--accent); font-weight: 600; text-decoration: none; margin-top: 10px; display: inline-block; }
+    .projects-header-centered .gh-link:hover { text-decoration: underline; }
 
     .projects-carousel-wrapper { position: relative; display: flex; align-items: center; }
-    .carousel-track-box { overflow-x: auto; scroll-behavior: smooth; width: 100%; padding: 20px 5px; } /* Added padding for shadow */
+    .carousel-track-box { overflow-x: auto; scroll-behavior: smooth; width: 100%; padding: 20px 5px; }
     .carousel-track-box::-webkit-scrollbar { height: 0; } 
     
     .carousel-track-flex { display: flex; gap: 30px; }
@@ -609,6 +611,7 @@
           
           <div class="projects-header-centered">
               <h2>A curated selection of academic and personal projects demonstrating my technical expertise and passion for solving complex challenges.</h2>
+              <a href="https://github.com/samibennane" target="_blank" class="gh-link">You can find the source code and technical details on my <span>GitHub</span> <i class="ph ph-arrow-right"></i></a>
           </div>
 
           <div class="projects-carousel-wrapper">
@@ -661,17 +664,21 @@
                       </div>
 
                       <div class="project-card-interactive">
-                          <div class="pc-image-box" style="background:#f3f4f6; display:flex; align-items:center; justify-content:center;">
-                              <i class="ph ph-code" style="font-size:3rem; color:#cbd5e1;"></i>
+                          <div class="pc-image-box">
+                              <img src="assets/images/ascon.png" alt="Ascon Cryptography">
                           </div>
                           <div class="pc-content">
-                              <h3>Upcoming Project</h3>
+                              <h3>Ascon-128 Cryptography</h3>
                               <p style="font-size:0.9rem; color:#6b7280; margin-bottom:10px;">
-                                  Currently working on advanced embedded security protocols.
+                                  Hardware implementation of lightweight encryption algorithm (AEAD128) on FPGA using SystemVerilog.
                               </p>
                               <div class="pc-tags">
-                                  <span class="pc-tag">C++</span>
-                                  <span class="pc-tag">STM32</span>
+                                  <span class="pc-tag">SystemVerilog</span>
+                                  <span class="pc-tag">ModelSim</span>
+                                  <span class="pc-tag">Crypto</span>
+                              </div>
+                              <div class="pc-links">
+                                  <a href="assets/docs/sami_bennane_rapport_pcsn.pdf" target="_blank" class="btn-small highlight">View Report</a>
                               </div>
                           </div>
                       </div>
