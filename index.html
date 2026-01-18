@@ -175,9 +175,9 @@
       background: linear-gradient(to bottom right, #ffffff, #f8fafc); /* Subtil dégradé */
     }
 
-    /* Layout Grille (Texte + Animation) */
+    /* Layout Grille (Texte + Cartes Focus) */
     .about-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+      display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 60px;
       position: relative; z-index: 2; max-width: 1100px; width: 100%; align-items: center;
     }
 
@@ -190,19 +190,49 @@
     .about-text p { font-size: 1.1rem; color: #374151; margin-bottom: 20px; line-height: 1.7; }
     .about-highlight { color: var(--accent); font-weight: 600; }
 
-    /* === NEW ANIMATION CONTAINER (RIGHT COLUMN) === */
-    .about-animation-container {
-        position: relative;
-        width: 100%;
-        height: 450px; /* Hauteur fixe pour l'animation */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        /* Léger fond lumineux derrière l'animation pour la faire ressortir */
-        background: radial-gradient(circle at center, rgba(79, 70, 229, 0.08) 0%, transparent 70%);
-        border-radius: 30px;
+    /* === NEW "ELEGANT" CARDS FOR ABOUT === */
+    .about-focus-cards { display: flex; flex-direction: column; gap: 24px; }
+
+    .focus-card {
+      /* Design plus moderne et épuré */
+      background: rgba(255, 255, 255, 0.8); 
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      border-radius: 16px;
+      padding: 24px 30px;
+      display: flex; align-items: center; gap: 20px;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
     }
-    #nexus-canvas { width: 100%; height: 100%; }
+
+    .focus-card:hover {
+      transform: translateX(10px) translateY(-2px);
+      background: #fff;
+      box-shadow: 0 15px 35px rgba(79, 70, 229, 0.1);
+      border-color: rgba(79, 70, 229, 0.3);
+    }
+
+    /* Numérotation de fond élégante */
+    .focus-number {
+      font-size: 4rem; font-weight: 900; color: rgba(0,0,0,0.03);
+      position: absolute; right: 20px; bottom: -10px;
+      line-height: 1; pointer-events: none; transition: 0.3s;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .focus-card:hover .focus-number { color: rgba(79, 70, 229, 0.08); transform: scale(1.1); }
+
+    .focus-icon {
+      font-size: 32px; color: var(--text-main);
+      transition: 0.3s; min-width: 40px; display: flex; justify-content: center;
+    }
+    .focus-card:hover .focus-icon { color: var(--accent); transform: scale(1.1) rotate(5deg); }
+    
+    .focus-content { flex: 1; position: relative; z-index: 1; }
+    .focus-content h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; color: var(--text-main); }
+    .focus-content p { font-size: 0.95rem; color: var(--text-secondary); margin: 0; line-height: 1.5; font-weight: 400; }
 
     /* SPLIT */
     .split-layout { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 50px; align-items: start; }
@@ -359,8 +389,7 @@
       .contact-title { font-size: 1.8rem; }
       .about-grid { grid-template-columns: 1fr; gap: 40px; text-align: center; }
       .about-text h2 { font-size: 2rem; }
-      /* Fix animation container on mobile */
-      .about-animation-container { height: 300px; order: -1; /* Put animation above text on mobile */ }
+      .focus-card { padding: 20px; text-align: left; }
       #about { padding: 40px 20px; height: auto; min-height: auto; }
       .logo-grid { grid-template-columns: repeat(3, 1fr); }
     }
@@ -431,10 +460,36 @@
               <p>Deeply invested in the <strong>geopolitics of technology</strong>, I tackle challenges related to digital sovereignty and AI ethics. My goal: design solutions that are technically flawless, strategically autonomous, and socially responsible.</p>
             </div>
             
-            <div class="about-animation-container">
-                <canvas id="nexus-canvas"></canvas>
-            </div>
+            <div class="about-focus-cards">
+              
+              <div class="focus-card">
+                <div class="focus-number">01</div>
+                <div class="focus-icon"><i class="ph ph-cpu"></i></div>
+                <div class="focus-content">
+                  <h4>Embedded Engineering</h4>
+                  <p>Mastering low-level systems, from STM32 to real-time OS.</p>
+                </div>
+              </div>
 
+              <div class="focus-card">
+                <div class="focus-number">02</div>
+                <div class="focus-icon"><i class="ph ph-brain"></i></div>
+                <div class="focus-content">
+                  <h4>AI & Data Strategy</h4>
+                  <p>Applying ML not just as a tool, but as a strategic asset.</p>
+                </div>
+              </div>
+
+              <div class="focus-card">
+                <div class="focus-number">03</div>
+                <div class="focus-icon"><i class="ph ph-globe-hemisphere-west"></i></div>
+                <div class="focus-content">
+                  <h4>Tech Geopolitics</h4>
+                  <p>Analyzing sovereignty, ethics, and global tech dynamics.</p>
+                </div>
+              </div>
+
+            </div>
           </div>
         </section>
 
@@ -743,10 +798,9 @@
       });
     });
 
-    // --- HERO NEURAL NETWORK ANIMATION SCRIPT ---
+    // --- NEURAL NETWORK ANIMATION SCRIPT ---
     (function() {
       const canvas = document.getElementById('neural-canvas');
-      if (!canvas) return;
       const ctx = canvas.getContext('2d');
       let width, height;
       let particles = [];
@@ -760,7 +814,7 @@
         constructor() {
           this.x = Math.random() * width;
           this.y = Math.random() * height;
-          this.vx = (Math.random() - 0.5) * 0.5;
+          this.vx = (Math.random() - 0.5) * 0.5; // Vitesse lente
           this.vy = (Math.random() - 0.5) * 0.5;
           this.size = Math.random() * 2 + 1;
         }
@@ -773,28 +827,34 @@
         draw() {
           ctx.beginPath();
           ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(6, 182, 212, 0.6)'; 
+          ctx.fillStyle = 'rgba(6, 182, 212, 0.6)'; // Couleur CYAN lumineux
           ctx.fill();
         }
       }
 
       function init() {
         particles = [];
-        for (let i = 0; i < 60; i++) { particles.push(new Particle()); }
+        for (let i = 0; i < 60; i++) { // Nombre de particules
+          particles.push(new Particle());
+        }
       }
 
       function animate() {
         ctx.clearRect(0, 0, width, height);
+        
         for (let i = 0; i < particles.length; i++) {
           particles[i].update();
           particles[i].draw();
+          
+          // Dessiner les connexions
           for (let j = i; j < particles.length; j++) {
             const dx = particles[i].x - particles[j].x;
             const dy = particles[i].y - particles[j].y;
             const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < 120) {
+            
+            if (distance < 120) { // Distance de connexion
               ctx.beginPath();
-              ctx.strokeStyle = `rgba(6, 182, 212, ${1 - distance / 120})`;
+              ctx.strokeStyle = `rgba(6, 182, 212, ${1 - distance / 120})`; // Cyan fading
               ctx.lineWidth = 0.5;
               ctx.moveTo(particles[i].x, particles[i].y);
               ctx.lineTo(particles[j].x, particles[j].y);
@@ -804,120 +864,11 @@
         }
         requestAnimationFrame(animate);
       }
+
       window.addEventListener('resize', () => { resize(); init(); });
-      resize(); init(); animate();
-    })();
-
-    // --- NEW ABOUT SECTION ANIMATION SCRIPT ("STRATEGIC NEXUS") ---
-    (function() {
-        const canvas = document.getElementById('nexus-canvas');
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        let width, height, centerX, centerY;
-        let particles = [];
-        let time = 0;
-
-        function resize() {
-            width = canvas.width = canvas.parentElement.offsetWidth;
-            height = canvas.height = canvas.parentElement.offsetHeight;
-            centerX = width / 2;
-            centerY = height / 2;
-        }
-
-        class NexusParticle {
-            constructor(orbitRadius, speed, offsetAngle, color) {
-                this.orbitRadius = orbitRadius;
-                this.speed = speed;
-                this.angle = offsetAngle;
-                this.color = color;
-                this.size = Math.random() * 2 + 1.5;
-            }
-            update() {
-                this.angle += this.speed;
-                // Elliptical orbit modeled by modulating radius with sin/cos over time
-                const currentRadiusX = this.orbitRadius * (1 + 0.1 * Math.sin(time * 0.5));
-                const currentRadiusY = this.orbitRadius * 0.7 * (1 + 0.1 * Math.cos(time * 0.5));
-                
-                this.x = centerX + currentRadiusX * Math.cos(this.angle);
-                this.y = centerY + currentRadiusY * Math.sin(this.angle);
-            }
-            draw() {
-                ctx.beginPath();
-                // Add a glow effect
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = this.color;
-                ctx.fillStyle = this.color;
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.shadowBlur = 0; // Reset shadow for other elements
-            }
-        }
-
-        function init() {
-            particles = [];
-            // Create particles for 3 main orbits (representing the 3 fields)
-            // Orbit 1 (Hardware - Cyan)
-            for(let i=0; i<8; i++) particles.push(new NexusParticle(120, 0.008, i * (Math.PI/4), '#06b6d4'));
-            // Orbit 2 (AI - Purple)
-            for(let i=0; i<8; i++) particles.push(new NexusParticle(80, -0.012, i * (Math.PI/4) + 1, '#8b5cf6'));
-             // Orbit 3 (Geo - Accent Blue)
-            for(let i=0; i<6; i++) particles.push(new NexusParticle(160, 0.005, i * (Math.PI/3) + 2, '#4f46e5'));
-        }
-
-        function drawCore() {
-            // Pulsing central core representing strategic vision
-            const coreRadius = 30 + 5 * Math.sin(time * 1.5);
-            const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, coreRadius);
-            gradient.addColorStop(0, 'rgba(79, 70, 229, 0.8)'); // Inner purple
-            gradient.addColorStop(0.6, 'rgba(6, 182, 212, 0.4)'); // Mid cyan
-            gradient.addColorStop(1, 'rgba(0,0,0,0)'); // Transparent outer
-
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, coreRadius, 0, Math.PI * 2);
-            ctx.fillStyle = gradient;
-            ctx.fill();
-        }
-
-        function drawOrbits() {
-             // Draw faint orbit paths
-             ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
-             ctx.lineWidth = 1;
-             
-             // Orbit path 1
-             ctx.beginPath();
-             ctx.ellipse(centerX, centerY, 120 * (1 + 0.1 * Math.sin(time * 0.5)), 120 * 0.7 * (1 + 0.1 * Math.cos(time * 0.5)), 0, 0, 2 * Math.PI);
-             ctx.stroke();
-
-              // Orbit path 2
-             ctx.beginPath();
-             ctx.ellipse(centerX, centerY, 80 * (1 + 0.1 * Math.sin(time * 0.5)), 80 * 0.7 * (1 + 0.1 * Math.cos(time * 0.5)), 0, 0, 2 * Math.PI);
-             ctx.stroke();
-             
-              // Orbit path 3
-             ctx.beginPath();
-             ctx.ellipse(centerX, centerY, 160 * (1 + 0.1 * Math.sin(time * 0.5)), 160 * 0.7 * (1 + 0.1 * Math.cos(time * 0.5)), 0, 0, 2 * Math.PI);
-             ctx.stroke();
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
-            time += 0.01;
-            
-            drawCore();
-            drawOrbits();
-            
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-
-            requestAnimationFrame(animate);
-        }
-
-        window.addEventListener('resize', () => { resize(); init(); });
-        resize();
-        init();
-        animate();
+      resize();
+      init();
+      animate();
     })();
   </script>
 </body>
