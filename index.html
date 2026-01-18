@@ -253,7 +253,7 @@
     .t-company { font-size: 1rem; font-weight: 500; color: #374151; margin-bottom: 8px; }
     .t-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; }
 
-    /* SKILLS GRID & LOGOS (NO BOX DESIGN) */
+    /* SKILLS GRID & LOGOS (CLEAN & FIXED) */
     .skills-block {
       margin-bottom: 60px;
       opacity: 0; transform: translateY(20px); transition: 0.6s;
@@ -265,9 +265,9 @@
       margin-bottom: 25px; color: var(--text-main);
       display: flex; align-items: center; gap: 10px;
     }
-    .skills-intro { font-size: 1rem; color: #64748b; margin-bottom: 30px; max-width: 700px; line-height: 1.6; }
+    .skills-intro { font-size: 1rem; color: #64748b; margin-bottom: 30px; max-width: 700px; }
 
-    /* LOGO GRID UNIFIED STYLE - NO BOXES */
+    /* LOGO GRID UNIFIED STYLE */
     .logo-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -279,11 +279,10 @@
       align-items: center; justify-content: center;
       gap: 12px; height: 110px;
       transition: all 0.3s ease;
-      /* Animation flottante enlevée pour un look plus "pro" et posé, ou gardée subtilement */
-      animation: floatLogo 6s ease-in-out infinite; 
+      animation: floatLogo 4s ease-in-out infinite;
     }
     .logo-item:nth-child(odd) { animation-delay: 0s; }
-    .logo-item:nth-child(even) { animation-delay: 3s; }
+    .logo-item:nth-child(even) { animation-delay: 2s; }
 
     .logo-item img {
       height: 60px; width: auto; max-width: 100%;
@@ -335,16 +334,12 @@
     .lang-level { color: var(--text-muted); font-size: 0.85rem; font-weight: 400; }
     .progress-track { width: 100%; height: 8px; background: #e2e8f0; border-radius: 10px; overflow: hidden; }
     .progress-fill { height: 100%; background: var(--accent); border-radius: 10px; width: 0; transition: width 1.5s cubic-bezier(0.65, 0, 0.35, 1); }
-    
+
     /* NEW: Language Quote */
     .lang-quote {
-      margin-top: 40px;
-      padding-top: 20px;
-      border-top: 1px solid var(--timeline-line);
-      font-style: italic;
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-      text-align: center;
+      margin-bottom: 40px; margin-top: -10px;
+      font-style: italic; color: var(--text-secondary); font-size: 1rem;
+      line-height: 1.6; max-width: 800px;
     }
     .lang-quote span { color: var(--accent); font-weight: 600; }
 
@@ -394,7 +389,6 @@
       .contact-title { font-size: 1.8rem; }
       .about-grid { grid-template-columns: 1fr; gap: 40px; text-align: center; }
       .about-text h2 { font-size: 2rem; }
-      /* Cards mobile tweaks */
       .focus-card { padding: 20px; text-align: left; }
       #about { padding: 40px 20px; height: auto; min-height: auto; }
       .logo-grid { grid-template-columns: repeat(3, 1fr); }
@@ -642,16 +636,17 @@
 
         <section id="languages" class="reveal">
           <h2><i class="ph ph-translate" style="color:var(--accent)"></i> Languages</h2>
+          
+          <div class="lang-quote">
+            Language is the bridge to cultural understanding. I value <span>multilingualism</span> as a tool to broaden my horizon and connect with diverse minds.
+          </div>
+
           <div class="lang-grid">
             <div class="lang-item"><div class="lang-header"><span>French</span><span>Native</span></div><div class="progress-track"><div class="progress-fill" style="width:100%"></div></div></div>
             <div class="lang-item" style="transition-delay:0.1s"><div class="lang-header"><span>English</span><span>Full Professional (Cambridge B2)</span></div><div class="progress-track"><div class="progress-fill" style="width:90%"></div></div></div>
             <div class="lang-item" style="transition-delay:0.2s"><div class="lang-header"><span>German</span><span>Limited Working</span></div><div class="progress-track"><div class="progress-fill" style="width:50%"></div></div></div>
             <div class="lang-item" style="transition-delay:0.3s"><div class="lang-header"><span>Spanish</span><span>Limited Working</span></div><div class="progress-track"><div class="progress-fill" style="width:50%"></div></div></div>
             <div class="lang-item" style="transition-delay:0.4s"><div class="lang-header"><span>Arabic</span><span>Limited Working</span></div><div class="progress-track"><div class="progress-fill" style="width:50%"></div></div></div>
-          </div>
-          
-          <div class="lang-quote">
-            "Language is the bridge to cultural understanding. I value <span>multilingualism</span> as a tool to broaden my horizon and connect with diverse minds."
           </div>
         </section>
 
