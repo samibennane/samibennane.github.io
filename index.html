@@ -172,6 +172,7 @@
       display: flex; align-items: center; justify-content: center;
       position: relative; padding: 0 60px; overflow: hidden;
       margin-bottom: 0;
+      background: linear-gradient(to bottom right, #ffffff, #f8fafc); /* Subtil dégradé */
     }
 
     /* Layout Grille (Texte + Cartes Focus) */
@@ -189,29 +190,49 @@
     .about-text p { font-size: 1.1rem; color: #374151; margin-bottom: 20px; line-height: 1.7; }
     .about-highlight { color: var(--accent); font-weight: 600; }
 
-    /* Colonne Focus (Cartes) */
-    .about-focus-cards { display: flex; flex-direction: column; gap: 20px; }
+    /* === NEW "ELEGANT" CARDS FOR ABOUT === */
+    .about-focus-cards { display: flex; flex-direction: column; gap: 24px; }
 
     .focus-card {
-      background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.5); padding: 20px;
-      border-radius: 16px; display: flex; align-items: center; gap: 15px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.05); transition: 0.3s;
-    }
-    .focus-card:hover {
-      transform: translateX(10px); background: #fff;
-      box-shadow: 0 10px 30px rgba(79, 70, 229, 0.15); border-color: var(--accent);
+      /* Design plus moderne et épuré */
+      background: rgba(255, 255, 255, 0.8); 
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      border-radius: 16px;
+      padding: 24px 30px;
+      display: flex; align-items: center; gap: 20px;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
     }
 
-    .focus-icon {
-      width: 50px; height: 50px;
-      background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(6, 182, 212, 0.1));
-      border-radius: 12px; display: flex; align-items: center; justify-content: center;
-      color: var(--accent); font-size: 24px; flex-shrink: 0;
+    .focus-card:hover {
+      transform: translateX(10px) translateY(-2px);
+      background: #fff;
+      box-shadow: 0 15px 35px rgba(79, 70, 229, 0.1);
+      border-color: rgba(79, 70, 229, 0.3);
     }
+
+    /* Numérotation de fond élégante */
+    .focus-number {
+      font-size: 4rem; font-weight: 900; color: rgba(0,0,0,0.03);
+      position: absolute; right: 20px; bottom: -10px;
+      line-height: 1; pointer-events: none; transition: 0.3s;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .focus-card:hover .focus-number { color: rgba(79, 70, 229, 0.08); transform: scale(1.1); }
+
+    .focus-icon {
+      font-size: 32px; color: var(--text-main);
+      transition: 0.3s; min-width: 40px; display: flex; justify-content: center;
+    }
+    .focus-card:hover .focus-icon { color: var(--accent); transform: scale(1.1) rotate(5deg); }
     
-    .focus-content h4 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
-    .focus-content p { font-size: 0.85rem; color: var(--text-secondary); margin: 0; }
+    .focus-content { flex: 1; position: relative; z-index: 1; }
+    .focus-content h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; color: var(--text-main); }
+    .focus-content p { font-size: 0.95rem; color: var(--text-secondary); margin: 0; line-height: 1.5; font-weight: 400; }
 
     /* SPLIT */
     .split-layout { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 50px; align-items: start; }
@@ -360,7 +381,7 @@
       .contact-title { font-size: 1.8rem; }
       .about-grid { grid-template-columns: 1fr; gap: 40px; text-align: center; }
       .about-text h2 { font-size: 2rem; }
-      .focus-card { text-align: left; }
+      .focus-card { padding: 20px; text-align: left; }
       #about { padding: 40px 20px; height: auto; min-height: auto; }
       .logo-grid { grid-template-columns: repeat(3, 1fr); }
     }
@@ -430,28 +451,36 @@
               <p>My technical core lies in building scalable embedded systems (STM32, IoT) and secure architectures. However, I believe engineering isn't just about execution—it's about understanding the world technology shapes.</p>
               <p>Deeply invested in the <strong>geopolitics of technology</strong>, I tackle challenges related to digital sovereignty and AI ethics. My goal: design solutions that are technically flawless, strategically autonomous, and socially responsible.</p>
             </div>
+            
             <div class="about-focus-cards">
+              
               <div class="focus-card">
+                <div class="focus-number">01</div>
                 <div class="focus-icon"><i class="ph ph-cpu"></i></div>
                 <div class="focus-content">
                   <h4>Embedded Engineering</h4>
                   <p>Mastering low-level systems, from STM32 to real-time OS.</p>
                 </div>
               </div>
+
               <div class="focus-card">
+                <div class="focus-number">02</div>
                 <div class="focus-icon"><i class="ph ph-brain"></i></div>
                 <div class="focus-content">
                   <h4>AI & Data Strategy</h4>
                   <p>Applying ML not just as a tool, but as a strategic asset.</p>
                 </div>
               </div>
+
               <div class="focus-card">
+                <div class="focus-number">03</div>
                 <div class="focus-icon"><i class="ph ph-globe-hemisphere-west"></i></div>
                 <div class="focus-content">
                   <h4>Tech Geopolitics</h4>
                   <p>Analyzing sovereignty, ethics, and global tech dynamics.</p>
                 </div>
               </div>
+
             </div>
           </div>
         </section>
