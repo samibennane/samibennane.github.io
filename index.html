@@ -117,10 +117,7 @@
     .hero-bg-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px); background-size: 50px 50px; mask-image: radial-gradient(circle at center, black 30%, transparent 80%); z-index: 1; animation: pulseGrid 10s infinite alternate; }
     
     /* CANVAS NEURAL NET (HERO) */
-    #hero-canvas {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      z-index: 2; pointer-events: none;
-    }
+    #hero-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
 
     .geo-globe { position: absolute; width: 600px; height: 600px; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; opacity: 0.15; z-index: 0; perspective: 1000px; pointer-events: none; animation: globeEnter 2.5s var(--ease-smooth) forwards; }
     .globe-ring { position: absolute; border: 1px solid var(--tech-cyan); border-radius: 50%; top: 0; left: 0; right: 0; bottom: 0; box-shadow: 0 0 30px rgba(6, 182, 212, 0.2); }
@@ -143,14 +140,14 @@
     .btn-trans { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
     .btn-trans:hover { background: rgba(255,255,255,0.2); border-color: #fff; transform: translateY(-3px); }
 
-    /* CONTENT */
+    /* CONTENT WRAPPER */
     .content-wrapper { padding: 100px 60px; background: var(--main-bg); position: relative; }
     .container { max-width: var(--container-width); margin: 0 auto; }
     section { margin-bottom: 120px; scroll-margin-top: 100px; }
     h2 { font-size: 28px; font-weight: 700; margin-bottom: 40px; color: var(--text-main); display: flex; align-items: center; gap: 12px; }
     h2::after { content: ""; flex: 1; height: 1px; background: var(--timeline-line); max-width: 200px; }
 
-    /* === FULL-SCREEN ABOUT SECTION === */
+    /* === FULL-SCREEN ABOUT SECTION (WITH ANIMATION) === */
     #about {
       min-height: 100vh; /* Prend toute la hauteur de l'écran */
       display: flex; align-items: center; justify-content: center;
@@ -176,7 +173,7 @@
     .about-animation-container {
         position: relative; width: 100%; height: 450px;
         display: flex; justify-content: center; align-items: center;
-        background: radial-gradient(circle at center, rgba(79, 70, 229, 0.05) 0%, transparent 60%); /* Leger glow derrière l'animation */
+        background: radial-gradient(circle at center, rgba(79, 70, 229, 0.05) 0%, transparent 60%);
         border-radius: 50%;
     }
     #nexus-canvas { width: 100%; height: 100%; }
@@ -214,69 +211,73 @@
     .t-company { font-size: 1rem; font-weight: 500; color: #374151; margin-bottom: 8px; }
     .t-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; }
 
-    /* PHILOSOPHY & PROJECTS (NEW MODERN "NO BOX" CARDS) */
-    .philosophy-banner { margin: 80px 0; padding: 40px; border-left: 4px solid var(--accent); background: linear-gradient(90deg, rgba(79, 70, 229, 0.05) 0%, transparent 100%); font-size: 1.4rem; font-style: italic; color: var(--text-secondary); line-height: 1.6; opacity: 0; transform: translateY(20px); transition: 0.8s var(--ease-out); }
-    .philosophy-banner.visible { opacity: 1; transform: translateY(0); }
-    .philosophy-banner span { font-weight: 600; color: var(--text-main); }
-    
-    .article-grid, .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; }
-    
-    /* MODERN "INVISIBLE" PROJECT CARD */
-    .project-card, .article-card {
-      /* Base state: Transparent/Minimal */
-      background: transparent;
-      border: 1px solid transparent;
-      border-bottom: 1px solid #e5e7eb; /* Just a subtle line at bottom */
-      border-radius: 12px;
-      padding: 20px;
-      display: flex; flex-direction: column; gap: 12px;
-      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-      opacity: 0; transform: translateY(30px);
+    /* === NEW CAROUSEL PROJECTS SECTION (LIGHT THEME) === */
+    .projects-section-interactive {
+        background-color: transparent; /* Light theme match */
+        padding: 40px 0;
+        margin-bottom: 120px;
+        overflow: hidden;
     }
-    .project-card.visible, .article-card.visible { opacity: 1; transform: translateY(0); }
-    
-    .project-card:hover, .article-card:hover {
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(10px);
-      transform: translateY(-5px) scale(1.01);
-      box-shadow: 0 15px 35px rgba(0,0,0,0.06);
-      border-color: rgba(79, 70, 229, 0.2);
-      border-bottom-color: var(--accent); /* Accent color on hover */
-    }
-    
-    .project-header { display: flex; align-items: center; gap: 12px; margin-bottom: 5px; }
-    .project-icon { font-size: 1.8rem; filter: grayscale(100%); transition: 0.3s; }
-    .project-card:hover .project-icon { filter: grayscale(0%); transform: scale(1.1); }
-    
-    .project-card h3, .article-card .article-title { font-size: 1.3rem; margin: 0; color: var(--text-main); font-weight: 700; letter-spacing: -0.5px; }
-    
-    .project-card p, .article-card .article-desc { font-size: 0.95rem; color: #4b5563; line-height: 1.6; flex: 1; }
-    
-    .project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-    .pt-tag { 
-        font-size: 0.75rem; 
-        background: transparent; 
-        border: 1px solid #e2e8f0;
-        color: #6b7280; 
-        padding: 4px 12px; 
-        border-radius: 100px; 
-        font-weight: 600; 
-        transition: 0.3s;
-    }
-    .project-card:hover .pt-tag { background: rgba(79, 70, 229, 0.05); color: var(--accent); border-color: rgba(79, 70, 229, 0.2); }
 
-    .project-links { display: flex; gap: 12px; margin-top: 20px; }
-    .btn-card { padding: 10px 20px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px; transition: 0.3s; }
-    .btn-card-primary { background: var(--text-main); color: #fff; }
-    .btn-card-primary:hover { background: var(--accent); transform: translateY(-2px); }
-    .btn-card-secondary { background: transparent; color: var(--text-secondary); border: 1px solid #e5e7eb; }
-    .btn-card-secondary:hover { border-color: var(--text-main); color: var(--text-main); }
+    .projects-container-flex {
+        display: flex; gap: 60px; align-items: center; width: 100%;
+    }
 
-    /* Essay Card specific tweaks */
-    .article-card::before { display: none; } /* Remove side bar */
-    .article-icon { font-size: 2rem; color: var(--text-secondary); transition: 0.3s; }
-    .article-card:hover .article-icon { color: var(--accent); }
-    .article-link { margin-top: 15px; font-weight: 600; color: var(--accent); display: inline-flex; align-items: center; gap: 5px; }
+    .projects-intro-text { flex: 1; max-width: 400px; }
+    .projects-intro-text h2 { font-size: 2.5rem; margin-bottom: 20px; }
+    .github-link { color: var(--accent); font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 15px; }
+    .github-link:hover { text-decoration: underline; }
+
+    .projects-carousel-wrapper { flex: 2; position: relative; display: flex; align-items: center; }
+    .carousel-track-box { overflow-x: auto; scroll-behavior: smooth; width: 100%; padding: 20px 0; }
+    .carousel-track-box::-webkit-scrollbar { height: 0; } 
+    
+    .carousel-track-flex { display: flex; gap: 30px; }
+
+    .project-card-interactive {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        min-width: 380px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    .project-card-interactive:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        border-color: var(--accent);
+    }
+
+    .pc-image-box { width: 100%; height: 220px; overflow: hidden; }
+    .pc-image-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; filter: brightness(0.95); }
+    .project-card-interactive:hover .pc-image-box img { transform: scale(1.05); filter: brightness(1.05); }
+
+    .pc-content { padding: 24px; }
+    .pc-content h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 12px; }
+    
+    .pc-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+    .pc-tag { font-size: 0.75rem; background: #f3f4f6; color: #4b5563; padding: 5px 12px; border-radius: 100px; font-weight: 600; text-transform: uppercase; }
+
+    .nav-arrow {
+        background: #fff; border: 1px solid #e5e7eb;
+        color: var(--text-main); width: 44px; height: 44px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.2rem; cursor: pointer; z-index: 10; transition: 0.3s;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        position: absolute;
+    }
+    .nav-arrow:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .nav-arrow.prev { left: -22px; }
+    .nav-arrow.next { right: -22px; }
+
+    /* ESSAY CARDS (Standard) */
+    .article-card { background: #fff; border-radius: 12px; border: 1px solid #e5e7eb; padding: 24px; transition: 0.3s; }
+    .article-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.06); }
+    .article-icon { font-size: 28px; margin-bottom: 15px; color: var(--accent); }
+    .article-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    .article-desc { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 15px; }
+    .article-link { font-size: 0.9rem; font-weight: 600; color: var(--accent); display: flex; align-items: center; gap: 5px; text-decoration: none; }
 
     /* LANGUAGES */
     .lang-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
@@ -301,6 +302,14 @@
     .btn-big-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(79, 70, 229, 0.5); }
     .btn-big-outline { padding: 16px 36px; border-radius: 12px; font-weight: 700; font-size: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; display: flex; align-items: center; gap: 10px; transition: 0.3s; text-decoration: none; }
     .btn-big-outline:hover { background: rgba(255,255,255,0.1); transform: translateY(-3px); }
+
+    /* PHILOSOPHY */
+    .philosophy-banner { margin: 80px 0; padding: 40px; border-left: 4px solid var(--accent); background: linear-gradient(90deg, rgba(79, 70, 229, 0.05) 0%, transparent 100%); font-size: 1.4rem; font-style: italic; color: var(--text-secondary); line-height: 1.6; opacity: 0; transform: translateY(20px); transition: 0.8s var(--ease-out); }
+    .philosophy-banner.visible { opacity: 1; transform: translateY(0); }
+    .philosophy-banner span { font-weight: 600; color: var(--text-main); }
+
+    /* GRID FOR ESSAYS */
+    .article-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
 
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
@@ -335,9 +344,12 @@
       .contact-title { font-size: 1.8rem; }
       .about-grid { grid-template-columns: 1fr; gap: 40px; text-align: center; }
       .about-text h2 { font-size: 2rem; }
+      .focus-card { text-align: left; }
       #about { padding: 40px 20px; height: auto; min-height: auto; }
-      .about-animation-container { height: 300px; order: -1; }
       .logo-grid { grid-template-columns: repeat(3, 1fr); }
+      
+      .projects-container-flex { flex-direction: column; gap: 30px; }
+      .nav-arrow { display: none; }
     }
   </style>
 </head>
@@ -569,56 +581,85 @@
           </div>
         </section>
 
-        <section id="portfolio" class="reveal">
-          <h2><i class="ph ph-code" style="color:var(--accent)"></i> Technical Projects</h2>
-          <div class="project-grid">
-            
-            <div class="project-card">
-              <div class="project-header">
-                <div class="project-icon">⚽</div>
-                <h3>Ligue 1 Match Prediction</h3>
-              </div>
-              <p>
-                A pedagogical machine learning project predicting football match outcomes. 
-                Focuses on the mathematical foundations (Linear Algebra, Probability) behind the algorithms rather than just using high-level libraries.
-              </p>
-              <div class="project-tags">
-                <span class="pt-tag">Python</span>
-                <span class="pt-tag">Pandas</span>
-                <span class="pt-tag">Scikit-learn</span>
-                <span class="pt-tag">Maths</span>
-              </div>
-              <div class="project-links">
-                <a href="assets/docs/french_league_predictions_sami_bennane.pdf" target="_blank" class="btn-card btn-card-primary">
-                  <i class="ph ph-file-pdf"></i> Report
+        <section id="portfolio" class="projects-section-interactive reveal">
+          <div class="projects-container-flex">
+            <div class="projects-intro-text">
+                <a href="https://github.com/samibennane" target="_blank" class="github-link">
+                    See more on my GitHub page here <i class="ph ph-arrow-right"></i>
                 </a>
-                <a href="assets/docs/ligue1.py" target="_blank" class="btn-card btn-card-secondary">
-                  <i class="ph ph-code"></i> Python
-                </a>
-              </div>
+                <h2>My Projects</h2>
+                <p style="color:#64748b; line-height:1.6;">
+                    Here are some projects I made during my studies or personal projects that reflect my skills and the types of challenges I enjoy solving.
+                </p>
             </div>
 
-            <div class="project-card" style="transition-delay: 0.1s;">
-              <div class="project-header">
-                <div class="project-icon">🔊</div>
-                <h3>Acoustic Transduction</h3>
-              </div>
-              <p>
-                Design and analysis of an analog signal chain for sound capture.
-                Validation of the acquisition chain through Fast Fourier Transform (FFT) analysis.
-              </p>
-              <div class="project-tags">
-                <span class="pt-tag">Analog Electronics</span>
-                <span class="pt-tag">Signal Processing</span>
-                <span class="pt-tag">Bode Plot</span>
-              </div>
-              <div class="project-links">
-                <a href="assets/docs/pcp.pdf" target="_blank" class="btn-card btn-card-primary">
-                  <i class="ph ph-file-pdf"></i> View Project
-                </a>
-              </div>
-            </div>
+            <div class="projects-carousel-wrapper">
+                <button class="nav-arrow prev" onclick="scrollCarousel(-400)"><i class="ph ph-caret-left"></i></button>
+                
+                <div class="carousel-track-box" id="projectTrack">
+                    <div class="carousel-track-flex">
+                        
+                        <div class="project-card-interactive">
+                            <div class="pc-image-box">
+                                <img src="assets/images/ligue1.png" alt="Ligue 1 Project">
+                            </div>
+                            <div class="pc-content">
+                                <h3>Ligue 1 Match Prediction</h3>
+                                <p style="font-size:0.9rem; color:#6b7280; margin-bottom:10px;">
+                                    ML project predicting football outcomes using mathematical foundations rather than just libraries.
+                                </p>
+                                <div class="pc-tags">
+                                    <span class="pc-tag">PYTHON</span>
+                                    <span class="pc-tag">PANDAS</span>
+                                    <span class="pc-tag">MATHS</span>
+                                </div>
+                                <div style="margin-top:20px;">
+                                    <a href="assets/docs/french_league_predictions_sami_bennane.pdf" target="_blank" style="color:var(--accent); font-weight:600; font-size:0.9rem;">View Report <i class="ph ph-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
 
+                        <div class="project-card-interactive">
+                            <div class="pc-image-box">
+                                <img src="assets/images/pcp.png" alt="Acoustic Project">
+                            </div>
+                            <div class="pc-content">
+                                <h3>Acoustic Transduction</h3>
+                                <p style="font-size:0.9rem; color:#6b7280; margin-bottom:10px;">
+                                    Analog signal chain design for sound capture & FFT validation.
+                                </p>
+                                <div class="pc-tags">
+                                    <span class="pc-tag">ANALOG</span>
+                                    <span class="pc-tag">SIGNAL PROC</span>
+                                    <span class="pc-tag">BODE</span>
+                                </div>
+                                <div style="margin-top:20px;">
+                                    <a href="assets/docs/pcp.pdf" target="_blank" style="color:var(--accent); font-weight:600; font-size:0.9rem;">View Project <i class="ph ph-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="project-card-interactive">
+                            <div class="pc-image-box" style="background:#f3f4f6; display:flex; align-items:center; justify-content:center;">
+                                <i class="ph ph-code" style="font-size:3rem; color:#cbd5e1;"></i>
+                            </div>
+                            <div class="pc-content">
+                                <h3>Upcoming Project</h3>
+                                <p style="font-size:0.9rem; color:#6b7280; margin-bottom:10px;">
+                                    Currently working on advanced embedded security protocols.
+                                </p>
+                                <div class="pc-tags">
+                                    <span class="pc-tag">C++</span>
+                                    <span class="pc-tag">STM32</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <button class="nav-arrow next" onclick="scrollCarousel(400)"><i class="ph ph-caret-right"></i></button>
+            </div>
           </div>
         </section>
 
@@ -702,6 +743,12 @@
       }
     });
 
+    // CAROUSEL SCROLL FUNCTION
+    function scrollCarousel(offset) {
+        const track = document.getElementById('projectTrack');
+        track.scrollBy({ left: offset, behavior: 'smooth' });
+    }
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -717,8 +764,8 @@
       });
     }, { threshold: 0.15 });
 
-    // IMPORTANT: observe .skills-block
-    document.querySelectorAll('.reveal, .timeline-item, .project-card, .lang-item, .split-image-container, .article-card, .philosophy-banner, .skills-block, .logo-item').forEach(el => observer.observe(el));
+    // IMPORTANT: observe new classes
+    document.querySelectorAll('.reveal, .timeline-item, .project-card, .lang-item, .split-image-container, .article-card, .philosophy-banner, .skills-block, .logo-item, .projects-section-interactive').forEach(el => observer.observe(el));
 
     const sections = document.querySelectorAll("section");
     const navLinks = document.querySelectorAll(".nav-link");
@@ -735,7 +782,7 @@
 
     // --- HERO NEURAL NETWORK ANIMATION SCRIPT ---
     (function() {
-      const canvas = document.getElementById('hero-canvas'); // Correct ID
+      const canvas = document.getElementById('hero-canvas'); 
       if(!canvas) return;
       const ctx = canvas.getContext('2d');
       let width, height;
