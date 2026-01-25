@@ -427,6 +427,7 @@
         transform: none; 
         opacity: 1; 
       }
+      .next-dest-card { opacity: 1 !important; transform: none !important; }
       
       .philosophy-banner { font-size: 1.1rem; padding: 20px; }
       .contact-title { font-size: 1.8rem; }
@@ -910,7 +911,7 @@
     }, { threshold: 0.15 });
 
     // IMPORTANT: observe new classes
-    document.querySelectorAll('.reveal, .timeline-item, .project-card, .lang-item, .split-image-container, .article-card, .philosophy-banner, .skills-block, .logo-item, .projects-section-interactive').forEach(el => observer.observe(el));
+    document.querySelectorAll('.reveal, .timeline-item, .project-card, .lang-item, .split-image-container, .article-card, .philosophy-banner, .skills-block, .logo-item, .projects-section-interactive, .next-dest-card').forEach(el => observer.observe(el));
 
     const sections = document.querySelectorAll("section");
     const navLinks = document.querySelectorAll(".nav-link");
