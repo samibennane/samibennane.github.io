@@ -212,12 +212,30 @@
     /* TIMELINE & SPLIT (UPDATED EDUCATION LAYOUT) */
     .split-layout { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 50px; align-items: start; }
     
-    /* Image Mines St Etienne (Right Column) */
-    .split-image-container { position: sticky; top: 100px; height: 600px; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); opacity: 0; transform: translateX(30px); transition: 0.8s var(--ease-out); }
-    .split-image-container.visible { opacity: 1; transform: translateX(0); }
-    .split-image-container img { width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 0.6s; }
-    .split-image-container:hover img { transform: scale(1.05); }
+    /* Right column for visuals (Stacked) */
+    .education-right-column {
+      display: flex; flex-direction: column; gap: 30px;
+      position: sticky; top: 100px;
+    }
 
+    .school-image {
+      width: 100%; height: 220px; border-radius: 20px; overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05);
+      transition: transform 0.3s;
+    }
+    
+    /* FIX: object-position lowered to 25% */
+    .school-image img { 
+        width: 100%; height: 100%; 
+        object-fit: cover; 
+        object-position: 50% 25%; /* Lowered a bit to frame face better */
+    }
+    .school-image:hover { transform: scale(1.02); }
+
+    .split-image-container { position: sticky; top: 100px; height: 400px; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); opacity: 0; transform: translateX(30px); transition: 0.8s var(--ease-out); }
+    .split-image-container.visible { opacity: 1; transform: translateX(0); }
+    .split-image-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+    .split-image-container:hover img { transform: scale(1.05); }
     .timeline { position: relative; padding-left: 20px; }
     .timeline::before { content: ''; position: absolute; left: 0; top: 10px; bottom: 0; width: 2px; background: var(--timeline-line); border-radius: 2px; }
     .timeline-item { position: relative; padding-left: 40px; margin-bottom: 50px; opacity: 0; transform: translateY(20px); transition: 0.6s; }
@@ -711,6 +729,27 @@
                       
                       <div class="project-card-interactive">
                           <div class="pc-image-box">
+                              <img src="assets/images/rnnvscnn.png" alt="RNN vs CNN">
+                          </div>
+                          <div class="pc-content">
+                              <h3>RNN vs CNN for Image Classification</h3>
+                              <p style="font-size:0.9rem; color:#6b7280; margin-bottom:10px;">
+                                  A comparative study evaluating the performance of Recurrent Neural Networks (RNNs) versus Convolutional Neural Networks (CNNs) on image data. Analyzes accuracy, training behavior, and computational efficiency to highlight architectural strengths.
+                              </p>
+                              <div class="pc-tags">
+                                  <span class="pc-tag">Deep Learning</span>
+                                  <span class="pc-tag">Python</span>
+                                  <span class="pc-tag">Computer Vision</span>
+                              </div>
+                              <div class="pc-links">
+                                  <a href="assets/docs/README.txt" target="_blank" class="btn-small highlight">Readme</a>
+                                  <a href="assets/docs/RNN vs CNN.ipynb" target="_blank" class="btn-small">Notebook</a>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="project-card-interactive">
+                          <div class="pc-image-box">
                               <img src="assets/images/ligue1.png" alt="Ligue 1 Match Prediction">
                           </div>
                           <div class="pc-content">
@@ -921,7 +960,7 @@
     }, { threshold: 0.15 });
 
     // IMPORTANT: observe new classes
-    document.querySelectorAll('.reveal, .timeline-item, .project-card, .lang-item, .split-image-container, .article-card, .philosophy-banner, .skills-block, .logo-item, .projects-section-interactive, .exchange-banner').forEach(el => observer.observe(el));
+    document.querySelectorAll('.reveal, .timeline-item, .project-card, .lang-item, .split-image-container, .article-card, .philosophy-banner, .skills-block, .logo-item, .projects-section-interactive, .next-dest-card, .education-right-column').forEach(el => observer.observe(el));
 
     const sections = document.querySelectorAll("section");
     const navLinks = document.querySelectorAll(".nav-link");
