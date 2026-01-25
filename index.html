@@ -223,11 +223,12 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05);
       transition: transform 0.3s;
     }
-    /* FIX: object-position to show head */
+    
+    /* FIX: object-position lowered to 25% */
     .school-image img { 
         width: 100%; height: 100%; 
         object-fit: cover; 
-        object-position: 50% 15%; /* Focus on top part */
+        object-position: 50% 25%; /* Lowered a bit to frame face better */
     }
     .school-image:hover { transform: scale(1.02); }
 
