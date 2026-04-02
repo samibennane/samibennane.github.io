@@ -478,85 +478,102 @@
     .gh-link {
       font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
       color: var(--gold); display: inline-flex; align-items: center; gap: 8px;
-      border-bottom: 1px solid var(--gold-dim);
-      padding-bottom: 4px;
+      border-bottom: 1px solid var(--gold-dim); padding-bottom: 4px;
       transition: border-color 0.3s;
     }
     .gh-link:hover { border-color: var(--gold); }
 
-    .carousel-wrap {
-      position: relative; overflow: hidden;
-    }
-    .carousel-track {
-      display: flex; gap: 2px;
-      overflow-x: auto; scroll-snap-type: x mandatory;
-      scrollbar-width: none;
-      padding-bottom: 2px;
-    }
-    .carousel-track::-webkit-scrollbar { display: none; }
+    /* ── PROJECT LIST — Editorial hover-reveal ── */
+    .project-list { width: 100%; }
 
-    .project-card {
-      min-width: 380px; flex-shrink: 0;
-      scroll-snap-align: start;
-      border: 1px solid var(--border);
-      overflow: hidden;
-      transition: border-color 0.4s;
-      cursor: pointer;
-      position: relative;
+    .project-row {
+      display: grid;
+      grid-template-columns: 70px 1fr 180px;
+      align-items: center; gap: 40px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+      position: relative; cursor: pointer; overflow: hidden;
     }
-    .project-card:hover { border-color: rgba(201,169,110,0.3); }
-    .project-card-img {
-      width: 100%; height: 230px; object-fit: cover;
-      filter: grayscale(30%) brightness(0.85);
-      transition: filter 0.5s, transform 0.6s var(--ease-expo);
+    .project-row:first-child { border-top: 1px solid var(--border); }
+
+    .project-row::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, var(--gold-dim) 0%, transparent 70%);
+      transform: translateX(-101%);
+      transition: transform 0.65s var(--ease-expo);
+      z-index: 0;
     }
-    .project-card:hover .project-card-img {
-      filter: grayscale(0%) brightness(1);
-      transform: scale(1.04);
+    .project-row:hover::before { transform: translateX(0); }
+    .project-row > * { position: relative; z-index: 1; }
+
+    .pr-num {
+      font-family: var(--serif); font-style: italic;
+      font-size: 2rem; color: rgba(255,255,255,0.05);
+      line-height: 1; font-weight: 700;
+      transition: color 0.4s;
+      user-select: none;
     }
-    .project-card-img-wrap { overflow: hidden; height: 230px; }
-    .project-card-body { padding: 28px 28px 32px; background: var(--surface); }
-    .project-num {
-      font-family: var(--serif); font-size: 0.7rem; font-style: italic;
-      color: var(--grey-mid); margin-bottom: 10px;
-    }
-    .project-title {
-      font-family: var(--serif); font-size: 1.2rem;
+    .project-row:hover .pr-num { color: rgba(201,169,110,0.2); }
+
+    .pr-title {
+      font-family: var(--serif); font-size: clamp(1.05rem, 1.8vw, 1.4rem);
       font-weight: 400; color: var(--white);
-      margin-bottom: 12px; line-height: 1.3;
+      margin-bottom: 10px; line-height: 1.25;
+      transition: color 0.3s;
     }
-    .project-desc {
-      font-size: 0.82rem; color: var(--grey); line-height: 1.7;
-      font-weight: 300; margin-bottom: 20px;
-    }
-    .project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
-    .project-tag {
-      font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--grey-mid); border: 1px solid var(--border);
-      padding: 4px 10px;
-    }
-    .project-links { display: flex; gap: 10px; flex-wrap: wrap; }
-    .project-link {
-      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--white); border-bottom: 1px solid var(--border);
-      padding-bottom: 2px;
-      display: inline-flex; align-items: center; gap: 5px;
-      transition: color 0.3s, border-color 0.3s;
-    }
-    .project-link:hover { color: var(--gold); border-color: var(--gold); }
-    .project-link.primary { color: var(--gold); border-color: var(--gold-dim); }
+    .project-row:hover .pr-title { color: var(--gold); }
 
-    .carousel-controls {
-      display: flex; gap: 8px; margin-top: 30px; justify-content: flex-end;
+    .pr-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 0; }
+    .pr-tag {
+      font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--grey-mid); border: 1px solid var(--border); padding: 3px 9px;
+      transition: border-color 0.3s, color 0.3s;
     }
-    .carousel-btn {
-      width: 44px; height: 44px; border: 1px solid var(--border);
-      background: transparent; color: var(--grey);
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-      font-size: 18px;
-      transition: border-color 0.3s, color 0.3s, background 0.3s;
+    .project-row:hover .pr-tag { border-color: rgba(201,169,110,0.25); color: var(--grey); }
+
+    .pr-desc {
+      font-size: 0.8rem; color: var(--grey); line-height: 1.65; font-weight: 300;
+      margin-top: 10px; max-height: 0; overflow: hidden;
+      transition: max-height 0.55s var(--ease-expo), opacity 0.4s;
+      opacity: 0;
     }
-    .carousel-btn:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+    .project-row:hover .pr-desc { max-height: 100px; opacity: 1; }
+
+    .pr-links {
+      display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap;
+      opacity: 0; transform: translateY(8px);
+      transition: opacity 0.4s 0.15s, transform 0.45s var(--ease-expo) 0.15s;
+    }
+    .project-row:hover .pr-links { opacity: 1; transform: translateY(0); }
+
+    .pr-link {
+      font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--gold); border: 1px solid var(--gold-dim); padding: 5px 13px;
+      display: inline-flex; align-items: center; gap: 5px;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .pr-link:hover { background: var(--gold-dim); border-color: var(--gold); }
+    .pr-link.sec { color: var(--grey); border-color: var(--border); }
+    .pr-link.sec:hover { color: var(--white); border-color: rgba(255,255,255,0.18); background: rgba(255,255,255,0.04); }
+
+    /* Floating image preview */
+    .pr-img-wrap {
+      width: 180px; height: 110px; overflow: hidden;
+      border: 1px solid var(--border); flex-shrink: 0;
+      opacity: 0; transform: scale(0.88) translateY(10px);
+      transition: opacity 0.55s var(--ease-expo), transform 0.55s var(--ease-expo), border-color 0.3s;
+    }
+    .project-row:hover .pr-img-wrap {
+      opacity: 1; transform: scale(1) translateY(0);
+      border-color: rgba(201,169,110,0.3);
+    }
+    .pr-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: grayscale(15%);
+      transition: transform 0.7s var(--ease-expo);
+    }
+    .project-row:hover .pr-img-wrap img { transform: scale(1.08); }
 
     /* ─── QUOTE DIVIDER ─── */
     .quote-divider {
@@ -1067,114 +1084,108 @@
       </div>
     </div>
 
-    <div class="carousel-wrap reveal-fade" style="transition-delay:0.2s">
-      <div class="carousel-track" id="projectTrack">
+    <div class="project-list reveal-fade" style="transition-delay:0.15s">
 
-        <div class="project-card">
-          <div class="project-card-img-wrap">
-            <img src="assets/images/rnnvscnn.png" alt="RNN vs CNN" class="project-card-img">
+      <div class="project-row">
+        <div class="pr-num">01</div>
+        <div class="pr-main">
+          <h3 class="pr-title">RNN vs CNN for Image Classification</h3>
+          <div class="pr-tags">
+            <span class="pr-tag">Deep Learning</span>
+            <span class="pr-tag">Python</span>
+            <span class="pr-tag">Computer Vision</span>
           </div>
-          <div class="project-card-body">
-            <div class="project-num">Project 01</div>
-            <h3 class="project-title">RNN vs CNN for Image Classification</h3>
-            <p class="project-desc">Comparative study evaluating RNNs versus CNNs on image data — accuracy, training behavior, and computational efficiency.</p>
-            <div class="project-tags">
-              <span class="project-tag">Deep Learning</span>
-              <span class="project-tag">Python</span>
-              <span class="project-tag">Computer Vision</span>
-            </div>
-            <div class="project-links">
-              <a href="assets/docs/README.txt" target="_blank" class="project-link primary">Readme <i class="ph ph-arrow-up-right"></i></a>
-              <a href="assets/docs/RNN vs CNN.ipynb" target="_blank" class="project-link">Notebook</a>
-            </div>
+          <p class="pr-desc">Comparative study evaluating RNNs versus CNNs on image data — accuracy, training behavior, and computational efficiency.</p>
+          <div class="pr-links">
+            <a href="assets/docs/README.txt" target="_blank" class="pr-link">Readme <i class="ph ph-arrow-up-right"></i></a>
+            <a href="assets/docs/RNN vs CNN.ipynb" target="_blank" class="pr-link sec">Notebook</a>
           </div>
         </div>
-
-        <div class="project-card">
-          <div class="project-card-img-wrap">
-            <img src="assets/images/ligue1.png" alt="Ligue 1 Match Prediction" class="project-card-img">
-          </div>
-          <div class="project-card-body">
-            <div class="project-num">Project 02</div>
-            <h3 class="project-title">Ligue 1 Match Prediction</h3>
-            <p class="project-desc">ML project predicting football outcomes using mathematical foundations rather than just libraries.</p>
-            <div class="project-tags">
-              <span class="project-tag">Python</span>
-              <span class="project-tag">Pandas</span>
-              <span class="project-tag">Mathematics</span>
-            </div>
-            <div class="project-links">
-              <a href="assets/docs/french_league_predictions_sami_bennane.pdf" target="_blank" class="project-link primary">Report <i class="ph ph-arrow-up-right"></i></a>
-              <a href="assets/docs/ligue1.py" target="_blank" class="project-link">Python</a>
-              <a href="assets/docs/l1c.csv" target="_blank" class="project-link">Dataset</a>
-            </div>
-          </div>
+        <div class="pr-img-wrap">
+          <img src="assets/images/rnnvscnn.png" alt="RNN vs CNN">
         </div>
-
-        <div class="project-card">
-          <div class="project-card-img-wrap">
-            <img src="assets/images/pcp.png" alt="Acoustic Transduction" class="project-card-img">
-          </div>
-          <div class="project-card-body">
-            <div class="project-num">Project 03</div>
-            <h3 class="project-title">Acoustic Transduction</h3>
-            <p class="project-desc">Analog signal chain design for sound capture &amp; FFT validation. Bode analysis and frequency response characterisation.</p>
-            <div class="project-tags">
-              <span class="project-tag">Analog</span>
-              <span class="project-tag">Signal Processing</span>
-              <span class="project-tag">Bode</span>
-            </div>
-            <div class="project-links">
-              <a href="assets/docs/pcp.pdf" target="_blank" class="project-link primary">View Project <i class="ph ph-arrow-up-right"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <div class="project-card-img-wrap">
-            <img src="assets/images/ascon.png" alt="Ascon-128 Cryptography" class="project-card-img">
-          </div>
-          <div class="project-card-body">
-            <div class="project-num">Project 04</div>
-            <h3 class="project-title">Ascon-128 Cryptography</h3>
-            <p class="project-desc">Hardware implementation of lightweight encryption (AEAD128) on FPGA using SystemVerilog &amp; ModelSim.</p>
-            <div class="project-tags">
-              <span class="project-tag">SystemVerilog</span>
-              <span class="project-tag">ModelSim</span>
-              <span class="project-tag">Crypto</span>
-            </div>
-            <div class="project-links">
-              <a href="assets/docs/sami_bennane_rapport_pcsn.pdf" target="_blank" class="project-link primary">View Report <i class="ph ph-arrow-up-right"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <div class="project-card-img-wrap">
-            <img src="assets/images/robot.png" alt="Autonomous STM32 Robot" class="project-card-img">
-          </div>
-          <div class="project-card-body">
-            <div class="project-num">Project 05</div>
-            <h3 class="project-title">Autonomous STM32 Robot</h3>
-            <p class="project-desc">Autonomous mobile robot with obstacle detection (IR), PID speed control, and state machine architecture.</p>
-            <div class="project-tags">
-              <span class="project-tag">C</span>
-              <span class="project-tag">STM32</span>
-              <span class="project-tag">HAL</span>
-              <span class="project-tag">PID</span>
-            </div>
-            <div class="project-links">
-              <a href="assets/docs/robot.pdf" target="_blank" class="project-link primary">Report <i class="ph ph-arrow-up-right"></i></a>
-              <a href="assets/docs/robot.c" target="_blank" class="project-link">C Code</a>
-            </div>
-          </div>
-        </div>
-
       </div>
-    </div>
-    <div class="carousel-controls">
-      <button class="carousel-btn" onclick="scrollCarousel(-400)"><i class="ph ph-caret-left"></i></button>
-      <button class="carousel-btn" onclick="scrollCarousel(400)"><i class="ph ph-caret-right"></i></button>
+
+      <div class="project-row">
+        <div class="pr-num">02</div>
+        <div class="pr-main">
+          <h3 class="pr-title">Ligue 1 Match Prediction</h3>
+          <div class="pr-tags">
+            <span class="pr-tag">Python</span>
+            <span class="pr-tag">Pandas</span>
+            <span class="pr-tag">Mathematics</span>
+          </div>
+          <p class="pr-desc">ML project predicting football outcomes using mathematical foundations rather than just libraries.</p>
+          <div class="pr-links">
+            <a href="assets/docs/french_league_predictions_sami_bennane.pdf" target="_blank" class="pr-link">Report <i class="ph ph-arrow-up-right"></i></a>
+            <a href="assets/docs/ligue1.py" target="_blank" class="pr-link sec">Python</a>
+            <a href="assets/docs/l1c.csv" target="_blank" class="pr-link sec">Dataset</a>
+          </div>
+        </div>
+        <div class="pr-img-wrap">
+          <img src="assets/images/ligue1.png" alt="Ligue 1">
+        </div>
+      </div>
+
+      <div class="project-row">
+        <div class="pr-num">03</div>
+        <div class="pr-main">
+          <h3 class="pr-title">Acoustic Transduction</h3>
+          <div class="pr-tags">
+            <span class="pr-tag">Analog</span>
+            <span class="pr-tag">Signal Processing</span>
+            <span class="pr-tag">Bode</span>
+          </div>
+          <p class="pr-desc">Analog signal chain design for sound capture &amp; FFT validation. Bode analysis and frequency response characterisation.</p>
+          <div class="pr-links">
+            <a href="assets/docs/pcp.pdf" target="_blank" class="pr-link">View Project <i class="ph ph-arrow-up-right"></i></a>
+          </div>
+        </div>
+        <div class="pr-img-wrap">
+          <img src="assets/images/pcp.png" alt="Acoustic Transduction">
+        </div>
+      </div>
+
+      <div class="project-row">
+        <div class="pr-num">04</div>
+        <div class="pr-main">
+          <h3 class="pr-title">Ascon-128 Cryptography</h3>
+          <div class="pr-tags">
+            <span class="pr-tag">SystemVerilog</span>
+            <span class="pr-tag">ModelSim</span>
+            <span class="pr-tag">Crypto</span>
+          </div>
+          <p class="pr-desc">Hardware implementation of lightweight encryption (AEAD128) on FPGA using SystemVerilog.</p>
+          <div class="pr-links">
+            <a href="assets/docs/sami_bennane_rapport_pcsn.pdf" target="_blank" class="pr-link">View Report <i class="ph ph-arrow-up-right"></i></a>
+          </div>
+        </div>
+        <div class="pr-img-wrap">
+          <img src="assets/images/ascon.png" alt="Ascon-128">
+        </div>
+      </div>
+
+      <div class="project-row">
+        <div class="pr-num">05</div>
+        <div class="pr-main">
+          <h3 class="pr-title">Autonomous STM32 Robot</h3>
+          <div class="pr-tags">
+            <span class="pr-tag">C</span>
+            <span class="pr-tag">STM32</span>
+            <span class="pr-tag">HAL</span>
+            <span class="pr-tag">PID</span>
+          </div>
+          <p class="pr-desc">Autonomous mobile robot with obstacle detection (IR), PID speed control, and state machine architecture.</p>
+          <div class="pr-links">
+            <a href="assets/docs/robot.pdf" target="_blank" class="pr-link">Report <i class="ph ph-arrow-up-right"></i></a>
+            <a href="assets/docs/robot.c" target="_blank" class="pr-link sec">C Code</a>
+          </div>
+        </div>
+        <div class="pr-img-wrap">
+          <img src="assets/images/robot.png" alt="STM32 Robot">
+        </div>
+      </div>
+
     </div>
   </section>
 
