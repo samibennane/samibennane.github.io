@@ -7,1127 +7,1541 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
   <link rel="icon" type="image/png" sizes="32x32" href="assets/images/b3n.png">
   <link rel="apple-touch-icon" href="assets/images/b3n.png">
 
   <style>
+    /* ─── RESET & ROOT ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      /* Sidebar Colors */
-      --sidebar-text: #ffffff;
-      
-      /* Main Colors */
-      --main-bg: #ffffff;
-      --hero-bg: #020617;
-      
-      --text-main: #111827;
-      --text-secondary: #4b5563;
-      --text-muted: #9ca3af;
-      
-      /* Accents */
-      --accent: #4f46e5;
-      --tech-cyan: #06b6d4;
-      --tech-purple: #8b5cf6;
-      --timeline-line: #e5e7eb;
-
-      /* Dimensions */
-      --sidebar-width: 280px;
-      --container-width: 1000px;
-      
-      /* Transitions */
-      --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
-      --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
-      --transition-speed: 0.4s;
+      --bg:        #0a0a0a;
+      --surface:   #111111;
+      --border:    rgba(255,255,255,0.07);
+      --gold:      #c9a96e;
+      --gold-dim:  rgba(201,169,110,0.12);
+      --white:     #f5f0e8;
+      --grey:      #888580;
+      --grey-mid:  #555250;
+      --serif:     'Playfair Display', Georgia, serif;
+      --sans:      'DM Sans', system-ui, sans-serif;
+      --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-circ: cubic-bezier(0.85, 0, 0.15, 1);
     }
 
-    body.collapsed { --sidebar-width: 88px; }
+    html { scroll-behavior: auto; }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    
     body {
-      font-family: 'Inter', sans-serif;
-      background-color: var(--main-bg);
-      color: var(--text-main);
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--white);
       line-height: 1.6;
-      display: flex;
-      min-height: 100vh;
       overflow-x: hidden;
+      cursor: none;
     }
 
-    a { text-decoration: none; color: inherit; transition: 0.3s var(--ease-out); }
+    a { text-decoration: none; color: inherit; }
     ul { list-style: none; }
+    img { display: block; }
 
-    /* === SIDEBAR === */
-    .sidebar {
+    /* ─── CUSTOM CURSOR ─── */
+    #cursor-dot, #cursor-ring {
+      position: fixed; pointer-events: none; z-index: 9999; border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+    #cursor-dot {
+      width: 6px; height: 6px;
+      background: var(--gold);
+      transition: transform 0.1s;
+    }
+    #cursor-ring {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(201,169,110,0.5);
+      transition: width 0.3s var(--ease-expo), height 0.3s var(--ease-expo),
+                  border-color 0.3s, background 0.3s;
+    }
+    body:has(a:hover) #cursor-ring,
+    body:has(button:hover) #cursor-ring {
+      width: 52px; height: 52px;
+      border-color: var(--gold);
+      background: var(--gold-dim);
+    }
+
+    /* ─── LOADING SCREEN ─── */
+    #loader {
+      position: fixed; inset: 0; z-index: 10000;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 24px;
+    }
+    .loader-name {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--white);
+      opacity: 0;
+    }
+    .loader-bar-track {
+      width: 200px; height: 1px;
+      background: var(--border);
+    }
+    .loader-bar-fill {
+      height: 100%; width: 0%; background: var(--gold);
+      transition: width 1.8s var(--ease-expo);
+    }
+    .loader-num {
+      font-size: 0.75rem; letter-spacing: 0.2em;
+      color: var(--grey); font-weight: 300;
+    }
+
+    /* ─── SIDEBAR NAV ─── */
+    .nav-sidebar {
       position: fixed; top: 0; left: 0; bottom: 0;
-      width: var(--sidebar-width);
-      background: rgba(15, 23, 42, 0.95); 
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-right: 1px solid rgba(255, 255, 255, 0.08);
-      color: var(--sidebar-text);
+      width: 72px;
       display: flex; flex-direction: column;
-      padding: 30px 20px; 
-      z-index: 2000;
-      box-shadow: 10px 0 30px rgba(0,0,0,0.2);
-      transition: width var(--transition-speed) var(--ease-out);
+      align-items: center; justify-content: center;
+      padding: 40px 0;
+      z-index: 1000;
+      border-right: 1px solid var(--border);
+      gap: 8px;
+    }
+    .nav-logo {
+      position: absolute; top: 30px;
+      font-family: var(--serif); font-size: 1rem;
+      color: var(--gold); letter-spacing: 0.05em;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+    }
+    .nav-link {
+      display: flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; border-radius: 50%;
+      color: var(--grey-mid); font-size: 18px;
+      transition: color 0.3s, background 0.3s;
+      position: relative;
+    }
+    .nav-link::after {
+      content: attr(data-label);
+      position: absolute; left: 60px;
+      font-family: var(--sans); font-size: 0.7rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--gold); white-space: nowrap;
+      opacity: 0; transform: translateX(-6px);
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+    }
+    .nav-link:hover::after { opacity: 1; transform: translateX(0); }
+    .nav-link:hover, .nav-link.active { color: var(--gold); }
+    .nav-link.active { background: var(--gold-dim); }
+    .nav-social {
+      position: absolute; bottom: 30px;
+      display: flex; flex-direction: column; gap: 14px; align-items: center;
+    }
+    .nav-social a {
+      color: var(--grey-mid); font-size: 16px;
+      transition: color 0.3s;
+    }
+    .nav-social a:hover { color: var(--gold); }
+
+    /* ─── MAIN CONTENT ─── */
+    main { margin-left: 72px; }
+
+    /* ─── HERO ─── */
+    .hero {
+      height: 100vh; position: relative;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center; overflow: hidden;
+    }
+    .hero-left {
+      padding: 0 60px 0 80px;
+      display: flex; flex-direction: column; gap: 0;
+      z-index: 2;
+    }
+    .hero-eyebrow {
+      font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--gold); font-weight: 400;
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 28px;
+    }
+    .hero-eyebrow::before {
+      content: ''; width: 40px; height: 1px; background: var(--gold);
+    }
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(3.5rem, 6vw, 5.5rem);
+      font-weight: 400; line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+    .hero-name em {
+      font-style: italic; color: var(--gold);
+      display: block;
+    }
+    .hero-role {
+      font-size: 0.85rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--grey); font-weight: 300;
+      margin-bottom: 40px;
+    }
+    .hero-desc {
+      font-size: 1rem; color: var(--grey);
+      line-height: 1.8; max-width: 420px;
+      font-weight: 300;
+      margin-bottom: 48px;
+    }
+    .hero-btns {
+      display: flex; gap: 16px; flex-wrap: wrap;
+    }
+    .btn-gold {
+      padding: 13px 30px;
+      background: var(--gold); color: var(--bg);
+      font-family: var(--sans); font-size: 0.75rem;
+      font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+      border: none; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: opacity 0.3s, transform 0.3s var(--ease-expo);
+    }
+    .btn-gold:hover { opacity: 0.85; transform: translateY(-2px); }
+    .btn-outline {
+      padding: 12px 30px;
+      background: transparent; color: var(--white);
+      border: 1px solid var(--border);
+      font-family: var(--sans); font-size: 0.75rem;
+      font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: border-color 0.3s, color 0.3s, transform 0.3s var(--ease-expo);
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+    .hero-right {
+      position: relative; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-img-wrap {
+      position: relative; width: 65%; aspect-ratio: 3/4;
       overflow: hidden;
     }
-
-    .sidebar-toggle {
-      position: absolute; top: 20px; right: 20px;
-      background: transparent; border: none;
-      color: rgba(255,255,255,0.5); cursor: pointer;
-      font-size: 24px; transition: 0.3s; z-index: 10;
+    .hero-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover;
+      object-position: 50% 20%;
+      filter: grayscale(20%) contrast(1.05);
+      transition: transform 8s ease;
     }
-    .sidebar-toggle:hover { color: #fff; transform: scale(1.1); }
-    body.collapsed .sidebar-toggle { right: 50%; transform: translateX(50%); }
-
-    .brand {
-      display: flex; flex-direction: column; align-items: center; 
-      gap: 15px; margin-top: 40px; margin-bottom: 40px; text-align: center;
-      transition: all var(--transition-speed);
+    .hero-img-wrap:hover img { transform: scale(1.04); }
+    /* Gold frame accent */
+    .hero-img-wrap::before {
+      content: '';
+      position: absolute; top: -12px; right: -12px;
+      width: 60%; height: 60%;
+      border-top: 1px solid var(--gold);
+      border-right: 1px solid var(--gold);
+      z-index: 3; pointer-events: none;
+      opacity: 0.4;
     }
-    .brand-logo { 
-      width: 90px; height: 90px; border-radius: 50%; object-fit: cover; padding: 3px;
-      background: linear-gradient(135deg, var(--tech-cyan), var(--tech-purple)); 
-      box-shadow: 0 0 25px rgba(79, 70, 229, 0.3); transition: all var(--transition-speed);
+    .hero-img-wrap::after {
+      content: '';
+      position: absolute; bottom: -12px; left: -12px;
+      width: 60%; height: 60%;
+      border-bottom: 1px solid var(--gold);
+      border-left: 1px solid var(--gold);
+      z-index: 3; pointer-events: none;
+      opacity: 0.4;
     }
-    .brand-name { 
-      font-weight: 800; font-size: 1.4rem; letter-spacing: -0.5px; 
-      background: linear-gradient(to right, #fff, #94a3b8); -webkit-background-clip: text; color: transparent;
-      transition: opacity 0.2s; white-space: nowrap;
+    .hero-counter {
+      position: absolute; bottom: 40px; right: 40px;
+      display: flex; flex-direction: column; gap: 4px;
+      text-align: right;
     }
-    body.collapsed .brand-logo { width: 50px; height: 50px; margin-bottom: 10px; }
-    body.collapsed .brand-name { opacity: 0; pointer-events: none; position: absolute; }
-
-    .nav { display: flex; flex-direction: column; gap: 8px; flex: 1; }
-    .nav-link {
-      display: flex; align-items: center; gap: 16px; padding: 12px 20px;
-      color: #94a3b8; border-radius: 12px; font-weight: 500; font-size: 0.95rem; 
-      transition: all 0.3s ease; white-space: nowrap;
+    .hero-counter-num {
+      font-family: var(--serif); font-size: 3.5rem;
+      color: rgba(255,255,255,0.04); line-height: 1;
+      font-weight: 700;
     }
-    .nav-link:hover { background: rgba(255,255,255,0.03); color: #fff; border-color: rgba(255,255,255,0.05); transform: translateX(5px); }
-    .nav-link i { font-size: 24px; transition: 0.3s; color: #64748b; flex-shrink: 0; }
-    .nav-link:hover i { color: var(--tech-cyan); transform: scale(1.1); text-shadow: 0 0 10px var(--tech-cyan); }
-    .nav-link.active { background: linear-gradient(90deg, rgba(79, 70, 229, 0.15) 0%, transparent 100%); color: #fff; font-weight: 600; border-left: 3px solid var(--accent); border-radius: 4px 12px 12px 4px; }
-    .nav-link.active i { color: var(--accent); }
-    
-    body.collapsed .nav-link { justify-content: center; padding: 14px 0; }
-    body.collapsed .nav-link span { opacity: 0; width: 0; display: none; }
-    body.collapsed .nav-link:hover { transform: none; background: rgba(255,255,255,0.1); }
+    .hero-stat {
+      font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--grey-mid);
+    }
+    .hero-scroll-hint {
+      position: absolute; bottom: 40px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: var(--grey-mid); font-size: 0.65rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+    }
+    .scroll-line {
+      width: 1px; height: 50px;
+      background: linear-gradient(to bottom, var(--grey-mid), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(0.6); }
+    }
 
-    .sidebar-footer { margin-top: 20px; font-size: 0.75rem; color: rgba(255,255,255,0.2); text-align: center; white-space: nowrap; transition: opacity 0.3s; }
-    body.collapsed .sidebar-footer { opacity: 0; }
+    /* ─── SECTION COMMONS ─── */
+    .section { padding: 140px 80px 140px 80px; position: relative; }
+    .section + .section { border-top: 1px solid var(--border); }
 
-    /* === MAIN === */
-    main { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); padding: 0; display: flex; flex-direction: column; transition: margin-left var(--transition-speed) var(--ease-out), width var(--transition-speed) var(--ease-out); }
+    .section-label {
+      font-size: 0.65rem; letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--gold); font-weight: 400;
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 70px;
+    }
+    .section-label::before {
+      content: attr(data-num);
+      font-family: var(--serif); font-size: 0.9rem;
+      color: var(--grey-mid); font-style: italic;
+    }
 
-    /* HERO */
-    .hero-section { position: relative; height: 100vh; width: 100%; background-color: var(--hero-bg); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; overflow: hidden; color: #fff; }
-    .hero-bg-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px); background-size: 50px 50px; mask-image: radial-gradient(circle at center, black 30%, transparent 80%); z-index: 1; animation: pulseGrid 10s infinite alternate; }
-    
-    /* CANVAS NEURAL NET (HERO) */
-    #hero-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      font-weight: 400; line-height: 1.1;
+      margin-bottom: 28px;
+    }
+    .section-title em { font-style: italic; color: var(--gold); }
 
-    .geo-globe { position: absolute; width: 600px; height: 600px; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; opacity: 0.15; z-index: 0; perspective: 1000px; pointer-events: none; animation: globeEnter 2.5s var(--ease-smooth) forwards; }
-    .globe-ring { position: absolute; border: 1px solid var(--tech-cyan); border-radius: 50%; top: 0; left: 0; right: 0; bottom: 0; box-shadow: 0 0 30px rgba(6, 182, 212, 0.2); }
-    .ring-1 { animation: rotate1 20s linear infinite; }
-    .ring-2 { width: 80%; height: 80%; top: 10%; left: 10%; animation: rotate2 25s linear infinite reverse; border-color: var(--accent); }
-    .ring-3 { width: 60%; height: 60%; top: 20%; left: 20%; animation: rotate1 30s linear infinite; border-style: dashed; }
-    .ring-4 { width: 120%; height: 40%; top: 30%; left: -10%; border-color: rgba(255,255,255,0.1); transform: rotate(-45deg); }
-
-    .hero-content { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 20px; }
-    .hero-avatar { width: 180px; height: 180px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.2); padding: 4px; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); margin-bottom: 20px; opacity: 0; animation: zoomIn 1s 1s forwards; transition: transform 0.3s; }
-    .hero-avatar:hover { transform: scale(1.05); border-color: var(--tech-cyan); box-shadow: 0 0 30px rgba(6, 182, 212, 0.3); }
-    .hero-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-    .hero-title { font-size: clamp(48px, 6vw, 72px); font-weight: 800; letter-spacing: -2px; background: linear-gradient(135deg, #fff 30%, #94a3b8 100%); -webkit-background-clip: text; color: transparent; margin: 0; text-shadow: 0 10px 30px rgba(0,0,0,0.5); opacity: 0; animation: fadeInUp 1s 1.2s forwards; }
-    .hero-subtitle { font-size: 1.25rem; color: #cbd5e1; font-weight: 300; max-width: 600px; opacity: 0; animation: fadeInUp 1s 1.4s forwards; }
-    
-    .hero-btns { margin-top: 30px; display: flex; gap: 16px; opacity: 0; animation: fadeInUp 1s 1.6s forwards; }
-    .btn-hero { padding: 14px 32px; border-radius: 100px; font-weight: 600; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; align-items: center; gap: 8px; cursor: pointer; }
-    .btn-white { background: #fff; color: #000; }
-    .btn-white:hover { box-shadow: 0 0 25px rgba(255,255,255,0.5); transform: translateY(-3px) scale(1.02); }
-    .btn-trans { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
-    .btn-trans:hover { background: rgba(255,255,255,0.2); border-color: #fff; transform: translateY(-3px); }
-
-    /* CONTENT WRAPPER */
-    .content-wrapper { padding: 100px 60px; background: var(--main-bg); position: relative; }
-    .container { max-width: var(--container-width); margin: 0 auto; }
-    section { margin-bottom: 120px; scroll-margin-top: 100px; }
-    h2 { font-size: 28px; font-weight: 700; margin-bottom: 40px; color: var(--text-main); display: flex; align-items: center; gap: 12px; }
-    h2::after { content: ""; flex: 1; height: 1px; background: var(--timeline-line); max-width: 200px; }
-
-    /* === FULL-SCREEN ABOUT SECTION (WITH ANIMATION) === */
-    #about {
-      min-height: 100vh; /* Prend toute la hauteur de l'écran */
+    /* ─── ABOUT ─── */
+    #about .about-grid {
+      display: grid; grid-template-columns: 1fr 1.1fr;
+      gap: 100px; align-items: start;
+    }
+    .about-body {
+      font-size: 1.05rem; color: rgba(245,240,232,0.6);
+      line-height: 1.9; font-weight: 300;
+    }
+    .about-body p + p { margin-top: 22px; }
+    .about-body strong { color: var(--white); font-weight: 500; }
+    .about-highlight { color: var(--gold); font-weight: 400; }
+    .about-right { position: relative; }
+    .about-img {
+      width: 100%; aspect-ratio: 4/5;
+      object-fit: cover; object-position: 50% 20%;
+      filter: grayscale(30%);
+    }
+    .about-canvas-wrap {
+      position: absolute; inset: 0;
       display: flex; align-items: center; justify-content: center;
-      position: relative; padding: 0 60px; overflow: hidden;
-      margin-bottom: 0;
-      background: linear-gradient(to bottom right, #ffffff, #f8fafc);
+    }
+    #nexus-canvas { width: 100%; height: 100%; opacity: 0.7; }
+
+    /* ─── SKILLS ─── */
+    #skills .skills-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .skill-cat {
+      background: var(--bg); padding: 50px 40px;
+      transition: background 0.4s;
+    }
+    .skill-cat:hover { background: var(--surface); }
+    .skill-cat-title {
+      font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gold); font-weight: 400;
+      margin-bottom: 30px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .skill-cat-title::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+    .logo-grid { display: flex; flex-direction: column; gap: 20px; }
+    .logo-item {
+      display: flex; align-items: center; gap: 16px;
+      transition: transform 0.3s var(--ease-expo);
+    }
+    .logo-item:hover { transform: translateX(6px); }
+    .logo-item img {
+      width: 36px; height: 36px; object-fit: contain;
+      filter: grayscale(60%) brightness(0.8);
+      transition: filter 0.3s;
+    }
+    .logo-item:hover img { filter: grayscale(0%) brightness(1); }
+    .logo-name {
+      font-size: 0.9rem; color: var(--grey); font-weight: 300;
+      transition: color 0.3s;
+    }
+    .logo-item:hover .logo-name { color: var(--white); }
+
+    /* ─── EDUCATION ─── */
+    #education .edu-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+      align-items: start;
+    }
+    .timeline { position: relative; }
+    .timeline::before {
+      content: ''; position: absolute;
+      left: 0; top: 8px; bottom: 0;
+      width: 1px; background: var(--border);
+    }
+    .timeline-item {
+      padding-left: 36px; padding-bottom: 60px;
+      position: relative;
+    }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-dot {
+      position: absolute; left: -4px; top: 8px;
+      width: 9px; height: 9px; border-radius: 50%;
+      border: 1px solid var(--gold);
+      background: var(--bg);
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .timeline-item:hover .timeline-dot {
+      background: var(--gold);
+      box-shadow: 0 0 16px rgba(201,169,110,0.5);
+    }
+    .t-date {
+      font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold); font-weight: 400; margin-bottom: 10px;
+      display: block;
+    }
+    .t-title {
+      font-family: var(--serif); font-size: 1.3rem; font-weight: 400;
+      color: var(--white); margin-bottom: 4px; line-height: 1.3;
+    }
+    .t-company {
+      font-size: 0.85rem; color: var(--grey); font-weight: 300;
+      margin-bottom: 14px; letter-spacing: 0.04em;
+    }
+    .t-desc { font-size: 0.9rem; color: rgba(245,240,232,0.5); line-height: 1.7; font-weight: 300; }
+
+    .edu-right { display: flex; flex-direction: column; gap: 30px; }
+    .school-img-card {
+      overflow: hidden; border: 1px solid var(--border);
+      position: relative;
+    }
+    .school-img-card img {
+      width: 100%; height: 240px; object-fit: cover;
+      object-position: 50% 25%;
+      filter: grayscale(40%);
+      transition: filter 0.6s, transform 0.6s;
+    }
+    .school-img-card:hover img { filter: grayscale(0%); transform: scale(1.04); }
+    .exchange-card {
+      border: 1px solid var(--border); padding: 32px;
+      position: relative; overflow: hidden;
+      transition: border-color 0.4s;
+    }
+    .exchange-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, var(--gold-dim) 0%, transparent 60%);
+      opacity: 0; transition: opacity 0.4s;
+    }
+    .exchange-card:hover { border-color: var(--gold); }
+    .exchange-card:hover::before { opacity: 1; }
+    .exchange-badge {
+      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold); background: var(--gold-dim);
+      padding: 5px 12px; display: inline-block;
+      margin-bottom: 14px;
+    }
+    .exchange-title {
+      font-family: var(--serif); font-size: 1.5rem;
+      font-weight: 400; margin-bottom: 8px;
+    }
+    .exchange-desc { font-size: 0.85rem; color: var(--grey); line-height: 1.7; font-weight: 300; }
+    .exchange-logo {
+      position: absolute; bottom: 20px; right: 20px;
+      width: 60px; opacity: 0.4;
+      filter: grayscale(100%) brightness(2);
     }
 
-    .about-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
-      position: relative; z-index: 2; max-width: 1100px; width: 100%; align-items: center;
+    /* ─── EXPERIENCE / VOLUNTEERING ─── */
+    #experience .exp-layout,
+    #volunteering .vol-layout {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: start;
     }
-
-    .about-text h2 {
-      font-size: 3rem; margin-bottom: 30px;
-      background: linear-gradient(to right, #111827, #4f46e5);
-      -webkit-background-clip: text; color: transparent; line-height: 1.2;
-    }
-    .about-text p { font-size: 1.1rem; color: #374151; margin-bottom: 20px; line-height: 1.7; }
-    .about-highlight { color: var(--accent); font-weight: 600; }
-
-    /* CONTAINER ANIMATION ABOUT (NEXUS) */
-    .about-animation-container {
-        position: relative; width: 100%; height: 450px;
-        display: flex; justify-content: center; align-items: center;
-        background: radial-gradient(circle at center, rgba(79, 70, 229, 0.05) 0%, transparent 60%);
-        border-radius: 50%;
-    }
-    #nexus-canvas { width: 100%; height: 100%; }
-
-    /* === SKILLS (CLEAN STACK LAYOUT) === */
-    .skills-block { margin-bottom: 60px; opacity: 0; transform: translateY(20px); transition: 0.6s; }
-    .skills-block.visible { opacity: 1; transform: translateY(0); }
-    .skills-category-header { font-size: 1.4rem; font-weight: 700; margin-bottom: 25px; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
-    .skills-intro { font-size: 1rem; color: #64748b; margin-bottom: 30px; max-width: 700px; line-height: 1.6; }
-
-    .logo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 20px; }
-    .logo-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; height: 110px; transition: all 0.3s ease; animation: floatLogo 4s ease-in-out infinite; }
-    .logo-item:nth-child(odd) { animation-delay: 0s; }
-    .logo-item:nth-child(even) { animation-delay: 2s; }
-    .logo-item img { height: 60px; width: auto; max-width: 100%; object-fit: contain; filter: grayscale(10%); transition: transform 0.3s, filter 0.3s; }
-    .logo-name { font-size: 0.9rem; font-weight: 600; color: #6b7280; transition: color 0.3s; }
-    .logo-item:hover img { transform: scale(1.15); filter: grayscale(0%); }
-    .logo-item:hover .logo-name { color: var(--accent); }
-    @keyframes floatLogo { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-5px); } }
-
-    /* TIMELINE & SPLIT (UPDATED EDUCATION LAYOUT) */
-    .split-layout { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 50px; align-items: start; }
-    
-    /* Right column for visuals (Stacked) */
-    .education-right-column {
-      display: flex; flex-direction: column; gap: 30px;
+    .exp-img {
+      width: 100%; aspect-ratio: 4/3;
+      object-fit: cover; border: 1px solid var(--border);
+      filter: grayscale(50%);
+      transition: filter 0.5s;
       position: sticky; top: 100px;
     }
+    .exp-img:hover { filter: grayscale(0%); }
 
-    .school-image {
-      width: 100%; height: 220px; border-radius: 20px; overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05);
-      transition: transform 0.3s;
+    /* ─── PROJECTS ─── */
+    #portfolio .projects-intro {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; margin-bottom: 80px; align-items: end;
     }
-    
-    /* FIX: object-position lowered to 25% */
-    .school-image img { 
-        width: 100%; height: 100%; 
-        object-fit: cover; 
-        object-position: 50% 25%; /* Lowered a bit to frame face better */
+    .projects-intro p {
+      font-size: 0.9rem; color: var(--grey);
+      line-height: 1.8; font-weight: 300;
     }
-    .school-image:hover { transform: scale(1.02); }
-
-    .split-image-container { position: sticky; top: 100px; height: 400px; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); opacity: 0; transform: translateX(30px); transition: 0.8s var(--ease-out); }
-    .split-image-container.visible { opacity: 1; transform: translateX(0); }
-    .split-image-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
-    .split-image-container:hover img { transform: scale(1.05); }
-    .timeline { position: relative; padding-left: 20px; }
-    .timeline::before { content: ''; position: absolute; left: 0; top: 10px; bottom: 0; width: 2px; background: var(--timeline-line); border-radius: 2px; }
-    .timeline-item { position: relative; padding-left: 40px; margin-bottom: 50px; opacity: 0; transform: translateY(20px); transition: 0.6s; }
-    .timeline-item.visible { opacity: 1; transform: translateY(0); }
-    .timeline-dot { position: absolute; left: -5px; top: 8px; width: 12px; height: 12px; background: #fff; border: 3px solid var(--accent); border-radius: 50%; z-index: 2; transition: 0.3s; }
-    .timeline-item:hover .timeline-dot { background: var(--accent); transform: scale(1.5); box-shadow: 0 0 15px var(--accent); }
-    .t-date { display: inline-block; font-size: 0.85rem; font-weight: 700; color: var(--accent); text-transform: uppercase; margin-bottom: 4px; background: rgba(79, 70, 229, 0.06); padding: 4px 10px; border-radius: 4px; }
-    .t-title { font-size: 1.25rem; font-weight: 700; color: var(--text-main); margin-bottom: 2px; }
-    .t-company { font-size: 1rem; font-weight: 500; color: #374151; margin-bottom: 8px; }
-    .t-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; }
-
-    /* === EXCHANGE BANNER (POLYTECH MONTREAL) === */
-    .exchange-banner {
-        margin-top: 60px;
-        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-        border: 1px solid #e2e8f0;
-        border-radius: 24px;
-        padding: 30px;
-        display: flex;
-        align-items: center;
-        gap: 30px;
-        box-shadow: 0 15px 30px rgba(0,0,0,0.05);
-        opacity: 0; transform: translateY(20px);
-        transition: 0.8s var(--ease-out);
-        position: relative;
-        overflow: hidden;
+    .gh-link {
+      font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--gold); display: inline-flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid var(--gold-dim);
+      padding-bottom: 4px;
+      transition: border-color 0.3s;
     }
-    .exchange-banner.visible { opacity: 1; transform: translateY(0); }
-    .exchange-banner:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(79, 70, 229, 0.1); border-color: var(--accent); }
-    
-    .eb-image { width: 100px; height: 100px; border-radius: 16px; overflow: hidden; flex-shrink: 0; background: #fff; padding: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-    .eb-image img { width: 100%; height: 100%; object-fit: contain; }
-    
-    .eb-content { flex: 1; }
-    .eb-badge {
-        display: inline-block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #fff;
-        background: var(--accent); padding: 4px 12px; border-radius: 20px; margin-bottom: 10px;
+    .gh-link:hover { border-color: var(--gold); }
+
+    .carousel-wrap {
+      position: relative; overflow: hidden;
     }
-    .eb-title { font-size: 1.3rem; font-weight: 800; color: var(--text-main); margin-bottom: 5px; }
-    .eb-desc { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 10px; }
-    .eb-stat { display: inline-flex; align-items: center; gap: 8px; color: #475569; font-weight: 600; font-size: 0.85rem; background: #f1f5f9; padding: 6px 12px; border-radius: 8px; }
-    .eb-stat i { color: #eab308; font-size: 1rem; }
+    .carousel-track {
+      display: flex; gap: 2px;
+      overflow-x: auto; scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      padding-bottom: 2px;
+    }
+    .carousel-track::-webkit-scrollbar { display: none; }
 
-    /* === NEW CAROUSEL PROJECTS SECTION (UPDATED LAYOUT - LIGHT) === */
-    .projects-section-interactive {
-        background-color: transparent; /* Light theme */
-        padding: 40px 0;
-        margin-bottom: 120px;
-        overflow: hidden;
+    .project-card {
+      min-width: 380px; flex-shrink: 0;
+      scroll-snap-align: start;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: border-color 0.4s;
+      cursor: pointer;
+      position: relative;
+    }
+    .project-card:hover { border-color: rgba(201,169,110,0.3); }
+    .project-card-img {
+      width: 100%; height: 230px; object-fit: cover;
+      filter: grayscale(30%) brightness(0.85);
+      transition: filter 0.5s, transform 0.6s var(--ease-expo);
+    }
+    .project-card:hover .project-card-img {
+      filter: grayscale(0%) brightness(1);
+      transform: scale(1.04);
+    }
+    .project-card-img-wrap { overflow: hidden; height: 230px; }
+    .project-card-body { padding: 28px 28px 32px; background: var(--surface); }
+    .project-num {
+      font-family: var(--serif); font-size: 0.7rem; font-style: italic;
+      color: var(--grey-mid); margin-bottom: 10px;
+    }
+    .project-title {
+      font-family: var(--serif); font-size: 1.2rem;
+      font-weight: 400; color: var(--white);
+      margin-bottom: 12px; line-height: 1.3;
+    }
+    .project-desc {
+      font-size: 0.82rem; color: var(--grey); line-height: 1.7;
+      font-weight: 300; margin-bottom: 20px;
+    }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+    .project-tag {
+      font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--grey-mid); border: 1px solid var(--border);
+      padding: 4px 10px;
+    }
+    .project-links { display: flex; gap: 10px; flex-wrap: wrap; }
+    .project-link {
+      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--white); border-bottom: 1px solid var(--border);
+      padding-bottom: 2px;
+      display: inline-flex; align-items: center; gap: 5px;
+      transition: color 0.3s, border-color 0.3s;
+    }
+    .project-link:hover { color: var(--gold); border-color: var(--gold); }
+    .project-link.primary { color: var(--gold); border-color: var(--gold-dim); }
+
+    .carousel-controls {
+      display: flex; gap: 8px; margin-top: 30px; justify-content: flex-end;
+    }
+    .carousel-btn {
+      width: 44px; height: 44px; border: 1px solid var(--border);
+      background: transparent; color: var(--grey);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      transition: border-color 0.3s, color 0.3s, background 0.3s;
+    }
+    .carousel-btn:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+
+    /* ─── QUOTE DIVIDER ─── */
+    .quote-divider {
+      padding: 100px 80px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .quote-text {
+      font-family: var(--serif); font-size: clamp(1.4rem, 3vw, 2.2rem);
+      font-style: italic; font-weight: 400; line-height: 1.5;
+      color: rgba(245,240,232,0.5); max-width: 900px;
+    }
+    .quote-text em { color: var(--white); font-style: italic; }
+
+    /* ─── ESSAYS ─── */
+    #essays .essays-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+      background: var(--border);
+    }
+    .essay-card {
+      background: var(--surface); padding: 48px;
+      transition: background 0.4s;
+      position: relative; overflow: hidden;
+    }
+    .essay-card::after {
+      content: '→';
+      position: absolute; bottom: 48px; right: 48px;
+      font-size: 1.2rem; color: var(--gold);
+      opacity: 0; transform: translateX(-8px);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .essay-card:hover { background: var(--bg); }
+    .essay-card:hover::after { opacity: 1; transform: translateX(0); }
+    .essay-icon { font-size: 2rem; color: var(--gold); margin-bottom: 24px; }
+    .essay-title {
+      font-family: var(--serif); font-size: 1.3rem; font-weight: 400;
+      color: var(--white); margin-bottom: 14px; line-height: 1.3;
+    }
+    .essay-desc { font-size: 0.85rem; color: var(--grey); line-height: 1.7; font-weight: 300; }
+
+    /* ─── LANGUAGES ─── */
+    #languages .lang-grid { display: flex; flex-direction: column; gap: 30px; max-width: 700px; }
+    .lang-item {}
+    .lang-header {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 10px;
+    }
+    .lang-name {
+      font-family: var(--serif); font-size: 1.1rem; font-weight: 400;
+    }
+    .lang-level { font-size: 0.75rem; color: var(--grey); font-weight: 300; letter-spacing: 0.05em; }
+    .progress-track {
+      height: 1px; background: var(--border); position: relative;
+    }
+    .progress-fill {
+      height: 1px; background: var(--gold); width: 0;
+      transition: width 1.8s var(--ease-expo);
+      position: relative;
+    }
+    .progress-fill::after {
+      content: ''; position: absolute; right: 0; top: 50%;
+      transform: translateY(-50%);
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--gold);
+    }
+    .lang-quote {
+      font-family: var(--serif); font-style: italic;
+      font-size: 1rem; color: var(--grey);
+      line-height: 1.8; max-width: 600px;
+      margin-bottom: 60px;
+    }
+    .lang-quote span { color: var(--gold); }
+
+    /* ─── IMAGE FEATURE ─── */
+    .img-feature {
+      padding: 0 80px 140px;
+      display: flex; justify-content: center;
+    }
+    .img-feature-inner {
+      position: relative; max-width: 480px; width: 100%;
+    }
+    .img-feature-inner img {
+      width: 100%; height: 560px;
+      object-fit: cover; object-position: 50% 20%;
+      filter: grayscale(30%);
+    }
+    .img-feature-caption {
+      position: absolute; bottom: -20px; right: -20px;
+      background: var(--gold); color: var(--bg);
+      padding: 12px 20px;
+      font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+      font-weight: 500;
     }
 
-    /* Header Centered above Carousel */
-    .projects-header-centered {
-        text-align: left;
-        max-width: 800px;
-        margin-bottom: 40px;
+    /* ─── CONTACT ─── */
+    #contact .contact-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: start;
     }
-    .projects-header-centered h2 { margin-bottom: 15px; }
-    .projects-header-centered p { font-size: 1rem; color: #64748b; line-height: 1.6; }
-    .projects-header-centered .gh-link { color: var(--accent); font-weight: 600; text-decoration: none; margin-top: 10px; display: inline-block; }
-    .projects-header-centered .gh-link:hover { text-decoration: underline; }
-
-    .projects-carousel-wrapper { position: relative; display: flex; align-items: center; }
-    .carousel-track-box { overflow-x: auto; scroll-behavior: smooth; width: 100%; padding: 20px 5px; }
-    .carousel-track-box::-webkit-scrollbar { height: 0; } 
-    
-    .carousel-track-flex { display: flex; gap: 30px; }
-
-    .project-card-interactive {
-        background: #fff;
-        border: 1px solid #e5e7eb;
-        border-radius: 16px;
-        min-width: 380px;
-        overflow: hidden;
-        transition: all 0.3s ease;
-        position: relative;
+    .contact-cta-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 400; line-height: 1.1;
+      margin-bottom: 28px;
     }
-    .project-card-interactive:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-        border-color: var(--accent);
+    .contact-cta-title em { font-style: italic; color: var(--gold); }
+    .contact-cta-body {
+      font-size: 0.95rem; color: var(--grey);
+      line-height: 1.8; font-weight: 300;
+    }
+    .contact-items { display: flex; flex-direction: column; gap: 28px; }
+    .contact-item {
+      display: flex; align-items: flex-start; gap: 20px;
+      border-bottom: 1px solid var(--border); padding-bottom: 28px;
+    }
+    .contact-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .contact-icon {
+      width: 44px; height: 44px;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold); font-size: 18px; flex-shrink: 0;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .contact-item:hover .contact-icon {
+      background: var(--gold-dim); border-color: var(--gold);
+    }
+    .contact-label {
+      font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--grey-mid); margin-bottom: 5px;
+    }
+    .contact-value {
+      font-size: 1rem; font-weight: 300; color: var(--white);
+      transition: color 0.3s;
+    }
+    .contact-value.link { cursor: pointer; }
+    .contact-value.link:hover { color: var(--gold); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 80px;
+      display: flex; justify-content: space-between; align-items: center;
+      margin-left: 0;
+    }
+    .footer-name {
+      font-family: var(--serif); font-size: 1rem; color: var(--grey);
+      font-style: italic;
+    }
+    .footer-copy {
+      font-size: 0.7rem; letter-spacing: 0.12em;
+      color: var(--grey-mid); text-transform: uppercase;
     }
 
-    .pc-image-box { width: 100%; height: 220px; overflow: hidden; }
-    .pc-image-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; filter: brightness(0.95); }
-    .project-card-interactive:hover .pc-image-box img { transform: scale(1.05); filter: brightness(1.05); }
+    /* ─── REVEAL CLASSES ─── */
+    .reveal-fade { opacity: 0; transform: translateY(30px); }
+    .reveal-left { opacity: 0; transform: translateX(-40px); }
+    .reveal-right { opacity: 0; transform: translateX(40px); }
+    .reveal-scale { opacity: 0; transform: scale(0.95); }
 
-    .pc-content { padding: 24px; }
-    .pc-content h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 12px; color: var(--text-main); }
-    
-    .pc-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; margin-bottom: 20px; }
-    .pc-tag { font-size: 0.75rem; background: #f3f4f6; color: #4b5563; padding: 5px 12px; border-radius: 100px; font-weight: 600; text-transform: uppercase; }
-
-    /* Links area */
-    .pc-links { display: flex; gap: 10px; flex-wrap: wrap; }
-    .btn-small { 
-        padding: 8px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; text-decoration: none; 
-        display: inline-flex; align-items: center; gap: 5px; transition: 0.2s;
-        border: 1px solid #e5e7eb; background: #fff; color: var(--text-secondary);
-    }
-    .btn-small:hover { background: var(--text-main); color: #fff; border-color: var(--text-main); }
-    .btn-small.highlight { background: rgba(79, 70, 229, 0.1); color: var(--accent); border-color: transparent; }
-    .btn-small.highlight:hover { background: var(--accent); color: #fff; }
-
-    .nav-arrow {
-        background: #fff; border: 1px solid #e5e7eb;
-        color: var(--text-main); width: 44px; height: 44px; border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 1.2rem; cursor: pointer; z-index: 10; transition: 0.3s;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        position: absolute;
-    }
-    .nav-arrow:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
-    .nav-arrow.prev { left: -22px; }
-    .nav-arrow.next { right: -22px; }
-
-    /* ESSAY CARDS (Standard) */
-    .article-card { background: #fff; border-radius: 12px; border: 1px solid #e5e7eb; padding: 24px; transition: 0.3s; }
-    .article-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.06); }
-    .article-icon { font-size: 28px; margin-bottom: 15px; color: var(--accent); }
-    .article-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
-    .article-desc { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 15px; }
-    .article-link { font-size: 0.9rem; font-weight: 600; color: var(--accent); display: flex; align-items: center; gap: 5px; text-decoration: none; }
-
-    /* LANGUAGES */
-    .lang-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-    .lang-item { display: flex; flex-direction: column; gap: 6px; opacity: 0; transform: translateY(20px); transition: 0.6s; }
-    .lang-item.visible { opacity: 1; transform: translateY(0); }
-    .lang-header { display: flex; justify-content: space-between; font-weight: 600; font-size: 0.95rem; }
-    .lang-level { color: var(--text-muted); font-size: 0.85rem; font-weight: 400; }
-    .progress-track { width: 100%; height: 8px; background: #e2e8f0; border-radius: 10px; overflow: hidden; }
-    .progress-fill { height: 100%; background: var(--accent); border-radius: 10px; width: 0; transition: width 1.5s cubic-bezier(0.65, 0, 0.35, 1); }
-    .lang-quote { margin-bottom: 40px; margin-top: -10px; font-style: italic; color: var(--text-secondary); font-size: 1rem; line-height: 1.6; max-width: 800px; }
-    .lang-quote span { color: var(--accent); font-weight: 600; }
-
-    /* PHILOSOPHY */
-    .philosophy-banner { margin: 80px 0; padding: 40px; border-left: 4px solid var(--accent); background: linear-gradient(90deg, rgba(79, 70, 229, 0.05) 0%, transparent 100%); font-size: 1.4rem; font-style: italic; color: var(--text-secondary); line-height: 1.6; opacity: 0; transform: translateY(20px); transition: 0.8s var(--ease-out); }
-    .philosophy-banner.visible { opacity: 1; transform: translateY(0); }
-    .philosophy-banner span { font-weight: 600; color: var(--text-main); }
-    .article-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
-
-    /* === NEW MODERN CONTACT (NO BOX - CLEAN GRID) === */
-    .contact-clean-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
-      align-items: center; margin-bottom: 80px;
-    }
-    
-    .contact-cta h3 { font-size: 2.5rem; margin-bottom: 20px; line-height: 1.1; background: linear-gradient(to right, #111827, #4f46e5); -webkit-background-clip: text; color: transparent; }
-    .contact-cta p { font-size: 1.1rem; color: #64748b; margin-bottom: 0; max-width: 450px; }
-
-    .contact-info-list {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 30px;
-    }
-    
-    .ci-item { display: flex; align-items: center; gap: 15px; }
-    .ci-icon { width: 50px; height: 50px; background: rgba(79, 70, 229, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 24px; flex-shrink: 0; }
-    
-    .ci-text { display: flex; flex-direction: column; overflow: hidden; }
-    .ci-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #9ca3af; font-weight: 600; }
-    
-    /* Force single line text */
-    .ci-value { 
-        font-size: 1rem; font-weight: 600; color: var(--text-main);
-        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-    
-    .ci-value.link { text-decoration: none; transition: color 0.2s; }
-    .ci-value.link:hover { color: var(--accent); }
-
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes zoomIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } }
-    @keyframes slideInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
-    @keyframes rotate1 { 0% { transform: rotateX(60deg) rotateZ(0deg); } 100% { transform: rotateX(60deg) rotateZ(360deg); } }
-    @keyframes rotate2 { 0% { transform: rotateY(60deg) rotateZ(0deg); } 100% { transform: rotateY(60deg) rotateZ(360deg); } }
-    @keyframes pulseGrid { 0% { opacity: 0.5; } 100% { opacity: 1; } }
-    @keyframes floatWidget { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-    @keyframes equalize { 0%, 100% { height: 40%; } 50% { height: 100%; } }
-    @keyframes blinkText { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-    @keyframes globeEnter { 0% { opacity: 0; transform: translate(30vw, 30vh) scale(0.4); } 100% { opacity: 0.15; transform: translate(-50%, -50%) scale(1); } }
-    .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s var(--ease-out); }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* Mobile */
+    /* ─── MOBILE ─── */
     @media (max-width: 900px) {
-      .sidebar { width: 100%; height: auto; top: auto; bottom: 0; flex-direction: row; justify-content: space-between; padding: 10px 20px; }
-      .brand, .sidebar-footer { display: none; }
-      .sidebar-toggle { display: none; } 
-      .nav { flex-direction: row; width: 100%; justify-content: space-between; animation: none; opacity: 1; }
-      .nav-link { flex-direction: column; padding: 6px; font-size: 10px; gap: 4px; }
-      main { margin-left: 0; width: 100%; }
-      .content-wrapper { padding: 60px 20px 120px; }
-      .hero-title { font-size: 36px; }
-      .geo-globe { width: 300px; height: 300px; }
-      .tech-widget { display: none; }
-      
-      /* Split layout fixes for mobile */
-      .split-layout { grid-template-columns: 1fr; gap: 40px; }
-      
-      /* Force visible images stacked below timeline */
-      .split-image-container, .education-right-column { 
-        display: block !important; 
-        position: relative; 
-        top: auto; 
-        height: auto; 
-        width: 100%; 
-        margin-top: 20px; 
-        transform: none; 
-        opacity: 1; 
+      main { margin-left: 0; }
+      .nav-sidebar { display: none; }
+
+      /* Mobile bottom nav */
+      .mobile-nav {
+        position: fixed; bottom: 0; left: 0; right: 0;
+        background: rgba(10,10,10,0.95);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid var(--border);
+        display: flex; justify-content: space-around;
+        padding: 12px 0; z-index: 1000;
       }
-      .split-image-container { height: 250px; }
-      
-      /* Exchange Banner on Mobile */
-      .exchange-banner { flex-direction: column; text-align: center; gap: 15px; }
-      .eb-content { text-align: center; }
-      
-      .philosophy-banner { font-size: 1.1rem; padding: 20px; }
-      .contact-title { font-size: 1.8rem; }
-      .about-grid { grid-template-columns: 1fr; gap: 40px; text-align: center; }
-      .about-text h2 { font-size: 2rem; }
-      #about { padding: 40px 20px; height: auto; min-height: auto; }
-      .about-animation-container { height: 300px; order: -1; }
-      .logo-grid { grid-template-columns: repeat(3, 1fr); }
-      
-      .projects-container-flex { flex-direction: column; gap: 30px; }
-      .nav-arrow { display: none; }
-      
-      /* Contact Mobile */
-      .contact-clean-grid { grid-template-columns: 1fr; gap: 40px; }
-      .contact-info-list { grid-template-columns: 1fr; }
+      .mobile-nav a {
+        display: flex; flex-direction: column; align-items: center;
+        gap: 4px; color: var(--grey-mid); font-size: 18px;
+        font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+      }
+      .mobile-nav a i { font-size: 20px; }
+      .mobile-nav a.active, .mobile-nav a:hover { color: var(--gold); }
+
+      .hero { grid-template-columns: 1fr; height: auto; padding-top: 80px; padding-bottom: 80px; }
+      .hero-left { padding: 40px 24px; }
+      .hero-right { display: none; }
+      .hero-scroll-hint { display: none; }
+      .section { padding: 80px 24px; }
+      #about .about-grid,
+      #education .edu-grid,
+      #experience .exp-layout,
+      #volunteering .vol-layout,
+      #portfolio .projects-intro,
+      #contact .contact-grid {
+        grid-template-columns: 1fr; gap: 40px;
+      }
+      #skills .skills-grid { grid-template-columns: 1fr; }
+      #essays .essays-grid { grid-template-columns: 1fr; }
+      .project-card { min-width: 300px; }
+      .quote-divider { padding: 60px 24px; }
+      .img-feature { padding: 0 24px 80px; }
+      footer { flex-direction: column; gap: 12px; padding: 30px 24px; text-align: center; }
+      #cursor-dot, #cursor-ring { display: none; }
     }
   </style>
 </head>
-
 <body>
 
-  <aside class="sidebar" id="sidebar">
-    <button class="sidebar-toggle" id="sidebarToggle"><i class="ph ph-list"></i></button>
-    <div class="brand">
-      <img src="assets/images/b3n.png" alt="B3N Logo" class="brand-logo">
-      <span class="brand-name">Sami Bennane</span>
+<!-- CUSTOM CURSOR -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-name" id="loaderName">Sami Bennane</div>
+  <div class="loader-bar-track"><div class="loader-bar-fill" id="loaderBar"></div></div>
+  <div class="loader-num" id="loaderNum">0</div>
+</div>
+
+<!-- SIDEBAR NAV -->
+<aside class="nav-sidebar">
+  <div class="nav-logo">S.B</div>
+  <nav style="display:flex;flex-direction:column;gap:8px;align-items:center;">
+    <a href="#home"        class="nav-link active" data-label="Home">        <i class="ph ph-house"></i></a>
+    <a href="#about"       class="nav-link"         data-label="About">       <i class="ph ph-user"></i></a>
+    <a href="#skills"      class="nav-link"         data-label="Skills">      <i class="ph ph-lightning"></i></a>
+    <a href="#education"   class="nav-link"         data-label="Education">   <i class="ph ph-graduation-cap"></i></a>
+    <a href="#experience"  class="nav-link"         data-label="Experience">  <i class="ph ph-briefcase"></i></a>
+    <a href="#portfolio"   class="nav-link"         data-label="Projects">    <i class="ph ph-code"></i></a>
+    <a href="#essays"      class="nav-link"         data-label="Analysis">    <i class="ph ph-article"></i></a>
+    <a href="#contact"     class="nav-link"         data-label="Contact">     <i class="ph ph-paper-plane-tilt"></i></a>
+  </nav>
+  <div class="nav-social">
+    <a href="https://www.linkedin.com/in/sami-bennane-575380320" target="_blank"><i class="ph ph-linkedin-logo"></i></a>
+    <a href="https://github.com/samibennane" target="_blank"><i class="ph ph-github-logo"></i></a>
+    <a href="mailto:sami.bennane@gmail.com"><i class="ph ph-envelope-simple"></i></a>
+  </div>
+</aside>
+
+<!-- MOBILE NAV -->
+<nav class="mobile-nav">
+  <a href="#home" class="active"><i class="ph ph-house"></i><span>Home</span></a>
+  <a href="#about"><i class="ph ph-user"></i><span>About</span></a>
+  <a href="#skills"><i class="ph ph-lightning"></i><span>Skills</span></a>
+  <a href="#portfolio"><i class="ph ph-code"></i><span>Projects</span></a>
+  <a href="#contact"><i class="ph ph-paper-plane-tilt"></i><span>Contact</span></a>
+</nav>
+
+<main>
+
+  <!-- ─── HERO ─── -->
+  <section id="home" class="hero">
+    <canvas id="hero-canvas" style="position:absolute;inset:0;pointer-events:none;z-index:1;opacity:0.25;"></canvas>
+
+    <div class="hero-left" style="position:relative;z-index:2;">
+      <div class="hero-eyebrow reveal-fade">Engineering Student · Paris</div>
+      <h1 class="hero-name reveal-fade" style="transition-delay:0.1s">
+        Sami<br><em>Bennane</em>
+      </h1>
+      <p class="hero-role reveal-fade" style="transition-delay:0.2s">AI · Embedded Systems · Innovation</p>
+      <p class="hero-desc reveal-fade" style="transition-delay:0.3s">
+        Building the bridge between hardware precision and strategic intelligence — at Mines Saint-Étienne, one of France's most selective engineering schools.
+      </p>
+      <div class="hero-btns reveal-fade" style="transition-delay:0.4s">
+        <a href="assets/docs/resume_en.pdf" download="Sami_Bennane_Resume_EN.pdf" class="btn-gold">
+          Resume (EN) <i class="ph ph-download-simple"></i>
+        </a>
+        <a href="assets/docs/resume_fr.pdf" download="Sami_Bennane_CV_FR.pdf" class="btn-outline">
+          CV (FR) <i class="ph ph-download-simple"></i>
+        </a>
+      </div>
     </div>
-    <nav class="nav">
-      <a href="#home" class="nav-link active"><i class="ph ph-house"></i><span>Home</span></a>
-      <a href="#about" class="nav-link"><i class="ph ph-user"></i><span>About</span></a>
-      <a href="#skills" class="nav-link"><i class="ph ph-lightning"></i><span>My Skills</span></a>
-      <a href="#education" class="nav-link"><i class="ph ph-graduation-cap"></i><span>Education</span></a>
-      <a href="#experience" class="nav-link"><i class="ph ph-briefcase"></i><span>Experience</span></a>
-      <a href="#volunteering" class="nav-link"><i class="ph ph-heart"></i><span>Volunteering</span></a>
-      <a href="#portfolio" class="nav-link"><i class="ph ph-code"></i><span>Projects</span></a>
-      <a href="#essays" class="nav-link"><i class="ph ph-article"></i><span>Analysis</span></a>
-      <a href="#contact" class="nav-link"><i class="ph ph-paper-plane-tilt"></i><span>Contact</span></a>
-    </nav>
-    <div class="sidebar-footer">© <span id="year"></span> Sami Bennane</div>
-  </aside>
 
-  <main>
-    
-    <section id="home" class="hero-section">
-      <div class="hero-bg-grid"></div>
-      
-      <canvas id="hero-canvas"></canvas>
-
-      <div class="geo-globe">
-        <div class="globe-ring ring-1"></div>
-        <div class="globe-ring ring-2"></div>
-        <div class="globe-ring ring-3"></div>
-        <div class="globe-ring ring-4"></div>
+    <div class="hero-right" style="z-index:2;">
+      <div class="hero-img-wrap reveal-right">
+        <img src="assets/images/photo_fei.png" alt="Sami Bennane">
       </div>
-      
-      <div class="hero-content">
-        <div class="hero-avatar"><img src="assets/images/photo_fei.png" alt="Sami Bennane"></div>
-        <h1 class="hero-title">Sami Bennane</h1>
-        <p class="hero-subtitle">Engineering Student @ Mines Saint-Étienne <br> AI • Embedded Systems • Innovation</p>
-        
-        <div class="hero-btns">
-          <a href="assets/docs/resume_en.pdf" download="Sami_Bennane_Resume_EN.pdf" class="btn-hero btn-white">
-            Resume (EN) <i class="ph ph-download-simple"></i>
-          </a>
-          <a href="assets/docs/resume_fr.pdf" download="Sami_Bennane_CV_FR.pdf" class="btn-hero btn-trans">
-            CV (FR) <i class="ph ph-download-simple"></i>
-          </a>
+      <div class="hero-counter">
+        <span class="hero-counter-num">03</span>
+        <span class="hero-stat">Years of study</span>
+      </div>
+    </div>
+
+    <div class="hero-scroll-hint">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ─── ABOUT ─── -->
+  <section id="about" class="section">
+    <div class="section-label" data-num="01">About</div>
+    <div class="about-grid">
+      <div class="about-text">
+        <h2 class="section-title reveal-fade">Bridging Hardware<br>& <em>Strategic Vision.</em></h2>
+        <div class="about-body reveal-fade" style="transition-delay:0.1s">
+          <p>I am an engineering student at <strong>Mines Saint-Étienne</strong>, bridging the gap between <span class="about-highlight">hardware reliability</span> and <span class="about-highlight">AI innovation</span>.</p>
+          <p>My technical core lies in building scalable embedded systems (STM32, IoT) and secure architectures. I believe engineering isn't just about execution — it's about understanding the world technology shapes.</p>
+          <p>Deeply invested in the <strong>geopolitics of technology</strong>, I tackle challenges related to digital sovereignty and AI ethics. My goal: design solutions that are technically flawless, strategically autonomous, and socially responsible.</p>
         </div>
       </div>
-    </section>
+      <div class="about-right reveal-right">
+        <div class="about-canvas-wrap" style="position:relative;width:100%;height:420px;">
+          <canvas id="nexus-canvas"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <div class="content-wrapper">
-      <div class="container">
+  <!-- ─── SKILLS ─── -->
+  <section id="skills" class="section">
+    <div class="section-label" data-num="02">Expertise</div>
+    <h2 class="section-title reveal-fade">Skills &amp;<br><em>Technologies.</em></h2>
+    <div class="skills-grid reveal-fade" style="margin-top:60px;transition-delay:0.2s">
 
-        <section id="about" class="reveal">
-          <div class="about-grid">
-            <div class="about-text">
-              <h2>Bridging Hardware <br> & Strategic Vision.</h2>
-              <p>I am an engineering student at <strong>Mines Saint-Étienne</strong>, bridging the gap between <span class="about-highlight">hardware reliability</span> and <span class="about-highlight">AI innovation</span>.</p>
-              <p>My technical core lies in building scalable embedded systems (STM32, IoT) and secure architectures. However, I believe engineering isn't just about execution—it's about understanding the world technology shapes.</p>
-              <p>Deeply invested in the <strong>geopolitics of technology</strong>, I tackle challenges related to digital sovereignty and AI ethics. My goal: design solutions that are technically flawless, strategically autonomous, and socially responsible.</p>
+      <div class="skill-cat">
+        <div class="skill-cat-title">Software &amp; AI</div>
+        <div class="logo-grid">
+          <div class="logo-item"><img src="assets/images/c.png" alt="C"><span class="logo-name">C</span></div>
+          <div class="logo-item"><img src="assets/images/c++.png" alt="C++"><span class="logo-name">C++</span></div>
+          <div class="logo-item"><img src="assets/images/python.png" alt="Python"><span class="logo-name">Python</span></div>
+          <div class="logo-item"><img src="assets/images/sql.png" alt="SQL"><span class="logo-name">SQL</span></div>
+          <div class="logo-item"><img src="assets/images/bash.png" alt="Bash"><span class="logo-name">Bash</span></div>
+        </div>
+      </div>
+
+      <div class="skill-cat">
+        <div class="skill-cat-title">Electronics &amp; IoT</div>
+        <div class="logo-grid">
+          <div class="logo-item"><img src="assets/images/stm32.png" alt="STM32"><span class="logo-name">STM32</span></div>
+          <div class="logo-item"><img src="assets/images/kicad.png" alt="KiCad"><span class="logo-name">KiCad</span></div>
+          <div class="logo-item"><img src="assets/images/pq.png" alt="PartQuest"><span class="logo-name">PartQuest</span></div>
+          <div class="logo-item"><img src="assets/images/arduino.png" alt="Arduino"><span class="logo-name">Arduino</span></div>
+          <div class="logo-item"><img src="assets/images/ttn.png" alt="TTN"><span class="logo-name">TTN</span></div>
+        </div>
+      </div>
+
+      <div class="skill-cat">
+        <div class="skill-cat-title">Tools &amp; Methods</div>
+        <div class="logo-grid">
+          <div class="logo-item"><img src="assets/images/tf2.png" alt="TensorFlow"><span class="logo-name">TensorFlow</span></div>
+          <div class="logo-item"><img src="assets/images/linux3.webp" alt="Linux"><span class="logo-name">Linux</span></div>
+          <div class="logo-item"><img src="assets/images/devops.png" alt="DevOps"><span class="logo-name">DevOps</span></div>
+          <div class="logo-item"><img src="assets/images/jupyter.png" alt="Jupyter"><span class="logo-name">Jupyter</span></div>
+          <div class="logo-item"><img src="assets/images/sklearn.png" alt="Scikit-Learn"><span class="logo-name">Scikit-Learn</span></div>
+          <div class="logo-item"><img src="assets/images/vscode.png" alt="VS Code"><span class="logo-name">VS Code</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── EDUCATION ─── -->
+  <section id="education" class="section">
+    <div class="section-label" data-num="03">Background</div>
+    <h2 class="section-title reveal-fade">Academic<br><em>Journey.</em></h2>
+    <div class="edu-grid" style="margin-top:60px;">
+      <div class="timeline">
+        <div class="timeline-item reveal-fade">
+          <span class="timeline-dot"></span>
+          <span class="t-date">2024 — 2027</span>
+          <div class="t-title">MSc in Engineering</div>
+          <div class="t-company">Mines Saint-Étienne</div>
+          <div class="t-desc">One of France's most prestigious Grandes Écoles (Top 5%). Major: AI, Embedded &amp; Secure Systems. Rank: Top 10% (GPA 3.8/4.0). Focus: IoT, Computer Architecture, Cryptography.</div>
+        </div>
+        <div class="timeline-item reveal-fade" style="transition-delay:0.1s">
+          <span class="timeline-dot"></span>
+          <span class="t-date">2022 — 2024</span>
+          <div class="t-title">CPGE — MPSI / PSI</div>
+          <div class="t-company">Lycée Pasteur, Neuilly-sur-Seine</div>
+          <div class="t-desc">Intensive preparatory program for French Grandes Écoles. Focus on Advanced Mathematics &amp; Physics.</div>
+        </div>
+        <div class="timeline-item reveal-fade" style="transition-delay:0.2s">
+          <span class="timeline-dot"></span>
+          <span class="t-date">2019 — 2022</span>
+          <div class="t-title">French Baccalaureate</div>
+          <div class="t-company">Lycée Lucie Aubrac</div>
+          <div class="t-desc">Scientific Track with Highest Honors (Mention Très Bien).</div>
+        </div>
+      </div>
+
+      <div class="edu-right reveal-right">
+        <div class="school-img-card">
+          <img src="assets/images/unif.jpeg" alt="Mines Saint-Étienne Campus">
+        </div>
+        <div class="exchange-card">
+          <img src="assets/images/plt.png" alt="Polytechnique Montréal Logo" class="exchange-logo">
+          <span class="exchange-badge">Next Destination</span>
+          <h3 class="exchange-title">Polytechnique Montréal</h3>
+          <p class="exchange-desc">Selected for an academic exchange specialising in <strong>Artificial Intelligence</strong> &amp; Data Science. Top 10 Shanghai Ranking 2025 (AI Domain).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── EXPERIENCE ─── -->
+  <section id="experience" class="section">
+    <div class="section-label" data-num="04">Career</div>
+    <h2 class="section-title reveal-fade">Professional<br><em>Experience.</em></h2>
+    <div class="exp-layout" style="margin-top:60px;">
+      <div class="timeline">
+        <div class="timeline-item reveal-fade">
+          <span class="timeline-dot"></span>
+          <span class="t-date">Oct 2025 — Present</span>
+          <div class="t-title">Academic Tutor</div>
+          <div class="t-company">École Sport Entreprendre</div>
+          <div class="t-desc">Math &amp; Physics tutoring for elite athletes (rugby, handball, boxing).</div>
+        </div>
+        <div class="timeline-item reveal-fade" style="transition-delay:0.1s">
+          <span class="timeline-dot"></span>
+          <span class="t-date">Jul 2025 — Aug 2025</span>
+          <div class="t-title">IT Asset Assistant</div>
+          <div class="t-company">Informatique CDC</div>
+          <div class="t-desc">Tracking of IT assets and hardware infrastructure monitoring.</div>
+        </div>
+        <div class="timeline-item reveal-fade" style="transition-delay:0.2s">
+          <span class="timeline-dot"></span>
+          <span class="t-date">Jan 2025 — Feb 2025</span>
+          <div class="t-title">Cloud Intern</div>
+          <div class="t-company">CDC Informatique</div>
+          <div class="t-desc">Data migration (Lift-and-Shift) to internal cloud infrastructure.</div>
+        </div>
+      </div>
+      <div class="reveal-right">
+        <img src="assets/images/icdc.png" alt="CDC Informatique" class="exp-img" style="filter:grayscale(40%)">
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── VOLUNTEERING ─── -->
+  <section id="volunteering" class="section">
+    <div class="section-label" data-num="05">Giving Back</div>
+    <h2 class="section-title reveal-fade">Community &amp;<br><em>Volunteering.</em></h2>
+    <div class="vol-layout" style="margin-top:60px;">
+      <div class="timeline">
+        <div class="timeline-item reveal-fade">
+          <span class="timeline-dot"></span>
+          <span class="t-date">Apr 2025 — Present</span>
+          <div class="t-title">Corporate Relations Officer</div>
+          <div class="t-company">Forum Entreprises Ingénieur</div>
+          <div class="t-desc">Outreach and relationship management with companies.</div>
+        </div>
+        <div class="timeline-item reveal-fade" style="transition-delay:0.1s">
+          <span class="timeline-dot"></span>
+          <span class="t-date">Mar 2025 — Present</span>
+          <div class="t-title">Football Team Manager</div>
+          <div class="t-company">BDS — Mines Saint-Étienne</div>
+          <div class="t-desc">Coordinating team activities and fostering cohesion.</div>
+        </div>
+        <div class="timeline-item reveal-fade" style="transition-delay:0.2s">
+          <span class="timeline-dot"></span>
+          <span class="t-date">Feb 2025 — Jun 2025</span>
+          <div class="t-title">Volunteer</div>
+          <div class="t-company">École des XV</div>
+          <div class="t-desc">Supporting students facing academic challenges in Marseille.</div>
+        </div>
+      </div>
+      <div class="reveal-right">
+        <img src="assets/images/pros.jpeg" alt="Volunteering" class="exp-img" style="filter:grayscale(40%)">
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── LANGUAGES ─── -->
+  <section id="languages" class="section">
+    <div class="section-label" data-num="06">Multilingual</div>
+    <h2 class="section-title reveal-fade">Language<br><em>Proficiency.</em></h2>
+    <p class="lang-quote reveal-fade" style="margin-top:30px;transition-delay:0.1s">
+      Language is the bridge to cultural understanding. I value <span>multilingualism</span> as a tool to broaden my horizon and connect with diverse minds.
+    </p>
+    <div class="lang-grid" id="langGrid">
+      <div class="lang-item reveal-fade">
+        <div class="lang-header"><span class="lang-name">French</span><span class="lang-level">Native</span></div>
+        <div class="progress-track"><div class="progress-fill" data-width="100"></div></div>
+      </div>
+      <div class="lang-item reveal-fade" style="transition-delay:0.07s">
+        <div class="lang-header"><span class="lang-name">English</span><span class="lang-level">Full Professional — Cambridge B2</span></div>
+        <div class="progress-track"><div class="progress-fill" data-width="90"></div></div>
+      </div>
+      <div class="lang-item reveal-fade" style="transition-delay:0.14s">
+        <div class="lang-header"><span class="lang-name">German</span><span class="lang-level">Limited Working</span></div>
+        <div class="progress-track"><div class="progress-fill" data-width="50"></div></div>
+      </div>
+      <div class="lang-item reveal-fade" style="transition-delay:0.21s">
+        <div class="lang-header"><span class="lang-name">Spanish</span><span class="lang-level">Limited Working</span></div>
+        <div class="progress-track"><div class="progress-fill" data-width="50"></div></div>
+      </div>
+      <div class="lang-item reveal-fade" style="transition-delay:0.28s">
+        <div class="lang-header"><span class="lang-name">Arabic</span><span class="lang-level">Limited Working</span></div>
+        <div class="progress-track"><div class="progress-fill" data-width="50"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PROJECTS ─── -->
+  <section id="portfolio" class="section">
+    <div class="section-label" data-num="07">Work</div>
+    <div class="projects-intro">
+      <h2 class="section-title reveal-fade">Selected<br><em>Projects.</em></h2>
+      <div class="reveal-fade" style="transition-delay:0.1s">
+        <p>A curated selection of academic and personal projects demonstrating technical expertise and a passion for solving complex challenges.</p>
+        <a href="https://github.com/samibennane" target="_blank" class="gh-link" style="margin-top:24px;">
+          View source on GitHub <i class="ph ph-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="carousel-wrap reveal-fade" style="transition-delay:0.2s">
+      <div class="carousel-track" id="projectTrack">
+
+        <div class="project-card">
+          <div class="project-card-img-wrap">
+            <img src="assets/images/rnnvscnn.png" alt="RNN vs CNN" class="project-card-img">
+          </div>
+          <div class="project-card-body">
+            <div class="project-num">Project 01</div>
+            <h3 class="project-title">RNN vs CNN for Image Classification</h3>
+            <p class="project-desc">Comparative study evaluating RNNs versus CNNs on image data — accuracy, training behavior, and computational efficiency.</p>
+            <div class="project-tags">
+              <span class="project-tag">Deep Learning</span>
+              <span class="project-tag">Python</span>
+              <span class="project-tag">Computer Vision</span>
             </div>
-            
-            <div class="about-animation-container">
-                <canvas id="nexus-canvas"></canvas>
+            <div class="project-links">
+              <a href="assets/docs/README.txt" target="_blank" class="project-link primary">Readme <i class="ph ph-arrow-up-right"></i></a>
+              <a href="assets/docs/RNN vs CNN.ipynb" target="_blank" class="project-link">Notebook</a>
             </div>
           </div>
-        </section>
-
-        <section id="skills">
-          <h2>Skills & Expertise</h2>
-
-          <div class="skills-block reveal">
-            <h3 class="skills-category-header">Software & AI</h3>
-            <p class="skills-intro">Development of robust algorithms and intelligent systems using high-performance languages and modern frameworks.</p>
-            <div class="logo-grid">
-              <div class="logo-item"><img src="assets/images/c.png" alt="C"><span class="logo-name">C</span></div>
-              <div class="logo-item"><img src="assets/images/c++.png" alt="C++"><span class="logo-name">C++</span></div>
-              <div class="logo-item"><img src="assets/images/python.png" alt="Python"><span class="logo-name">Python</span></div>
-              <div class="logo-item"><img src="assets/images/sql.png" alt="SQL"><span class="logo-name">SQL</span></div>
-              <div class="logo-item"><img src="assets/images/bash.png" alt="Bash"><span class="logo-name">Bash</span></div>
-            </div>
-          </div>
-
-          <div class="skills-block reveal" style="transition-delay: 0.1s;">
-            <h3 class="skills-category-header">Electronics & IoT</h3>
-            <p class="skills-intro">Design and programming of embedded architectures, ensuring optimal communication between hardware and software layers.</p>
-            <div class="logo-grid">
-              <div class="logo-item"><img src="assets/images/stm32.png" alt="STM32"><span class="logo-name">STM32</span></div>
-              <div class="logo-item"><img src="assets/images/kicad.png" alt="KiCad"><span class="logo-name">KiCad</span></div>
-              <div class="logo-item"><img src="assets/images/pq.png" alt="PartQuest"><span class="logo-name">PartQuest</span></div>
-              <div class="logo-item"><img src="assets/images/arduino.png" alt="Arduino"><span class="logo-name">Arduino</span></div>
-              <div class="logo-item"><img src="assets/images/ttn.png" alt="TTN"><span class="logo-name">TTN</span></div>
-            </div>
-          </div>
-
-          <div class="skills-block reveal" style="transition-delay: 0.2s;">
-            <h3 class="skills-category-header">Tools & Methods</h3>
-            <p class="skills-intro">A curated ecosystem of technologies and methodologies I leverage daily to architect scalable solutions and drive innovation.</p>
-            <div class="logo-grid">
-              <div class="logo-item"><img src="assets/images/tf2.png" alt="TensorFlow"><span class="logo-name">TensorFlow</span></div>
-              <div class="logo-item"><img src="assets/images/linux3.webp" alt="Linux"><span class="logo-name">Linux</span></div>
-              <div class="logo-item"><img src="assets/images/devops.png" alt="DevOps"><span class="logo-name">DevOps</span></div>
-              <div class="logo-item"><img src="assets/images/jupyter.png" alt="Jupyter"><span class="logo-name">Jupyter</span></div>
-              <div class="logo-item"><img src="assets/images/sklearn.png" alt="Scikit-Learn"><span class="logo-name">Scikit-Learn</span></div>
-              <div class="logo-item"><img src="assets/images/vscode.png" alt="VS Code"><span class="logo-name">VS Code</span></div>
-            </div>
-          </div>
-        </section>
-
-        <section id="education" class="reveal">
-          <h2><i class="ph ph-graduation-cap" style="color:var(--accent)"></i> Education</h2>
-          <div class="split-layout">
-            
-            <div class="timeline">
-              <div class="timeline-item">
-                <span class="timeline-dot"></span>
-                <span class="t-date">2024 - 2027</span>
-                <div class="t-title">MSc in Engineering</div>
-                <div class="t-company">Mines Saint-Étienne</div>
-                <div class="t-desc">
-                  One of the most prestigious "Grandes Écoles" in France (Top 5%), dedicated to training elite engineers and industry leaders.<br>
-                  <strong>Major:</strong> AI, Embedded & Secure Systems. <strong>Rank:</strong> Top 10% (GPA 3.8/4.0).<br>
-                  <strong>Focus:</strong> IoT, Computer Architecture, Cryptography.
-                </div>
-              </div>
-              <div class="timeline-item" style="transition-delay: 0.1s;">
-                <span class="timeline-dot"></span>
-                <span class="t-date">2022 - 2024</span>
-                <div class="t-title">CPGE - MPSI / PSI</div>
-                <div class="t-company">Lycée Pasteur (Neuilly-sur-Seine)</div>
-                <div class="t-desc">Intensive preparatory program for French "Grandes Écoles". Focus on Advanced Mathematics & Physics.</div>
-              </div>
-              <div class="timeline-item" style="transition-delay: 0.2s;">
-                <span class="timeline-dot"></span>
-                <span class="t-date">2019 - 2022</span>
-                <div class="t-title">French Baccalaureate</div>
-                <div class="t-company">Lycée Lucie Aubrac</div>
-                <div class="t-desc">Scientific Track with Highest Honors (Mention Très Bien).</div>
-              </div>
-            </div>
-            
-            <div class="split-image-container">
-               <img src="assets/images/unif.jpeg" alt="Mines Saint-Étienne Campus">
-            </div>
-
-          </div>
-
-          <div class="exchange-banner reveal">
-             <div class="eb-image">
-                <img src="assets/images/plt.png" alt="Polytechnique Montréal Logo">
-             </div>
-             <div class="eb-content">
-                <span class="eb-badge">Next Destination</span>
-                <h3 class="eb-title">Polytechnique Montréal</h3>
-                <p class="eb-desc">Selected for an academic exchange specializing in <strong>Artificial Intelligence</strong> & Data Science.</p>
-                <div class="eb-stat"><i class="ph ph-trophy"></i> Top 10 Shanghai Ranking 2025 (AI Domain)</div>
-             </div>
-          </div>
-
-        </section>
-
-        <section id="experience" class="reveal">
-          <h2><i class="ph ph-briefcase" style="color:var(--accent)"></i> Experience</h2>
-          <div class="split-layout">
-            <div class="timeline">
-              <div class="timeline-item">
-                <span class="timeline-dot"></span>
-                <span class="t-date">Oct 2025 - Present</span>
-                <div class="t-title">Academic Tutor</div>
-                <div class="t-company">ECOLE SPORT ENTREPRENDRE</div>
-                <div class="t-desc">Math & Physics tutoring for elite athletes (rugby, handball, boxing).</div>
-              </div>
-              <div class="timeline-item" style="transition-delay: 0.1s;">
-                <span class="timeline-dot"></span>
-                <span class="t-date">Jul 2025 (1 mo)</span>
-                <div class="t-title">IT Asset Assistant</div>
-                <div class="t-company">Informatique CDC</div>
-                <div class="t-desc">Tracking of IT assets and hardware infrastructure monitoring.</div>
-              </div>
-              <div class="timeline-item" style="transition-delay: 0.2s;">
-                <span class="timeline-dot"></span>
-                <span class="t-date">Jan 2025 (1 mo)</span>
-                <div class="t-title">Cloud Intern</div>
-                <div class="t-company">CDC Informatique</div>
-                <div class="t-desc">Data migration (Lift-and-Shift) to internal cloud.</div>
-              </div>
-            </div>
-            <div class="split-image-container">
-              <img src="assets/images/icdc.png" alt="Experience">
-            </div>
-          </div>
-        </section>
-
-        <section id="volunteering" class="reveal">
-          <h2><i class="ph ph-heart" style="color:var(--accent)"></i> Volunteering</h2>
-          <div class="split-layout">
-            <div class="timeline">
-              <div class="timeline-item">
-                <span class="timeline-dot"></span>
-                <span class="t-date">Apr 2025 - Present</span>
-                <div class="t-title">Corporate Relations Officer</div>
-                <div class="t-company">Forum Entreprises Ingénieur</div>
-                <div class="t-desc">Outreach and relationship management with companies.</div>
-              </div>
-              <div class="timeline-item" style="transition-delay: 0.1s;">
-                <span class="timeline-dot"></span>
-                <span class="t-date">Mar 2025 - Present</span>
-                <div class="t-title">Football Team Manager</div>
-                <div class="t-company">BDS - Mines Saint-Étienne</div>
-                <div class="t-desc">Coordinating team activities and fostering cohesion.</div>
-              </div>
-              <div class="timeline-item" style="transition-delay: 0.2s;">
-                <span class="timeline-dot"></span>
-                <span class="t-date">Feb 2025 - Jun 2025</span>
-                <div class="t-title">Volunteer</div>
-                <div class="t-company">École des XV</div>
-                <div class="t-desc">Supporting students facing academic challenges in Marseille.</div>
-              </div>
-            </div>
-            <div class="split-image-container">
-              <img src="assets/images/pros.jpeg" alt="Volunteering">
-            </div>
-          </div>
-        </section>
-
-        <section id="languages" class="reveal">
-          <h2><i class="ph ph-translate" style="color:var(--accent)"></i> Languages</h2>
-          
-          <div class="lang-quote">
-            Language is the bridge to cultural understanding. I value <span>multilingualism</span> as a tool to broaden my horizon and connect with diverse minds.
-          </div>
-
-          <div class="lang-grid">
-            <div class="lang-item"><div class="lang-header"><span>French</span><span>Native</span></div><div class="progress-track"><div class="progress-fill" style="width:100%"></div></div></div>
-            <div class="lang-item" style="transition-delay:0.1s"><div class="lang-header"><span>English</span><span>Full Professional (Cambridge B2)</span></div><div class="progress-track"><div class="progress-fill" style="width:90%"></div></div></div>
-            <div class="lang-item" style="transition-delay:0.2s"><div class="lang-header"><span>German</span><span>Limited Working</span></div><div class="progress-track"><div class="progress-fill" style="width:50%"></div></div></div>
-            <div class="lang-item" style="transition-delay:0.3s"><div class="lang-header"><span>Spanish</span><span>Limited Working</span></div><div class="progress-track"><div class="progress-fill" style="width:50%"></div></div></div>
-            <div class="lang-item" style="transition-delay:0.4s"><div class="lang-header"><span>Arabic</span><span>Limited Working</span></div><div class="progress-track"><div class="progress-fill" style="width:50%"></div></div></div>
-          </div>
-        </section>
-
-        <section id="portfolio" class="projects-section-interactive reveal">
-          
-          <div class="projects-header-centered">
-              <h2>A curated selection of academic and personal projects demonstrating my technical expertise and passion for solving complex challenges.</h2>
-              <a href="https://github.com/samibennane" target="_blank" class="gh-link">You can find the source code and technical details on my <span>GitHub</span> <i class="ph ph-arrow-right"></i></a>
-          </div>
-
-          <div class="projects-carousel-wrapper">
-              <button class="nav-arrow prev" onclick="scrollCarousel(-400)"><i class="ph ph-caret-left"></i></button>
-              
-              <div class="carousel-track-box" id="projectTrack">
-                  <div class="carousel-track-flex">
-                      
-                      <div class="project-card-interactive">
-                          <div class="pc-image-box">
-                              <img src="assets/images/rnnvscnn.png" alt="RNN vs CNN">
-                          </div>
-                          <div class="pc-content">
-                              <h3>RNN vs CNN for Image Classification</h3>
-                              <p style="font-size:0.9rem; color:#6b7280; margin-bottom:10px;">
-                                  A comparative study evaluating the performance of Recurrent Neural Networks (RNNs) versus Convolutional Neural Networks (CNNs) on image data. Analyzes accuracy, training behavior, and computational efficiency to highlight architectural strengths.
-                              </p>
-                              <div class="pc-tags">
-                                  <span class="pc-tag">Deep Learning</span>
-                                  <span class="pc-tag">Python</span>
-                                  <span class="pc-tag">Computer Vision</span>
-                              </div>
-                              <div class="pc-links">
-                                  <a href="assets/docs/README.txt" target="_blank" class="btn-small highlight">Readme</a>
-                                  <a href="assets/docs/RNN vs CNN.ipynb" target="_blank" class="btn-small">Notebook</a>
-                              </div>
-                          </div>
-                      </div>
-
-                      <div class="project-card-interactive">
-                          <div class="pc-image-box">
-                              <img src="assets/images/ligue1.png" alt="Ligue 1 Match Prediction">
-                          </div>
-                          <div class="pc-content">
-                              <h3>Ligue 1 Match Prediction</h3>
-                              <p style="font-size:0.9rem; color:#6b7280; margin-bottom:10px;">
-                                  ML project predicting football outcomes using mathematical foundations rather than just libraries.
-                              </p>
-                              <div class="pc-tags">
-                                  <span class="pc-tag">PYTHON</span>
-                                  <span class="pc-tag">PANDAS</span>
-                                  <span class="pc-tag">MATHS</span>
-                              </div>
-                              <div class="pc-links">
-                                  <a href="assets/docs/french_league_predictions_sami_bennane.pdf" target="_blank" class="btn-small highlight">Report</a>
-                                  <a href="assets/docs/l1c.csv" target="_blank" class="btn-small">Dataset</a>
-                                  <a href="assets/docs/ligue1.py" target="_blank" class="btn-small">Python</a>
-                                  <a href="assets/docs/README.md" target="_blank" class="btn-small">Readme</a>
-                              </div>
-                          </div>
-                      </div>
-
-                      <div class="project-card-interactive">
-                          <div class="pc-image-box">
-                              <img src="assets/images/pcp.png" alt="Acoustic Transduction">
-                          </div>
-                          <div class="pc-content">
-                              <h3>Acoustic Transduction</h3>
-                              <p style="font-size:0.9rem; color:#6b7280; margin-bottom:10px;">
-                                  Analog signal chain design for sound capture & FFT validation.
-                              </p>
-                              <div class="pc-tags">
-                                  <span class="pc-tag">ANALOG</span>
-                                  <span class="pc-tag">SIGNAL PROC</span>
-                                  <span class="pc-tag">BODE</span>
-                              </div>
-                              <div class="pc-links">
-                                  <a href="assets/docs/pcp.pdf" target="_blank" class="btn-small highlight">View Project</a>
-                              </div>
-                          </div>
-                      </div>
-
-                      <div class="project-card-interactive">
-                          <div class="pc-image-box">
-                              <img src="assets/images/ascon.png" alt="Ascon Cryptography">
-                          </div>
-                          <div class="pc-content">
-                              <h3>Ascon-128 Cryptography</h3>
-                              <p style="font-size:0.9rem; color:#6b7280; margin-bottom:10px;">
-                                  Hardware implementation of lightweight encryption algorithm (AEAD128) on FPGA using SystemVerilog.
-                              </p>
-                              <div class="pc-tags">
-                                  <span class="pc-tag">SystemVerilog</span>
-                                  <span class="pc-tag">ModelSim</span>
-                                  <span class="pc-tag">Crypto</span>
-                              </div>
-                              <div class="pc-links">
-                                  <a href="assets/docs/sami_bennane_rapport_pcsn.pdf" target="_blank" class="btn-small highlight">View Report</a>
-                              </div>
-                          </div>
-                      </div>
-
-                      <div class="project-card-interactive">
-                          <div class="pc-image-box">
-                              <img src="assets/images/robot.png" alt="Autonomous Robot">
-                          </div>
-                          <div class="pc-content">
-                              <h3>Autonomous STM32 Robot</h3>
-                              <p style="font-size:0.9rem; color:#6b7280; margin-bottom:10px;">
-                                  Development of an autonomous mobile robot using STM32. Features obstacle detection (IR), PID speed control, and state machine architecture.
-                              </p>
-                              <div class="pc-tags">
-                                  <span class="pc-tag">C</span>
-                                  <span class="pc-tag">STM32</span>
-                                  <span class="pc-tag">HAL</span>
-                                  <span class="pc-tag">PID</span>
-                              </div>
-                              <div class="pc-links">
-                                  <a href="assets/docs/robot.pdf" target="_blank" class="btn-small highlight">Report</a>
-                                  <a href="assets/docs/robot.c" target="_blank" class="btn-small">C Code</a>
-                              </div>
-                          </div>
-                      </div>
-
-                  </div>
-              </div>
-
-              <button class="nav-arrow next" onclick="scrollCarousel(400)"><i class="ph ph-caret-right"></i></button>
-          </div>
-        </section>
-
-        <div class="philosophy-banner reveal">
-          "But engineering goes beyond execution. It requires understanding the world that technology shapes. <br>
-          <span>I believe in a holistic vision where technical mastery meets strategic insight.</span>"
         </div>
 
-        <section id="essays" class="reveal">
-          <h2><i class="ph ph-book-open-text" style="color:var(--accent)"></i> Strategic Analysis & Essays</h2>
-          <div class="article-grid">
-            
-            <a href="assets/docs/french_sov.pdf" target="_blank" class="article-card">
-              <i class="ph ph-globe article-icon"></i>
-              <div class="article-title">French Sovereignty in the AI Era</div>
-              <div class="article-desc">An in-depth analysis of France's strategic autonomy in the face of US and Chinese AI hegemony (April 2025).</div>
-              <div class="article-link">Read PDF <i class="ph ph-file-pdf"></i></div>
-            </a>
-
-            <a href="assets/docs/smart_inventory.pdf" target="_blank" class="article-card" style="transition-delay: 0.1s;">
-              <i class="ph ph-warehouse article-icon"></i>
-              <div class="article-title">IoT & AI in Smart Inventory Management</div>
-              <div class="article-desc">
-                Bibliographic research on the convergence of <strong>IoT sensors</strong> and <strong>AI algorithms</strong> to create autonomous supply chains and <strong>digital twins</strong>.
-                Explores predictive maintenance and real-time tracking efficiency.
-              </div>
-              <div class="article-link">Read PDF <i class="ph ph-file-pdf"></i></div>
-            </a>
-
+        <div class="project-card">
+          <div class="project-card-img-wrap">
+            <img src="assets/images/ligue1.png" alt="Ligue 1 Match Prediction" class="project-card-img">
           </div>
-        </section>
-
-        <div class="reveal" style="margin-bottom: 120px; display: flex; justify-content: center;">
-          <img src="assets/images/micro.png" alt="Microphone Close-up" 
-               style="width: 100%; max-width: 500px; height: 550px; object-fit: cover; object-position: 50% 20%; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.15);">
+          <div class="project-card-body">
+            <div class="project-num">Project 02</div>
+            <h3 class="project-title">Ligue 1 Match Prediction</h3>
+            <p class="project-desc">ML project predicting football outcomes using mathematical foundations rather than just libraries.</p>
+            <div class="project-tags">
+              <span class="project-tag">Python</span>
+              <span class="project-tag">Pandas</span>
+              <span class="project-tag">Mathematics</span>
+            </div>
+            <div class="project-links">
+              <a href="assets/docs/french_league_predictions_sami_bennane.pdf" target="_blank" class="project-link primary">Report <i class="ph ph-arrow-up-right"></i></a>
+              <a href="assets/docs/ligue1.py" target="_blank" class="project-link">Python</a>
+              <a href="assets/docs/l1c.csv" target="_blank" class="project-link">Dataset</a>
+            </div>
+          </div>
         </div>
 
-        <section id="contact" class="reveal">
-          <h2>Contact</h2>
-          
-          <div class="contact-clean-grid">
-            <div class="contact-cta">
-              <h3>Let's Build the Future Together.</h3>
-              <p>I am currently open to new opportunities in AI, Embedded Systems, and Data Strategy. Whether you have a question or just want to say hi, I'll try my best to get back to you!</p>
+        <div class="project-card">
+          <div class="project-card-img-wrap">
+            <img src="assets/images/pcp.png" alt="Acoustic Transduction" class="project-card-img">
+          </div>
+          <div class="project-card-body">
+            <div class="project-num">Project 03</div>
+            <h3 class="project-title">Acoustic Transduction</h3>
+            <p class="project-desc">Analog signal chain design for sound capture &amp; FFT validation. Bode analysis and frequency response characterisation.</p>
+            <div class="project-tags">
+              <span class="project-tag">Analog</span>
+              <span class="project-tag">Signal Processing</span>
+              <span class="project-tag">Bode</span>
             </div>
-
-            <div class="contact-info-list">
-               <div class="ci-item">
-                  <div class="ci-icon"><i class="ph ph-phone"></i></div>
-                  <div class="ci-text">
-                     <span class="ci-label">Phone</span>
-                     <span class="ci-value">07 81 34 12 36</span>
-                  </div>
-               </div>
-               <div class="ci-item">
-                  <div class="ci-icon"><i class="ph ph-map-pin"></i></div>
-                  <div class="ci-text">
-                     <span class="ci-label">Location</span>
-                     <span class="ci-value">Paris, Aix-en-Provence</span>
-                  </div>
-               </div>
-               <div class="ci-item">
-                  <div class="ci-icon"><i class="ph ph-envelope-simple"></i></div>
-                  <div class="ci-text">
-                     <span class="ci-label">Email</span>
-                     <a href="mailto:sami.bennane@gmail.com" class="ci-value link">sami.bennane@gmail.com</a>
-                  </div>
-               </div>
-               <div class="ci-item">
-                  <div class="ci-icon"><i class="ph ph-linkedin-logo"></i></div>
-                  <div class="ci-text">
-                     <span class="ci-label">LinkedIn</span>
-                     <a href="https://www.linkedin.com/in/sami-bennane-575380320" target="_blank" class="ci-value link">Connect with me</a>
-                  </div>
-               </div>
+            <div class="project-links">
+              <a href="assets/docs/pcp.pdf" target="_blank" class="project-link primary">View Project <i class="ph ph-arrow-up-right"></i></a>
             </div>
           </div>
-        </section>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-img-wrap">
+            <img src="assets/images/ascon.png" alt="Ascon-128 Cryptography" class="project-card-img">
+          </div>
+          <div class="project-card-body">
+            <div class="project-num">Project 04</div>
+            <h3 class="project-title">Ascon-128 Cryptography</h3>
+            <p class="project-desc">Hardware implementation of lightweight encryption (AEAD128) on FPGA using SystemVerilog &amp; ModelSim.</p>
+            <div class="project-tags">
+              <span class="project-tag">SystemVerilog</span>
+              <span class="project-tag">ModelSim</span>
+              <span class="project-tag">Crypto</span>
+            </div>
+            <div class="project-links">
+              <a href="assets/docs/sami_bennane_rapport_pcsn.pdf" target="_blank" class="project-link primary">View Report <i class="ph ph-arrow-up-right"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-img-wrap">
+            <img src="assets/images/robot.png" alt="Autonomous STM32 Robot" class="project-card-img">
+          </div>
+          <div class="project-card-body">
+            <div class="project-num">Project 05</div>
+            <h3 class="project-title">Autonomous STM32 Robot</h3>
+            <p class="project-desc">Autonomous mobile robot with obstacle detection (IR), PID speed control, and state machine architecture.</p>
+            <div class="project-tags">
+              <span class="project-tag">C</span>
+              <span class="project-tag">STM32</span>
+              <span class="project-tag">HAL</span>
+              <span class="project-tag">PID</span>
+            </div>
+            <div class="project-links">
+              <a href="assets/docs/robot.pdf" target="_blank" class="project-link primary">Report <i class="ph ph-arrow-up-right"></i></a>
+              <a href="assets/docs/robot.c" target="_blank" class="project-link">C Code</a>
+            </div>
+          </div>
+        </div>
 
       </div>
     </div>
-  </main>
+    <div class="carousel-controls">
+      <button class="carousel-btn" onclick="scrollCarousel(-400)"><i class="ph ph-caret-left"></i></button>
+      <button class="carousel-btn" onclick="scrollCarousel(400)"><i class="ph ph-caret-right"></i></button>
+    </div>
+  </section>
 
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+  <!-- ─── QUOTE DIVIDER ─── -->
+  <div class="quote-divider reveal-fade">
+    <p class="quote-text">
+      "Engineering goes beyond execution — it requires understanding the world that technology shapes. <em>Technical mastery must meet strategic insight.</em>"
+    </p>
+  </div>
 
-    // Toggle Sidebar
-    const toggleBtn = document.getElementById('sidebarToggle');
-    const toggleIcon = toggleBtn.querySelector('i');
-    
-    toggleBtn.addEventListener('click', () => {
-      document.body.classList.toggle('collapsed');
-      
-      // Change icon direction/style
-      if(document.body.classList.contains('collapsed')) {
-        toggleIcon.classList.replace('ph-list', 'ph-caret-right');
-      } else {
-        toggleIcon.classList.replace('ph-caret-right', 'ph-list');
+  <!-- ─── ESSAYS ─── -->
+  <section id="essays" class="section">
+    <div class="section-label" data-num="08">Thinking</div>
+    <h2 class="section-title reveal-fade">Strategic Analysis<br>&amp; <em>Essays.</em></h2>
+    <div class="essays-grid reveal-fade" style="margin-top:60px;transition-delay:0.15s">
+      <a href="assets/docs/french_sov.pdf" target="_blank" class="essay-card">
+        <div class="essay-icon"><i class="ph ph-globe"></i></div>
+        <h3 class="essay-title">French Sovereignty in the AI Era</h3>
+        <p class="essay-desc">An in-depth analysis of France's strategic autonomy in the face of US and Chinese AI hegemony. April 2025.</p>
+      </a>
+      <a href="assets/docs/smart_inventory.pdf" target="_blank" class="essay-card">
+        <div class="essay-icon"><i class="ph ph-warehouse"></i></div>
+        <h3 class="essay-title">IoT &amp; AI in Smart Inventory Management</h3>
+        <p class="essay-desc">Bibliographic research on IoT sensors and AI algorithms converging to create autonomous supply chains and digital twins.</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- ─── IMAGE FEATURE ─── -->
+  <div class="img-feature">
+    <div class="img-feature-inner reveal-scale">
+      <img src="assets/images/micro.png" alt="Detail shot">
+      <div class="img-feature-caption">Mines Saint-Étienne</div>
+    </div>
+  </div>
+
+  <!-- ─── CONTACT ─── -->
+  <section id="contact" class="section">
+    <div class="section-label" data-num="09">Reach Out</div>
+    <div class="contact-grid">
+      <div class="reveal-fade">
+        <h2 class="contact-cta-title">Let's Build the<br><em>Future Together.</em></h2>
+        <p class="contact-cta-body">Open to opportunities in AI, Embedded Systems, and Data Strategy. Whether you have a project, a question, or just want to say hi — I'll get back to you.</p>
+      </div>
+      <div class="contact-items reveal-fade" style="transition-delay:0.15s">
+        <div class="contact-item">
+          <div class="contact-icon"><i class="ph ph-phone"></i></div>
+          <div>
+            <div class="contact-label">Phone</div>
+            <div class="contact-value">07 81 34 12 36</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="ph ph-map-pin"></i></div>
+          <div>
+            <div class="contact-label">Location</div>
+            <div class="contact-value">Paris · Aix-en-Provence</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="ph ph-envelope-simple"></i></div>
+          <div>
+            <div class="contact-label">Email</div>
+            <a href="mailto:sami.bennane@gmail.com" class="contact-value link">sami.bennane@gmail.com</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="ph ph-linkedin-logo"></i></div>
+          <div>
+            <div class="contact-label">LinkedIn</div>
+            <a href="https://www.linkedin.com/in/sami-bennane-575380320" target="_blank" class="contact-value link">Connect with me →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="footer-name">Sami Bennane</span>
+    <span class="footer-copy">© <span id="year"></span> — All rights reserved</span>
+  </footer>
+
+</main>
+
+<script>
+/* ───────── UTILS ───────── */
+document.getElementById("year").textContent = new Date().getFullYear();
+
+/* ───────── LOADER ───────── */
+(function() {
+  const name = document.getElementById('loaderName');
+  const bar  = document.getElementById('loaderBar');
+  const num  = document.getElementById('loaderNum');
+  let count  = 0;
+
+  // Animate name in
+  setTimeout(() => { name.style.transition = 'opacity 0.8s'; name.style.opacity = 1; }, 100);
+
+  // Trigger bar
+  setTimeout(() => { bar.style.width = '100%'; }, 200);
+
+  // Counter
+  const iv = setInterval(() => {
+    count = Math.min(count + Math.floor(Math.random() * 8 + 3), 100);
+    num.textContent = count;
+    if (count >= 100) {
+      clearInterval(iv);
+      setTimeout(hideLoader, 300);
+    }
+  }, 18);
+
+  function hideLoader() {
+    const loader = document.getElementById('loader');
+    loader.style.transition = 'opacity 0.8s, transform 0.8s cubic-bezier(0.16,1,0.3,1)';
+    loader.style.opacity = '0';
+    loader.style.transform = 'translateY(-20px)';
+    setTimeout(() => {
+      loader.style.display = 'none';
+      revealHero();
+    }, 800);
+  }
+})();
+
+function revealHero() {
+  document.querySelectorAll('.hero .reveal-fade, .hero .reveal-right').forEach((el, i) => {
+    setTimeout(() => {
+      el.style.transition = `opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1)`;
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    }, i * 120);
+  });
+}
+
+/* ───────── CUSTOM CURSOR ───────── */
+(function() {
+  const dot  = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+  function tick() {
+    // dot snaps immediately
+    dot.style.left  = mx + 'px';
+    dot.style.top   = my + 'px';
+    // ring lerps
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+/* ───────── SMOOTH SCROLL (Native-enhanced) ───────── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+/* ───────── ACTIVE NAV ───────── */
+(function() {
+  const sections  = document.querySelectorAll('section[id], div[id]');
+  const navLinks  = document.querySelectorAll('.nav-link, .mobile-nav a');
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        navLinks.forEach(l => {
+          l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+        });
       }
     });
+  }, { rootMargin: '-40% 0px -50% 0px' });
 
-    // CAROUSEL SCROLL FUNCTION
-    function scrollCarousel(offset) {
-        const track = document.getElementById('projectTrack');
-        track.scrollBy({ left: offset, behavior: 'smooth' });
-    }
+  sections.forEach(s => io.observe(s));
+})();
 
-    const observer = new IntersectionObserver((entries) => {
+/* ───────── SCROLL REVEAL ───────── */
+(function() {
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      el.style.transition = 'opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1)';
+      el.style.opacity    = '1';
+      el.style.transform  = 'none';
+      io.unobserve(el);
+
+      // Trigger progress bars when languages section appears
+      if (el.closest('#languages')) {
+        el.querySelectorAll('.progress-fill').forEach(fill => {
+          const w = fill.getAttribute('data-width');
+          setTimeout(() => { fill.style.width = w + '%'; }, 300);
+        });
+      }
+    });
+  }, { threshold: 0.12 });
+
+  // Also trigger progress bars if lang section is already in view
+  document.querySelectorAll('#langGrid .progress-fill').forEach(fill => {
+    const langIo = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          if (entry.target.id === 'languages') {
-             entry.target.querySelectorAll('.progress-fill').forEach(bar => {
-                const width = bar.style.width;
-                bar.style.width = '0';
-                setTimeout(() => { bar.style.width = width; }, 100);
-             });
-          }
+          const w = entry.target.getAttribute('data-width');
+          setTimeout(() => { entry.target.style.width = w + '%'; }, 300);
+          langIo.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.5 });
+    langIo.observe(fill);
+  });
 
-    // IMPORTANT: observe new classes
-    document.querySelectorAll('.reveal, .timeline-item, .project-card, .lang-item, .split-image-container, .article-card, .philosophy-banner, .skills-block, .logo-item, .projects-section-interactive, .next-dest-card, .education-right-column').forEach(el => observer.observe(el));
+  document.querySelectorAll('.reveal-fade, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+    // Skip hero elements — handled separately
+    if (el.closest('.hero')) return;
+    io.observe(el);
+  });
+})();
 
-    const sections = document.querySelectorAll("section");
-    const navLinks = document.querySelectorAll(".nav-link");
-    window.addEventListener("scroll", () => {
-      let current = "";
-      sections.forEach(sec => {
-        if (pageYOffset >= (sec.offsetTop - 300)) current = sec.getAttribute("id");
-      });
-      navLinks.forEach(link => {
-        link.classList.remove("active");
-        if (link.getAttribute("href").includes(current)) link.classList.add("active");
-      });
-    });
+/* ───────── CAROUSEL ───────── */
+function scrollCarousel(offset) {
+  document.getElementById('projectTrack').scrollBy({ left: offset, behavior: 'smooth' });
+}
 
-    // --- HERO NEURAL NETWORK ANIMATION SCRIPT ---
-    (function() {
-      const canvas = document.getElementById('hero-canvas'); 
-      if(!canvas) return;
-      const ctx = canvas.getContext('2d');
-      let width, height;
-      let particles = [];
+/* ───────── HERO CANVAS (Particle Network) ───────── */
+(function() {
+  const canvas = document.getElementById('hero-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
 
-      function resize() {
-        width = canvas.width = canvas.parentElement.offsetWidth;
-        height = canvas.height = canvas.parentElement.offsetHeight;
-      }
+  function resize() {
+    W = canvas.width  = canvas.parentElement.offsetWidth;
+    H = canvas.height = canvas.parentElement.offsetHeight;
+  }
 
-      class Particle {
-        constructor() {
-          this.x = Math.random() * width;
-          this.y = Math.random() * height;
-          this.vx = (Math.random() - 0.5) * 0.5;
-          this.vy = (Math.random() - 0.5) * 0.5;
-          this.size = Math.random() * 2 + 1;
-        }
-        update() {
-          this.x += this.vx;
-          this.y += this.vy;
-          if (this.x < 0 || this.x > width) this.vx *= -1;
-          if (this.y < 0 || this.y > height) this.vy *= -1;
-        }
-        draw() {
+  class P {
+    constructor() {
+      this.x  = Math.random() * W;
+      this.y  = Math.random() * H;
+      this.vx = (Math.random() - 0.5) * 0.4;
+      this.vy = (Math.random() - 0.5) * 0.4;
+      this.r  = Math.random() * 1.5 + 0.5;
+    }
+    update() {
+      this.x += this.vx; this.y += this.vy;
+      if (this.x < 0 || this.x > W) this.vx *= -1;
+      if (this.y < 0 || this.y > H) this.vy *= -1;
+    }
+  }
+
+  function init() {
+    particles = [];
+    for (let i = 0; i < 50; i++) particles.push(new P());
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => { p.update(); });
+    for (let i = 0; i < particles.length; i++) {
+      const a = particles[i];
+      ctx.beginPath();
+      ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(201,169,110,0.8)';
+      ctx.fill();
+      for (let j = i + 1; j < particles.length; j++) {
+        const b = particles[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d < 130) {
           ctx.beginPath();
-          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(6, 182, 212, 0.6)'; 
-          ctx.fill();
+          ctx.strokeStyle = `rgba(201,169,110,${(1 - d / 130) * 0.35})`;
+          ctx.lineWidth = 0.6;
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
         }
       }
+    }
+    requestAnimationFrame(draw);
+  }
 
-      function init() {
-        particles = [];
-        for (let i = 0; i < 60; i++) { particles.push(new Particle()); }
-      }
+  window.addEventListener('resize', () => { resize(); init(); });
+  resize(); init(); draw();
+})();
 
-      function animate() {
-        ctx.clearRect(0, 0, width, height);
-        for (let i = 0; i < particles.length; i++) {
-          particles[i].update();
-          particles[i].draw();
-          for (let j = i; j < particles.length; j++) {
-            const dx = particles[i].x - particles[j].x;
-            const dy = particles[i].y - particles[j].y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < 120) {
-              ctx.beginPath();
-              ctx.strokeStyle = `rgba(6, 182, 212, ${1 - distance / 120})`;
-              ctx.lineWidth = 0.5;
-              ctx.moveTo(particles[i].x, particles[i].y);
-              ctx.lineTo(particles[j].x, particles[j].y);
-              ctx.stroke();
-            }
-          }
-        }
-        requestAnimationFrame(animate);
-      }
-      window.addEventListener('resize', () => { resize(); init(); });
-      resize(); init(); animate();
-    })();
+/* ───────── NEXUS CANVAS (About) ───────── */
+(function() {
+  const canvas = document.getElementById('nexus-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, cx, cy, t = 0, pts = [];
 
-    // --- ABOUT SECTION ANIMATION SCRIPT ("STRATEGIC NEXUS") ---
-    (function() {
-        const canvas = document.getElementById('nexus-canvas');
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        let width, height, centerX, centerY;
-        let particles = [];
-        let time = 0;
+  function resize() {
+    W = canvas.width  = canvas.parentElement.offsetWidth;
+    H = canvas.height = canvas.parentElement.offsetHeight;
+    cx = W / 2; cy = H / 2;
+  }
 
-        function resize() {
-            width = canvas.width = canvas.parentElement.offsetWidth;
-            height = canvas.height = canvas.parentElement.offsetHeight;
-            centerX = width / 2;
-            centerY = height / 2;
-        }
+  class Orb {
+    constructor(r, speed, off, color) {
+      this.r = r; this.speed = speed; this.a = off; this.color = color;
+      this.size = Math.random() * 2 + 1.2;
+    }
+    update() {
+      this.a += this.speed;
+      const rx = this.r * (1 + 0.08 * Math.sin(t * 0.6));
+      const ry = this.r * 0.65 * (1 + 0.08 * Math.cos(t * 0.6));
+      this.x = cx + rx * Math.cos(this.a);
+      this.y = cy + ry * Math.sin(this.a);
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.shadowBlur = 12; ctx.shadowColor = this.color;
+      ctx.fillStyle = this.color;
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill(); ctx.shadowBlur = 0;
+    }
+  }
 
-        class NexusParticle {
-            constructor(orbitRadius, speed, offsetAngle, color) {
-                this.orbitRadius = orbitRadius;
-                this.speed = speed;
-                this.angle = offsetAngle;
-                this.color = color;
-                this.size = Math.random() * 2 + 1.5;
-            }
-            update() {
-                this.angle += this.speed;
-                const currentRadiusX = this.orbitRadius * (1 + 0.1 * Math.sin(time * 0.5));
-                const currentRadiusY = this.orbitRadius * 0.7 * (1 + 0.1 * Math.cos(time * 0.5));
-                this.x = centerX + currentRadiusX * Math.cos(this.angle);
-                this.y = centerY + currentRadiusY * Math.sin(this.angle);
-            }
-            draw() {
-                ctx.beginPath();
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = this.color;
-                ctx.fillStyle = this.color;
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.shadowBlur = 0; 
-            }
-        }
+  function init() {
+    pts = [];
+    for (let i = 0; i < 9; i++)  pts.push(new Orb(110, 0.009,  i * Math.PI/4.5, '#c9a96e'));
+    for (let i = 0; i < 7; i++)  pts.push(new Orb(70,  -0.013, i * Math.PI/3.5 + 1, 'rgba(201,169,110,0.4)'));
+    for (let i = 0; i < 6; i++)  pts.push(new Orb(155, 0.005,  i * Math.PI/3 + 2, 'rgba(245,240,232,0.15)'));
+  }
 
-        function init() {
-            particles = [];
-            for(let i=0; i<8; i++) particles.push(new NexusParticle(120, 0.008, i * (Math.PI/4), '#06b6d4'));
-            for(let i=0; i<8; i++) particles.push(new NexusParticle(80, -0.012, i * (Math.PI/4) + 1, '#8b5cf6'));
-            for(let i=0; i<6; i++) particles.push(new NexusParticle(160, 0.005, i * (Math.PI/3) + 2, '#4f46e5'));
-        }
+  function drawCore() {
+    const r = 22 + 4 * Math.sin(t * 1.5);
+    const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+    g.addColorStop(0, 'rgba(201,169,110,0.7)');
+    g.addColorStop(0.5, 'rgba(201,169,110,0.15)');
+    g.addColorStop(1, 'transparent');
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.fillStyle = g; ctx.fill();
+  }
 
-        function drawCore() {
-            const coreRadius = 30 + 5 * Math.sin(time * 1.5);
-            const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, coreRadius);
-            gradient.addColorStop(0, 'rgba(79, 70, 229, 0.8)'); 
-            gradient.addColorStop(0.6, 'rgba(6, 182, 212, 0.4)'); 
-            gradient.addColorStop(1, 'rgba(0,0,0,0)'); 
+  function drawOrbits() {
+    [110, 70, 155].forEach(r => {
+      const rx = r * (1 + 0.08 * Math.sin(t * 0.6));
+      const ry = r * 0.65 * (1 + 0.08 * Math.cos(t * 0.6));
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(201,169,110,0.08)';
+      ctx.lineWidth = 1; ctx.stroke();
+    });
+  }
 
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, coreRadius, 0, Math.PI * 2);
-            ctx.fillStyle = gradient;
-            ctx.fill();
-        }
+  function animate() {
+    ctx.clearRect(0, 0, W, H); t += 0.01;
+    drawCore(); drawOrbits();
+    pts.forEach(p => { p.update(); p.draw(); });
+    requestAnimationFrame(animate);
+  }
 
-        function drawOrbits() {
-             ctx.strokeStyle = 'rgba(79, 70, 229, 0.1)'; // Subtle purple lines
-             ctx.lineWidth = 1;
-             ctx.beginPath();
-             ctx.ellipse(centerX, centerY, 120 * (1 + 0.1 * Math.sin(time * 0.5)), 120 * 0.7 * (1 + 0.1 * Math.cos(time * 0.5)), 0, 0, 2 * Math.PI);
-             ctx.stroke();
-             ctx.beginPath();
-             ctx.ellipse(centerX, centerY, 80 * (1 + 0.1 * Math.sin(time * 0.5)), 80 * 0.7 * (1 + 0.1 * Math.cos(time * 0.5)), 0, 0, 2 * Math.PI);
-             ctx.stroke();
-             ctx.beginPath();
-             ctx.ellipse(centerX, centerY, 160 * (1 + 0.1 * Math.sin(time * 0.5)), 160 * 0.7 * (1 + 0.1 * Math.cos(time * 0.5)), 0, 0, 2 * Math.PI);
-             ctx.stroke();
-        }
+  window.addEventListener('resize', () => { resize(); init(); });
+  resize(); init(); animate();
+})();
 
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
-            time += 0.01;
-            drawCore();
-            drawOrbits();
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
-        }
-
-        window.addEventListener('resize', () => { resize(); init(); });
-        resize(); init(); animate();
-    })();
-  </script>
+/* ───────── PARALLAX (subtle) ───────── */
+window.addEventListener('scroll', () => {
+  const sy = window.scrollY;
+  const heroImg = document.querySelector('.hero-img-wrap img');
+  if (heroImg) heroImg.style.transform = `translateY(${sy * 0.08}px)`;
+});
+</script>
 </body>
 </html>
