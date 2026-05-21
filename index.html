@@ -1222,6 +1222,154 @@
     </div>
   </div>
 
+  <!-- ─────────────────────────────────────────────────────────
+  SECTION "COMMENT FONCTIONNE CHATGPT"
+  Colle ce bloc JUSTE AVANT la section #contact dans ton index.html
+  Mets aussi à jour la sidebar nav (voir commentaire en bas)
+───────────────────────────────────────────────────────── -->
+
+<!-- ─── CHATGPT / TRANSFORMER EXPLAINER ─── -->
+<section id="explainer" class="section">
+  <div class="section-label" data-num="10">IA & Pédagogie</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;">
+
+    <!-- Gauche : texte -->
+    <div>
+      <h2 class="section-title reveal-fade">Comment<br><em>ChatGPT</em> fonctionne.</h2>
+      <div class="about-body reveal-fade" style="transition-delay:.1s;">
+        <p>
+          Derrière la simplicité d'une conversation se cache une architecture fascinante :
+          le <strong>Transformer Decoder-Only</strong>.
+          Tokenisation, embeddings, mécanisme Q/K/V, softmax, génération autoregressive…
+        </p>
+        <p style="margin-top:18px;">
+          J'ai construit une <span class="about-highlight">exploration interactive</span>
+          qui anime chaque étape avec la question
+          <em>"Combien font deux et deux ?"</em> comme fil conducteur.
+        </p>
+      </div>
+      <div style="margin-top:36px;" class="reveal-fade" style="transition-delay:.2s;">
+        <a href="transformer.html" class="btn-gold" style="display:inline-flex;align-items:center;gap:10px;">
+          Explorer l'animation <i class="ph ph-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Droite : aperçu animé -->
+    <div class="reveal-right" style="position:relative;">
+      <div style="
+        background:var(--surface);
+        border:1px solid var(--border);
+        padding:32px;
+        position:relative;
+        overflow:hidden;
+      ">
+        <!-- Mini architecture schematic -->
+        <canvas id="mini-transformer-canvas" width="400" height="260"
+          style="width:100%;display:block;"></canvas>
+        <!-- Overlay label -->
+        <div style="
+          position:absolute;bottom:20px;left:20px;
+          font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;
+          color:rgba(201,169,110,.6);
+        ">Decoder-Only · GPT</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────
+  SCRIPT du mini canvas "mini-transformer-canvas"
+  Colle ce <script> juste avant </body>
+───────────────────────────────────────────────── -->
+<script>
+(function(){
+  const c=document.getElementById('mini-transformer-canvas');
+  if(!c)return;
+  const ctx=c.getContext('2d');
+  const W=c.width,H=c.height;
+
+  const GOLD='rgba(201,169,110,';
+  const BLUE='rgba(91,155,213,';
+  const PINK='rgba(217,107,143,';
+  const GREEN='rgba(107,189,138,';
+  const DIM='rgba(255,255,255,';
+
+  const layers=[
+    {label:'Input tokens',color:GREEN,y:220},
+    {label:'Embedding + PosEnc',color:GOLD,y:188},
+    {label:'Self-Attention  (Q·K·V)',color:BLUE,y:142},
+    {label:'Feed-Forward Network',color:PINK,y:96},
+    {label:'Linear + Softmax',color:'rgba(155,126,200,',y:50},
+    {label:'Output token',color:GREEN,y:14},
+  ];
+
+  // Animated particle positions
+  let particles=[];
+  let t=0;
+
+  function initParticles(){
+    particles=layers.map((l,i)=>{
+      return {y:l.y+12,x:W/2,vy:-(layers[0].y-layers[layers.length-1].y)/(layers.length*60),progress:i*(1/layers.length)};
+    });
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    t+=0.016;
+
+    // Draw layers
+    layers.forEach((l)=>{
+      const bW=W-40, bH=26, bX=20, bY=l.y;
+      const alpha=0.12+0.08*Math.sin(t*1.2+(l.y/H)*4);
+      // Glow BG
+      ctx.fillStyle=l.color+alpha+')';
+      ctx.beginPath();roundRect(ctx,bX,bY,bW,bH,3);ctx.fill();
+      // Border
+      ctx.strokeStyle=l.color+'0.45)';ctx.lineWidth=1;
+      ctx.beginPath();roundRect(ctx,bX,bY,bW,bH,3);ctx.stroke();
+      // Label
+      ctx.fillStyle='rgba(245,240,232,.65)';
+      ctx.font='11px "DM Sans", sans-serif';
+      ctx.textAlign='center';
+      ctx.fillText(l.label,W/2,bY+14);
+    });
+
+    // Animated flow particle
+    const particleY=H-40-(((t*0.35)%1)*(H-60));
+    const particleAlpha=Math.sin(((t*0.35)%1)*Math.PI);
+    ctx.beginPath();
+    ctx.arc(W/2,particleY,4,0,Math.PI*2);
+    ctx.fillStyle=`rgba(201,169,110,${particleAlpha*0.9})`;
+    ctx.fill();
+    // Glow
+    ctx.beginPath();
+    ctx.arc(W/2,particleY,10,0,Math.PI*2);
+    ctx.fillStyle=`rgba(201,169,110,${particleAlpha*0.15})`;
+    ctx.fill();
+
+    requestAnimationFrame(draw);
+  }
+
+  function roundRect(ctx,x,y,w,h,r){
+    ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);
+    ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+    ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);
+    ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();
+  }
+
+  initParticles();draw();
+})();
+</script>
+
+<!-- ─────────────────────────────────────────────
+  NAV — ajoute ce lien dans ta .nav-sidebar :
+  <a href="#explainer" class="nav-link" data-label="ChatGPT"><i class="ph ph-brain"></i></a>
+
+  Et dans .mobile-nav :
+  <a href="#explainer"><i class="ph ph-brain"></i><span>IA</span></a>
+───────────────────────────────────────────────── -->
+
   <!-- ─── CONTACT ─── -->
   <section id="contact" class="section">
     <div class="section-label" data-num="09">Reach Out</div>
