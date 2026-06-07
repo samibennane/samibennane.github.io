@@ -689,9 +689,9 @@
 <!-- SKILLS : Scroll-Morph Arc (inspiré IntroAnimation) -->
 <section id="skills" class="section skills-morph-section">
   <div class="section-label" data-num="02">Expertise</div>
-  <h2 class="section-title reveal-fade">Skills &amp;<br><em>Technologies.</em></h2>
-
   <!-- Zone de scroll virtuel : le sticky tient pendant 2000px de scroll -->
+  <h2 class="section-title reveal-fade" style="margin-bottom:60px;">Skills &amp;<br><em>Technologies.</em></h2>
+
   <div id="skills-scroll-spacer">
     <div id="skills-sticky-stage">
 
@@ -700,12 +700,6 @@
 
       <!-- Arc de logos : positionnés par JS -->
       <div id="skills-arc-container">
-
-        <!-- Catégorie labels (apparaissent au centre) -->
-        <div id="skills-category-label">
-          <span id="skills-cat-name">Software &amp; AI</span>
-        </div>
-
         <!-- Logos items — JS les positionne en arc -->
         <div class="sk-card" data-cat="0" data-name="C"           data-img="assets/images/c.png"></div>
         <div class="sk-card" data-cat="0" data-name="C++"         data-img="assets/images/c++.png"></div>
@@ -1361,13 +1355,11 @@ window.addEventListener('scroll',()=>{
 (function(){
   const spacer   = document.getElementById('skills-scroll-spacer');
   const stage    = document.getElementById('skills-sticky-stage');
-  const catLabel = document.getElementById('skills-cat-name');
   const tooltip  = document.getElementById('skills-tooltip');
   const hint     = document.getElementById('skills-scroll-hint');
   const cards    = [...document.querySelectorAll('.sk-card')];
   if (!spacer || !cards.length) return;
 
-  const CATS = ['Software & AI', 'Electronics & IoT', 'Tools & Methods'];
   const N    = cards.length; // 16 logos
 
   // Injecter le HTML interne de chaque card
@@ -1414,38 +1406,56 @@ window.addEventListener('scroll',()=>{
   const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
   const ease  = t => 1 - Math.pow(1 - t, 3);
 
-  // ── Arc position calculator ──
+  // ── Position calculator : arc → cercle ──
+  // Phase 1 (spreadProgress 0→0.6) : arc du bas s'ouvre
+  // Phase 2 (spreadProgress 0.6→1) : arc se referme en cercle complet
   function arcTarget(i, spreadProgress, W, H) {
-    const isMobile  = W < 768;
-    const minDim    = Math.min(W, H);
+    const isMobile   = W < 768;
+    const circRadius = Math.min(W, H) * (isMobile ? 0.36 : 0.34);
+
+    // Scroll global dans la zone (0→1)
+    const SCROLL_H = isMobile ? 1200 : 2200;
+    const rect     = spacer.getBoundingClientRect();
+    const scrolled = clamp(-rect.top / SCROLL_H, 0, 1);
+
+    // Phase 1 (0→0.5) : arc en bas, s'ouvre de 30° à 160°
+    // Phase 2 (0.5→1) : passage arc → cercle complet
+    const phase1 = clamp(scrolled / 0.5, 0, 1);
+    const phase2 = clamp((scrolled - 0.5) / 0.5, 0, 1);
+    const p1     = ease(phase1);
+    const p2     = ease(phase2);
+
+    // ── Cercle cible : logos répartis uniformément sur 360° ──
+    // Démarre à -90° (haut) et tourne dans le sens horaire
+    const circleAng = -90 + (i / N) * 360;
+    const circleRad = circleAng * Math.PI / 180;
+    const cx        = Math.cos(circleRad) * circRadius + W / 2;
+    const cy        = Math.sin(circleRad) * circRadius + H / 2;
+
+    // ── Arc intermédiaire (phase 1) : arc bas ──
     const baseR     = Math.min(W, H * 1.5);
     const arcRadius = baseR * (isMobile ? 1.35 : 1.05);
-
-    // Apex au quart supérieur
     const apexY     = H * (isMobile ? 0.3 : 0.22);
     const centerY   = apexY + arcRadius;
-
-    // Spread angulaire : commence serré (30°) et s'ouvre (140°)
-    const spread    = lerp(30, isMobile ? 90 : 140, ease(spreadProgress));
+    const spread    = lerp(30, isMobile ? 90 : 160, p1);
     const startAng  = -90 - spread / 2;
     const step      = spread / (N - 1);
+    const arcAng    = startAng + i * step;
+    const arcRad    = arcAng * Math.PI / 180;
+    const ax        = Math.cos(arcRad) * arcRadius + W / 2;
+    const ay        = Math.sin(arcRad) * arcRadius + centerY;
 
-    // Scroll latéral : avance de 0 à spread entier
-    const SCROLL_H  = isMobile ? 1200 : 2200;
-    const rect      = spacer.getBoundingClientRect();
-    const scrolled  = clamp(-rect.top / SCROLL_H, 0, 1);
-    const shift     = -ease(scrolled) * spread * 0.75;
+    // ── Interpoler arc → cercle (phase 2) ──
+    const x = lerp(ax, cx, p2);
+    const y = lerp(ay, cy, p2);
 
-    const ang = startAng + i * step + shift;
-    const rad = ang * Math.PI / 180;
+    // Rotation : tangente au cercle
+    const finalR = lerp(arcAng + 90, circleAng + 90, p2);
 
-    return {
-      x: Math.cos(rad) * arcRadius + W / 2,
-      y: Math.sin(rad) * arcRadius + centerY,
-      r: ang + 90,
-      s: isMobile ? 1.3 : 1.6,
-      o: 1,
-    };
+    // Scale : plus grand en cercle final
+    const finalS = lerp(isMobile ? 1.3 : 1.5, isMobile ? 1.1 : 1.3, p2);
+
+    return { x, y, r: finalR, s: finalS, o: 1 };
   }
 
   // ── Render loop ──
@@ -1467,8 +1477,6 @@ window.addEventListener('scroll',()=>{
     const totalH    = 2200;
     const rawScroll = clamp(-rect.top / totalH, 0, 1);
     const catIdx    = Math.floor(rawScroll * 3);
-    catLabel.textContent = CATS[Math.min(catIdx, 2)];
-    catLabel.style.opacity = p > 0.4 ? '1' : '0';
 
     // Hint : disparaît une fois scrollé
     hint.style.opacity = rawScroll < 0.05 ? '1' : '0';
