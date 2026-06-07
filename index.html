@@ -227,29 +227,20 @@
     .about-intro-subtitle strong { color: var(--white); font-weight: 500; }
     .about-intro-subtitle .hl { color: var(--gold); }
 
-    /* Keyword scroll column */
-    .about-keywords-col {
-      position: relative;
-    }
-    .keywords-scroll-container {
-      /* Zone de scroll : haute pour laisser le sticky jouer */
-      position: relative;
-    }
     .keywords-sticky {
-      /* Chaque mot apparaît dans le flux, pas en sticky ici :
-         on utilise IntersectionObserver pour allumer le mot au centre */
       display: flex;
       flex-direction: column;
       gap: 0;
+      padding-left: 0;
     }
     .kw-item {
       font-family: var(--serif);
-      font-size: clamp(2.4rem, 5vw, 4.2rem);
+      font-size: clamp(3rem, 7vw, 6rem);
       font-weight: 700;
-      line-height: 1.05;
+      line-height: 1.08;
       letter-spacing: -0.02em;
-      color: rgba(245,240,232,0.08);
-      padding: 18px 0;
+      color: rgba(245,240,232,0.07);
+      padding: 14px 0;
       border-bottom: 1px solid rgba(255,255,255,0.04);
       transition: color 0.5s var(--ease-expo), text-shadow 0.5s;
       cursor: default;
@@ -259,20 +250,16 @@
     .kw-item:last-child { border-bottom: none; }
     .kw-item.active {
       color: var(--gold);
-      text-shadow: 0 0 60px rgba(201,169,110,0.25);
+      text-shadow: 0 0 80px rgba(201,169,110,0.2);
     }
-    .kw-item em {
-      font-style: italic;
-      font-weight: 400;
-    }
-    /* Petit indicateur latéral */
+    .kw-item em { font-style: italic; font-weight: 400; }
     .kw-item::before {
       content: '';
       position: absolute; left: -24px; top: 50%; transform: translateY(-50%);
       width: 0; height: 1px; background: var(--gold);
       transition: width 0.4s var(--ease-expo);
     }
-    .kw-item.active::before { width: 18px; }
+    .kw-item.active::before { width: 16px; }
 
     /* SKILLS */
     #skills .skills-grid {
@@ -532,54 +519,17 @@
   <div class="hero-scroll-hint"><div class="scroll-line"></div><span>Scroll</span></div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════
-     ABOUT — Keywords cycliques (WordHeroPage style)
-     Chaque mot s'illumine en or quand il passe au centre
-════════════════════════════════════════════════════ -->
+<!-- ABOUT — mots-clés géants uniquement -->
 <section id="about" class="section">
   <div class="section-label" data-num="01">About</div>
-  <div class="about-grid">
-
-    <!-- Gauche : texte fixe sticky -->
-    <div class="about-intro-text">
-      <h2 class="section-title reveal-fade">
-        Bridging Hardware<br>&amp; <em>Strategic Vision.</em>
-      </h2>
-      <p class="about-intro-subtitle reveal-fade" style="transition-delay:0.12s">
-        Engineering student at <strong>Mines Saint-Étienne</strong>, I build systems at the intersection of
-        <span class="hl">hardware reliability</span> and <span class="hl">AI innovation</span>,
-        with a deep focus on digital sovereignty and strategic impact.
-      </p>
-      <!-- Stats -->
-      <div class="reveal-fade" style="transition-delay:0.22s;margin-top:40px;display:flex;flex-direction:column;gap:20px;">
-        <div>
-          <div style="font-family:var(--serif);font-size:2.6rem;font-weight:700;color:var(--gold);line-height:1;" id="count-gpa">3.8</div>
-          <div style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--grey-mid);margin-top:6px;">GPA / 4.0</div>
-        </div>
-        <div>
-          <div style="font-family:var(--serif);font-size:2.6rem;font-weight:700;color:var(--gold);line-height:1;">Top 10%</div>
-          <div style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--grey-mid);margin-top:6px;">Grande École Rank</div>
-        </div>
-        <div>
-          <div style="font-family:var(--serif);font-size:2.6rem;font-weight:700;color:var(--gold);line-height:1;">5</div>
-          <div style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--grey-mid);margin-top:6px;">Languages Spoken</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Droite : mots-clés géants cycliques -->
-    <div class="about-keywords-col">
-      <div class="keywords-sticky" id="kwList">
-        <div class="kw-item active" data-kw>innovation.</div>
-        <div class="kw-item" data-kw>agentic <em>ai</em></div>
-        <div class="kw-item" data-kw>rag.</div>
-        <div class="kw-item" data-kw>data <em>strategy.</em></div>
-        <div class="kw-item" data-kw>embedded <em>ai.</em></div>
-        <div class="kw-item" data-kw>sovereignty.</div>
-        <div class="kw-item" data-kw>hardware.</div>
-      </div>
-    </div>
-
+  <div class="keywords-sticky" id="kwList">
+    <div class="kw-item active" data-kw>innovation.</div>
+    <div class="kw-item" data-kw>agentic <em>ai</em></div>
+    <div class="kw-item" data-kw>rag.</div>
+    <div class="kw-item" data-kw>data <em>strategy.</em></div>
+    <div class="kw-item" data-kw>embedded <em>ai.</em></div>
+    <div class="kw-item" data-kw>sovereignty.</div>
+    <div class="kw-item" data-kw>hardware.</div>
   </div>
 </section>
 
