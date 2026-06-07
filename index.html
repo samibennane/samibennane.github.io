@@ -143,6 +143,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      /* C'est ce gap qui permet d'écarter "SAMI" au-dessus et "BENNANE" en dessous */
+      gap: clamp(40px, 8vw, 100px); 
     }
 
     .blur-word {
@@ -150,7 +152,7 @@
       color: var(--gold);
       font-weight: 700;
       font-size: clamp(80px, 14vw, 210px);
-      line-height: 0.75;
+      line-height: 0.8;
       letter-spacing: -0.05em;
       text-transform: uppercase;
       white-space: nowrap;
@@ -545,12 +547,14 @@
 <div id="cursor-dot"></div>
 <div id="cursor-ring"></div>
 
+<!-- LOADER -->
 <div id="loader">
   <div class="loader-name" id="loaderName">Sami Bennane</div>
   <div class="loader-bar-track"><div class="loader-bar-fill" id="loaderBar"></div></div>
   <div class="loader-num" id="loaderNum">0</div>
 </div>
 
+<!-- SIDEBAR NAV -->
 <aside class="nav-sidebar">
   <div class="nav-logo">S.B</div>
   <nav style="display:flex;flex-direction:column;gap:8px;align-items:center;">
@@ -571,6 +575,7 @@
   </div>
 </aside>
 
+<!-- MOBILE NAV -->
 <nav class="mobile-nav">
   <a href="#home" class="active"><i class="ph ph-house"></i><span>Home</span></a>
   <a href="#about"><i class="ph ph-user"></i><span>About</span></a>
@@ -581,12 +586,14 @@
 
 <main>
 
+<!-- NEW HERO SECTION (Minimalist Centered) -->
 <section id="home" class="new-hero">
   <div class="hero-center-wrapper">
     <div class="hero-text-container">
       <div class="blur-word">SAMI</div>
       <div class="blur-word">BENNANE</div>
       
+      <!-- Profile Picture Pill -->
       <div class="hero-profile-pic">
         <img src="assets/images/photo_fei.png" alt="Sami Bennane">
       </div>
@@ -605,6 +612,7 @@
   </div>
 </section>
 
+<!-- ABOUT -->
 <section id="about" class="section">
   <div class="section-label" data-num="01">About</div>
   <div class="keywords-sticky" id="kwList">
@@ -618,6 +626,7 @@
   </div>
 </section>
 
+<!-- SKILLS -->
 <section id="skills" class="section">
   <div class="section-label" data-num="02">Expertise</div>
   <h2 class="section-title reveal-fade">Skills &amp;<br><em>Technologies.</em></h2>
@@ -656,6 +665,7 @@
   </div>
 </section>
 
+<!-- EDUCATION -->
 <section id="education" class="section">
   <div class="section-label" data-num="03">Background</div>
   <h2 class="section-title reveal-fade">Academic<br><em>Journey.</em></h2>
@@ -695,6 +705,7 @@
   </div>
 </section>
 
+<!-- EXPERIENCE -->
 <section id="experience" class="section">
   <div class="section-label" data-num="04">Career</div>
   <h2 class="section-title reveal-fade">Professional<br><em>Experience.</em></h2>
@@ -728,6 +739,7 @@
   </div>
 </section>
 
+<!-- VOLUNTEERING -->
 <section id="volunteering" class="section">
   <div class="section-label" data-num="05">Giving Back</div>
   <h2 class="section-title reveal-fade">Community &amp;<br><em>Volunteering.</em></h2>
@@ -761,6 +773,7 @@
   </div>
 </section>
 
+<!-- LANGUAGES -->
 <section id="languages" class="section">
   <div class="section-label" data-num="06">Multilingual</div>
   <h2 class="section-title reveal-fade">Language<br><em>Proficiency.</em></h2>
@@ -791,6 +804,7 @@
   </div>
 </section>
 
+<!-- PROJECTS -->
 <section id="portfolio" class="section">
   <div class="section-label" data-num="07">Work</div>
   <div class="projects-intro">
@@ -864,12 +878,14 @@
   </div>
 </section>
 
+<!-- QUOTE DIVIDER -->
 <div class="quote-divider reveal-fade">
   <p class="quote-text">
     "Engineering goes beyond execution, it requires understanding the world that technology shapes. <em>Technical mastery must meet strategic insight.</em>"
   </p>
 </div>
 
+<!-- ESSAYS -->
 <section id="essays" class="section">
   <div class="section-label" data-num="08">Thinking</div>
   <h2 class="section-title reveal-fade">Strategic Analysis<br>&amp; <em>Essays.</em></h2>
@@ -887,6 +903,7 @@
   </div>
 </section>
 
+<!-- IMAGE FEATURE -->
 <div class="img-feature">
   <div class="img-feature-inner reveal-scale">
     <img src="assets/images/micro.png" alt="Detail shot">
@@ -894,6 +911,7 @@
   </div>
 </div>
 
+<!-- CHATGPT EXPLAINER -->
 <section id="explainer" class="section">
   <div class="section-label" data-num="09">IA &amp; Pédagogie</div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;">
@@ -916,6 +934,7 @@
   </div>
 </section>
 
+<!-- CONTACT -->
 <section id="contact" class="section">
   <div class="section-label" data-num="10">Reach Out</div>
   <div class="contact-grid">
@@ -1128,6 +1147,105 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
     requestAnimationFrame(draw);
   }
   draw();
+})();
+
+/* PARALLAX */
+window.addEventListener('scroll',()=>{
+  const sy=window.scrollY;
+  const heroImg=document.querySelector('.hero-img-wrap img');
+  if(heroImg)heroImg.style.transform=`translateY(${sy*0.08}px)`;
+});
+</script>
+
+<!-- CHAT WIDGET -->
+<style>
+  #chat-widget{position:fixed;bottom:32px;right:32px;z-index:9998;display:flex;flex-direction:column;align-items:flex-end;gap:12px;font-family:var(--sans);}
+  #chat-toggle{width:56px;height:56px;border-radius:50%;background:var(--bg);border:1px solid var(--gold);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 0 24px rgba(201,169,110,0.2);transition:box-shadow 0.3s,transform 0.3s var(--ease-expo);position:relative;}
+  #chat-toggle:hover{box-shadow:0 0 36px rgba(201,169,110,0.4);transform:scale(1.06);}
+  #chat-toggle .sb-avatar{width:40px;height:40px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:0.85rem;font-weight:500;color:var(--gold);letter-spacing:0.05em;transition:background 0.3s;}
+  #chat-toggle:hover .sb-avatar{background:rgba(201,169,110,0.22);}
+  #chat-toggle .notif-dot{position:absolute;top:4px;right:4px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--bg);animation:pulseDot 2s ease-in-out infinite;display:none;}
+  @keyframes pulseDot{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.3);opacity:0.6;}}
+  #chat-panel{width:360px;max-height:520px;background:var(--surface);border:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;transform-origin:bottom right;transform:scale(0.85) translateY(16px);opacity:0;pointer-events:none;transition:transform 0.4s var(--ease-expo),opacity 0.3s;box-shadow:0 24px 60px rgba(0,0,0,0.6);}
+  #chat-panel.open{transform:scale(1) translateY(0);opacity:1;pointer-events:all;}
+  .chat-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0;}
+  .chat-header-avatar{width:36px;height:36px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:0.75rem;color:var(--gold);flex-shrink:0;}
+  .chat-header-info{flex:1;}
+  .chat-header-name{font-size:0.85rem;font-weight:500;color:var(--white);line-height:1.2;}
+  .chat-header-status{font-size:0.65rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:5px;}
+  .chat-header-status::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--gold);display:inline-block;}
+  .chat-close{background:none;border:none;color:var(--grey-mid);cursor:pointer;font-size:18px;padding:4px;line-height:1;transition:color 0.2s;}
+  .chat-close:hover{color:var(--white);}
+  #chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+  #chat-messages::-webkit-scrollbar{width:4px;}
+  #chat-messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+  .msg{max-width:82%;font-size:0.85rem;line-height:1.6;animation:msgIn 0.35s var(--ease-expo);}
+  @keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .msg.bot{align-self:flex-start;}.msg.user{align-self:flex-end;}
+  .msg-bubble{padding:10px 14px;}
+  .msg.bot .msg-bubble{background:var(--bg);border:1px solid var(--border);color:rgba(245,240,232,0.85);}
+  .msg.user .msg-bubble{background:var(--gold-dim);border:1px solid rgba(201,169,110,0.3);color:var(--white);}
+  .msg-sender{font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey-mid);margin-bottom:4px;}
+  .msg.user .msg-sender{text-align:right;}
+  .typing-indicator{display:flex;gap:4px;padding:12px 14px;background:var(--bg);border:1px solid var(--border);width:fit-content;align-self:flex-start;animation:msgIn 0.35s var(--ease-expo);}
+  .typing-indicator span{width:5px;height:5px;border-radius:50%;background:var(--gold);opacity:0.4;animation:typingDot 1.2s ease-in-out infinite;}
+  .typing-indicator span:nth-child(2){animation-delay:0.2s;}.typing-indicator span:nth-child(3){animation-delay:0.4s;}
+  @keyframes typingDot{0%,100%{opacity:0.4;transform:translateY(0)}50%{opacity:1;transform:translateY(-4px)}}
+  .suggestions{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;}
+  .suggestion-btn{font-size:0.7rem;color:var(--gold);border:1px solid var(--gold-dim);background:transparent;padding:4px 10px;cursor:pointer;letter-spacing:0.05em;transition:background 0.2s,border-color 0.2s;font-family:var(--sans);}
+  .suggestion-btn:hover{background:var(--gold-dim);border-color:var(--gold);}
+  .chat-input-area{padding:14px 16px;border-top:1px solid var(--border);display:flex;gap:10px;align-items:flex-end;flex-shrink:0;}
+  #chat-input{flex:1;background:var(--bg);border:1px solid var(--border);color:var(--white);font-family:var(--sans);font-size:0.85rem;padding:10px 14px;resize:none;outline:none;line-height:1.5;max-height:80px;transition:border-color 0.2s;}
+  #chat-input::placeholder{color:var(--grey-mid);}
+  #chat-input:focus{border-color:rgba(201,169,110,0.4);}
+  #chat-send{width:38px;height:38px;background:var(--gold);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--bg);font-size:16px;flex-shrink:0;transition:opacity 0.2s,transform 0.2s var(--ease-expo);}
+  #chat-send:hover{opacity:0.85;transform:scale(1.05);}
+  #chat-send:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+  @media(max-width:900px){#chat-widget{bottom:80px;right:16px;}#chat-panel{width:calc(100vw - 32px);max-width:360px;}}
+</style>
+
+<div id="chat-widget">
+  <div id="chat-panel">
+    <div class="chat-header">
+      <div class="chat-header-avatar">SB</div>
+      <div class="chat-header-info">
+        <div class="chat-header-name">Sami Bennane</div>
+        <div class="chat-header-status">AI Assistant</div>
+      </div>
+      <button class="chat-close" id="chat-close-btn"><i class="ph ph-x"></i></button>
+    </div>
+    <div id="chat-messages"></div>
+    <div class="chat-input-area">
+      <textarea id="chat-input" placeholder="Ask me anything about Sami..." rows="1" maxlength="500"></textarea>
+      <button id="chat-send"><i class="ph ph-paper-plane-tilt"></i></button>
+    </div>
+  </div>
+  <button id="chat-toggle">
+    <div class="sb-avatar">SB</div>
+    <div class="notif-dot" id="notif-dot"></div>
+  </button>
+</div>
+
+<script>
+(function(){
+  const API_URL="https://portfolio-bot-qq75.onrender.com/ask";
+  const WELCOME="Hi! I'm Sami's AI assistant. Ask me anything about his background, projects, or skills.";
+  const SUGGESTIONS=["What are his main skills?","Tell me about his projects","Where is he studying?","Is he open to internships?"];
+  let isOpen=false,isLoading=false,welcomeShown=false;
+  const panel=document.getElementById("chat-panel"),toggle=document.getElementById("chat-toggle"),closeBtn=document.getElementById("chat-close-btn");
+  const messages=document.getElementById("chat-messages"),input=document.getElementById("chat-input"),sendBtn=document.getElementById("chat-send"),notifDot=document.getElementById("notif-dot");
+  toggle.addEventListener("click",()=>{isOpen=!isOpen;panel.classList.toggle("open",isOpen);if(isOpen){notifDot.style.display="none";if(!welcomeShown){welcomeShown=true;addBot(WELCOME,SUGGESTIONS);}setTimeout(()=>input.focus(),400);}});
+  closeBtn.addEventListener("click",()=>{isOpen=false;panel.classList.remove("open");});
+  function addBot(text,sugg=[]){const w=document.createElement("div");w.className="msg bot";const s=document.createElement("div");s.className="msg-sender";s.textContent="Sami's Bot";const b=document.createElement("div");b.className="msg-bubble";b.textContent=text;w.appendChild(s);w.appendChild(b);if(sugg.length){const el=document.createElement("div");el.className="suggestions";sugg.forEach(q=>{const btn=document.createElement("button");btn.className="suggestion-btn";btn.textContent=q;btn.addEventListener("click",()=>{if(isLoading)return;send(q);el.remove();});el.appendChild(btn);});w.appendChild(el);}messages.appendChild(w);scroll();}
+  function addUser(text){const w=document.createElement("div");w.className="msg user";const s=document.createElement("div");s.className="msg-sender";s.textContent="You";const b=document.createElement("div");b.className="msg-bubble";b.textContent=text;w.appendChild(s);w.appendChild(b);messages.appendChild(w);scroll();}
+  function showTyping(){const el=document.createElement("div");el.className="typing-indicator";el.id="typing";el.innerHTML="<span></span><span></span><span></span>";messages.appendChild(el);scroll();}
+  function removeTyping(){const el=document.getElementById("typing");if(el)el.remove();}
+  function scroll(){messages.scrollTop=messages.scrollHeight;}
+  async function send(text){const q=text||input.value.trim();if(!q||isLoading)return;input.value="";input.style.height="auto";isLoading=true;sendBtn.disabled=true;addUser(q);showTyping();try{const res=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({question:q})});removeTyping();if(!res.ok)throw new Error(res.status);const data=await res.json();addBot(data.answer||"I couldn't find an answer to that.");}catch(err){removeTyping();addBot("Sorry, I'm having trouble connecting right now. Please try again later or contact Sami directly at sami.bennane@gmail.com");}finally{isLoading=false;sendBtn.disabled=false;input.focus();}}
+  sendBtn.addEventListener("click",()=>send());
+  input.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();send();}});
+  input.addEventListener("input",()=>{input.style.height="auto";input.style.height=Math.min(input.scrollHeight,80)+"px";});
+  setTimeout(()=>{if(!isOpen)notifDot.style.display="block";},3000);
 })();
 </script>
 
