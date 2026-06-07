@@ -206,60 +206,40 @@
     .section-title em { font-style: italic; color: var(--gold); }
 
     /* ══════════════════════════════════════════════════
-       ABOUT - KEYWORD SCROLL EFFECT
-       Inspiré de WordHeroPage (scroll-hero-section)
-       Mots-clés géants qui défilent verticalement,
-       le mot au centre s'illumine en or.
+       ABOUT - KINETIC TYPOGRAPHY
     ══════════════════════════════════════════════════ */
-    #about { overflow: hidden; }
-    #about .about-grid {
-      display: grid; grid-template-columns: 1fr 1.2fr;
-      gap: 80px; align-items: start;
+    #about {
+      position: relative;
+      /* Grille Deep Tech en arrière-plan */
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      background-position: center center;
     }
-    .about-intro-text {
-      position: sticky; top: 140px;
-    }
-    .about-intro-subtitle {
-      font-size: 1rem; color: rgba(245,240,232,0.5);
-      line-height: 1.8; font-weight: 300; max-width: 340px;
-      margin-top: 28px;
-    }
-    .about-intro-subtitle strong { color: var(--white); font-weight: 500; }
-    .about-intro-subtitle .hl { color: var(--gold); }
-
-    .keywords-sticky {
+    .keywords-auto-scroll {
       display: flex;
       flex-direction: column;
-      gap: 0;
-      padding-left: 0;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 20px 0 60px 0;
     }
     .kw-item {
-      font-family: var(--serif);
-      font-size: clamp(3rem, 7vw, 6rem);
+      font-family: var(--sans);
+      font-size: clamp(3rem, 7vw, 6.5rem);
       font-weight: 700;
-      line-height: 1.08;
-      letter-spacing: -0.02em;
-      color: rgba(245,240,232,0.07);
-      padding: 14px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      transition: color 0.5s var(--ease-expo), text-shadow 0.5s;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      color: rgba(255, 255, 255, 0.04); /* Fondu dans le fond noir */
+      transition: color 0.4s var(--ease-expo), text-shadow 0.4s var(--ease-expo), transform 0.4s var(--ease-expo);
       cursor: default;
       user-select: none;
-      position: relative;
     }
-    .kw-item:last-child { border-bottom: none; }
     .kw-item.active {
       color: var(--gold);
-      text-shadow: 0 0 80px rgba(201,169,110,0.2);
+      text-shadow: 0 0 60px rgba(201, 169, 110, 0.35);
+      transform: translateX(30px); /* Léger décalage dynamique */
     }
-    .kw-item em { font-style: italic; font-weight: 400; }
-    .kw-item::before {
-      content: '';
-      position: absolute; left: -24px; top: 50%; transform: translateY(-50%);
-      width: 0; height: 1px; background: var(--gold);
-      transition: width 0.4s var(--ease-expo);
-    }
-    .kw-item.active::before { width: 16px; }
 
     /* SKILLS */
     #skills .skills-grid {
@@ -441,14 +421,15 @@
       .hero-left { padding: 40px 24px; }
       .hero-right { display: none; }
       .section { padding: 80px 24px; }
-      #about .about-grid, #education .edu-grid, #experience .exp-layout, #volunteering .vol-layout, #portfolio .projects-intro, #contact .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+      #education .edu-grid, #experience .exp-layout, #volunteering .vol-layout, #portfolio .projects-intro, #contact .contact-grid { grid-template-columns: 1fr; gap: 40px; }
       #skills .skills-grid { grid-template-columns: 1fr; }
       #essays .essays-grid { grid-template-columns: 1fr; }
       .quote-divider { padding: 60px 24px; }
       .img-feature { padding: 0 24px 80px; }
       footer { flex-direction: column; gap: 12px; padding: 30px 24px; text-align: center; }
       #cursor-dot, #cursor-ring { display: none; }
-      .kw-item { font-size: clamp(1.8rem, 8vw, 3rem); }
+      .kw-item { transform: translateX(0); }
+      .kw-item.active { transform: translateX(10px); }
     }
   </style>
 </head>
@@ -457,14 +438,12 @@
 <div id="cursor-dot"></div>
 <div id="cursor-ring"></div>
 
-<!-- LOADER -->
 <div id="loader">
   <div class="loader-name" id="loaderName">Sami Bennane</div>
   <div class="loader-bar-track"><div class="loader-bar-fill" id="loaderBar"></div></div>
   <div class="loader-num" id="loaderNum">0</div>
 </div>
 
-<!-- SIDEBAR NAV -->
 <aside class="nav-sidebar">
   <div class="nav-logo">S.B</div>
   <nav style="display:flex;flex-direction:column;gap:8px;align-items:center;">
@@ -485,7 +464,6 @@
   </div>
 </aside>
 
-<!-- MOBILE NAV -->
 <nav class="mobile-nav">
   <a href="#home" class="active"><i class="ph ph-house"></i><span>Home</span></a>
   <a href="#about"><i class="ph ph-user"></i><span>About</span></a>
@@ -496,7 +474,6 @@
 
 <main>
 
-<!-- HERO -->
 <section id="home" class="hero">
   <canvas id="hero-canvas" style="position:absolute;inset:0;pointer-events:none;z-index:1;opacity:0.25;"></canvas>
   <div class="hero-left" style="position:relative;z-index:2;">
@@ -519,21 +496,20 @@
   <div class="hero-scroll-hint"><div class="scroll-line"></div><span>Scroll</span></div>
 </section>
 
-<!-- ABOUT — mots-clés géants uniquement -->
 <section id="about" class="section">
   <div class="section-label" data-num="01">About</div>
-  <div class="keywords-sticky" id="kwList">
-    <div class="kw-item active" data-kw>Innovation</div>
-    <div class="kw-item" data-kw>Agentic <em>AI</em></div>
-    <div class="kw-item" data-kw>RAG</div>
-    <div class="kw-item" data-kw>Data <em>strategy.</em></div>
-    <div class="kw-item" data-kw>Embedded <em>AI</em></div>
-    <div class="kw-item" data-kw>Sovereignty</div>
-    <div class="kw-item" data-kw>Hardware</div>
+  <div class="keywords-auto-scroll" id="kwList">
+    <div class="kw-item active">hardware.</div>
+    <div class="kw-item">embedded ai.</div>
+    <div class="kw-item">agentic ai.</div>
+    <div class="kw-item">rag.</div>
+    <div class="kw-item">data strategy.</div>
+    <div class="kw-item">cybersecurity.</div>
+    <div class="kw-item">sovereignty.</div>
+    <div class="kw-item">innovation.</div>
   </div>
 </section>
 
-<!-- SKILLS -->
 <section id="skills" class="section">
   <div class="section-label" data-num="02">Expertise</div>
   <h2 class="section-title reveal-fade">Skills &amp;<br><em>Technologies.</em></h2>
@@ -572,7 +548,6 @@
   </div>
 </section>
 
-<!-- EDUCATION -->
 <section id="education" class="section">
   <div class="section-label" data-num="03">Background</div>
   <h2 class="section-title reveal-fade">Academic<br><em>Journey.</em></h2>
@@ -612,7 +587,6 @@
   </div>
 </section>
 
-<!-- EXPERIENCE -->
 <section id="experience" class="section">
   <div class="section-label" data-num="04">Career</div>
   <h2 class="section-title reveal-fade">Professional<br><em>Experience.</em></h2>
@@ -646,7 +620,6 @@
   </div>
 </section>
 
-<!-- VOLUNTEERING -->
 <section id="volunteering" class="section">
   <div class="section-label" data-num="05">Giving Back</div>
   <h2 class="section-title reveal-fade">Community &amp;<br><em>Volunteering.</em></h2>
@@ -680,7 +653,6 @@
   </div>
 </section>
 
-<!-- LANGUAGES -->
 <section id="languages" class="section">
   <div class="section-label" data-num="06">Multilingual</div>
   <h2 class="section-title reveal-fade">Language<br><em>Proficiency.</em></h2>
@@ -711,7 +683,6 @@
   </div>
 </section>
 
-<!-- PROJECTS -->
 <section id="portfolio" class="section">
   <div class="section-label" data-num="07">Work</div>
   <div class="projects-intro">
@@ -785,14 +756,12 @@
   </div>
 </section>
 
-<!-- QUOTE DIVIDER -->
 <div class="quote-divider reveal-fade">
   <p class="quote-text">
     "Engineering goes beyond execution, it requires understanding the world that technology shapes. <em>Technical mastery must meet strategic insight.</em>"
   </p>
 </div>
 
-<!-- ESSAYS -->
 <section id="essays" class="section">
   <div class="section-label" data-num="08">Thinking</div>
   <h2 class="section-title reveal-fade">Strategic Analysis<br>&amp; <em>Essays.</em></h2>
@@ -810,7 +779,6 @@
   </div>
 </section>
 
-<!-- IMAGE FEATURE -->
 <div class="img-feature">
   <div class="img-feature-inner reveal-scale">
     <img src="assets/images/micro.png" alt="Detail shot">
@@ -818,7 +786,6 @@
   </div>
 </div>
 
-<!-- CHATGPT EXPLAINER -->
 <section id="explainer" class="section">
   <div class="section-label" data-num="09">IA &amp; Pédagogie</div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;">
@@ -841,7 +808,6 @@
   </div>
 </section>
 
-<!-- CONTACT -->
 <section id="contact" class="section">
   <div class="section-label" data-num="10">Reach Out</div>
   <div class="contact-grid">
@@ -979,36 +945,24 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 })();
 
 /* ═══════════════════════════════════════════════════
-   ABOUT KEYWORDS — IntersectionObserver
-   Le mot au centre de la fenêtre s'illumine en or.
-   Inspiré du pattern WordHeroPage (scroll-hero-section).
+   ABOUT KEYWORDS — AUTOMATIC LOOP ANIMATION
 ════════════════════════════════════════════════════ */
 (function(){
   const items=document.querySelectorAll('.kw-item');
   if(!items.length)return;
 
-  const io=new IntersectionObserver(entries=>{
-    entries.forEach(entry=>{
-      if(entry.isIntersecting){
-        // Désactiver tous
-        items.forEach(i=>i.classList.remove('active'));
-        // Activer celui-ci
-        entry.target.classList.add('active');
-      }
-    });
-  },{
-    rootMargin:'-35% 0px -35% 0px',
-    threshold:0
-  });
+  let currentIndex = 0;
 
-  items.forEach(item=>io.observe(item));
+  // Assure le nettoyage au lancement
+  items.forEach(i => i.classList.remove('active'));
+  items[currentIndex].classList.add('active');
 
-  // Fallback : activer le premier au load
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',()=>items[0].classList.add('active'));
-  } else {
-    items[0].classList.add('active');
-  }
+  // Boucle toutes les 1.2 secondes
+  setInterval(() => {
+    items[currentIndex].classList.remove('active');
+    currentIndex = (currentIndex + 1) % items.length;
+    items[currentIndex].classList.add('active');
+  }, 1200); 
 })();
 
 /* HERO CANVAS */
@@ -1036,8 +990,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   window.addEventListener('resize',()=>{resize();init();});
   resize();init();draw();
 })();
-
-/* NEXUS CANVAS (used in old version, kept for compatibility) */
 
 /* MINI TRANSFORMER CANVAS */
 (function(){
@@ -1085,7 +1037,6 @@ window.addEventListener('scroll',()=>{
 });
 </script>
 
-<!-- CHAT WIDGET -->
 <style>
   #chat-widget{position:fixed;bottom:32px;right:32px;z-index:9998;display:flex;flex-direction:column;align-items:flex-end;gap:12px;font-family:var(--sans);}
   #chat-toggle{width:56px;height:56px;border-radius:50%;background:var(--bg);border:1px solid var(--gold);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 0 24px rgba(201,169,110,0.2);transition:box-shadow 0.3s,transform 0.3s var(--ease-expo);position:relative;}
