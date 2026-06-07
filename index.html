@@ -257,39 +257,84 @@
     /* ABOUT */
     #about { overflow: hidden; }
 
-    .keywords-sticky {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      padding-left: 0;
-    }
-    .kw-item {
-      font-family: var(--serif);
-      font-size: clamp(3rem, 7vw, 6rem);
-      font-weight: 700;
-      line-height: 1.08;
-      letter-spacing: -0.02em;
-      color: rgba(245,240,232,0.07);
-      padding: 14px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      transition: color 0.5s var(--ease-expo), text-shadow 0.5s;
-      cursor: default;
-      user-select: none;
+    /* ABOUT — un mot par écran, défilement vertical */
+    #about {
       position: relative;
+      /* hauteur = section-label + N mots * 100vh */
+      /* calculée dynamiquement en JS */
     }
-    .kw-item:last-child { border-bottom: none; }
-    .kw-item.active {
-      color: var(--gold);
-      text-shadow: 0 0 80px rgba(201,169,110,0.2);
+    #about .section-label { position: relative; z-index: 2; }
+
+    #kw-stage {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .kw-item {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) translateY(60px);
+      font-family: var(--serif);
+      font-size: clamp(3.5rem, 10vw, 9rem);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      color: rgba(245,240,232,0.06);
+      text-align: center;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.55s var(--ease-expo),
+                  transform 0.6s var(--ease-expo),
+                  color 0.55s,
+                  text-shadow 0.55s;
+      pointer-events: none;
+      user-select: none;
+      width: 90vw;
     }
     .kw-item em { font-style: italic; font-weight: 400; }
-    .kw-item::before {
-      content: '';
-      position: absolute; left: -24px; top: 50%; transform: translateY(-50%);
-      width: 0; height: 1px; background: var(--gold);
-      transition: width 0.4s var(--ease-expo);
+
+    /* Mot actif : centré, en or, pleine opacité */
+    .kw-item.active {
+      opacity: 1;
+      color: var(--gold);
+      transform: translate(-50%, -50%) translateY(0);
+      text-shadow: 0 0 120px rgba(201,169,110,0.18);
     }
-    .kw-item.active::before { width: 16px; }
+    /* Mot précédent : monte et disparaît */
+    .kw-item.prev {
+      opacity: 0;
+      color: rgba(245,240,232,0.15);
+      transform: translate(-50%, -50%) translateY(-60px);
+    }
+    /* Mot suivant : en attente en bas */
+    .kw-item.next {
+      opacity: 0;
+      transform: translate(-50%, -50%) translateY(60px);
+    }
+
+    /* Numéro du mot actif (petit indicateur) */
+    #kw-counter {
+      position: absolute;
+      bottom: 40px; left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--grey-mid);
+      display: flex; gap: 6px; align-items: center;
+    }
+    .kw-dot {
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--grey-mid);
+      transition: background 0.3s, transform 0.3s;
+    }
+    .kw-dot.active { background: var(--gold); transform: scale(1.4); }
 
     /* SKILLS */
     #skills .skills-grid {
@@ -724,18 +769,26 @@
   </div>
 </section>
 
-<!-- ABOUT — mots-clés géants uniquement -->
-<section id="about" class="section">
-  <div class="section-label" data-num="01">About</div>
-  <div class="keywords-sticky" id="kwList">
-    <div class="kw-item active" data-kw>innovation.</div>
-    <div class="kw-item" data-kw>agentic <em>ai</em></div>
-    <div class="kw-item" data-kw>rag.</div>
-    <div class="kw-item" data-kw>data <em>strategy.</em></div>
-    <div class="kw-item" data-kw>embedded <em>ai.</em></div>
-    <div class="kw-item" data-kw>sovereignty.</div>
-    <div class="kw-item" data-kw>hardware.</div>
+<!-- ABOUT — un mot par écran de scroll -->
+<section id="about">
+  <div class="section-label" data-num="01" style="padding:140px 80px 0;position:relative;z-index:2;">About</div>
+
+  <!-- Stage sticky : affiche un mot à la fois -->
+  <div id="kw-stage">
+    <div class="kw-item active">innovation.</div>
+    <div class="kw-item next">agentic <em>ai</em></div>
+    <div class="kw-item next">rag.</div>
+    <div class="kw-item next">data <em>strategy.</em></div>
+    <div class="kw-item next">embedded <em>ai.</em></div>
+    <div class="kw-item next">sovereignty.</div>
+    <div class="kw-item next">hardware.</div>
+
+    <!-- Indicateurs de progression (dots) -->
+    <div id="kw-counter"></div>
   </div>
+
+  <!-- Spacer : crée le scroll nécessaire (7 mots × 100vh) -->
+  <div id="kw-spacer"></div>
 </section>
 
 <!-- SKILLS : Scroll-Morph Arc (inspiré IntroAnimation) -->
@@ -1198,45 +1251,61 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 })();
 
 /* ═══════════════════════════════════════════════════
-   ABOUT KEYWORDS — Scroll-driven lent
-   Chaque mot occupe 300px de scroll dans la section.
+   ABOUT — Un mot par écran, scroll-driven
+   Chaque 100vh de scroll = un nouveau mot
 ════════════════════════════════════════════════════ */
 (function(){
-  const section = document.getElementById('about');
-  const items   = [...document.querySelectorAll('.kw-item')];
+  const section  = document.getElementById('about');
+  const stage    = document.getElementById('kw-stage');
+  const spacerEl = document.getElementById('kw-spacer');
+  const counter  = document.getElementById('kw-counter');
+  const items    = [...section.querySelectorAll('.kw-item')];
   if (!section || !items.length) return;
 
-  const PX_PER_WORD = 300;
-  const N = items.length;
+  const N         = items.length;
+  const VH        = window.innerHeight;
+  const SCROLL_PX = VH; // 1 mot = 1 viewport de scroll
 
-  // Spacer pour créer du scroll dans la section
-  const spacer = document.createElement('div');
-  spacer.style.cssText = 'height:' + (N * PX_PER_WORD) + 'px;pointer-events:none;';
-  section.appendChild(spacer);
+  // Fixer la hauteur du spacer
+  spacerEl.style.height = (N * SCROLL_PX) + 'px';
 
-  // Sticky sur la liste de mots
-  const kwList = document.getElementById('kwList');
-  if (kwList) {
-    kwList.style.position = 'sticky';
-    kwList.style.top      = '120px';
+  // Créer les dots indicateurs
+  items.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'kw-dot' + (i === 0 ? ' active' : '');
+    counter.appendChild(dot);
+  });
+  const dots = [...counter.querySelectorAll('.kw-dot')];
+
+  let currentIdx = 0;
+
+  function setActive(idx) {
+    if (idx === currentIdx && items[idx].classList.contains('active')) return;
+
+    items.forEach((el, i) => {
+      el.classList.remove('active', 'prev', 'next');
+      if (i < idx)      el.classList.add('prev');
+      else if (i > idx) el.classList.add('next');
+      else              el.classList.add('active');
+    });
+
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    currentIdx = idx;
   }
-
-  let activeIdx = 0;
-  items[0].classList.add('active');
 
   function onScroll() {
     const rect     = section.getBoundingClientRect();
-    const scrolled = -rect.top;
-    if (scrolled < 0) return;
-    const idx = Math.min(Math.floor(scrolled / PX_PER_WORD), N - 1);
-    if (idx !== activeIdx) {
-      items[activeIdx].classList.remove('active');
-      items[idx].classList.add('active');
-      activeIdx = idx;
-    }
+    const scrolled = -rect.top;           // px scrollés depuis le haut de la section
+    if (scrolled < 0) { setActive(0); return; }
+
+    const idx = Math.min(Math.floor(scrolled / SCROLL_PX), N - 1);
+    setActive(idx);
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', () => {
+    spacerEl.style.height = (N * window.innerHeight) + 'px';
+  });
   onScroll();
 })();
 
@@ -1466,32 +1535,46 @@ window.addEventListener('scroll',()=>{
   const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
   const ease  = t => 1 - Math.pow(1 - t, 3);
 
-  // ── Position calculator : scatter → arc (phase unique) ──
+  // ── Skills : arc s'ouvre (0→80% scroll) puis se resserre
+  //    en cercle compact centré (80→100% scroll)
   function arcTarget(i, spreadProgress, W, H) {
     const isMobile  = W < 768;
     const SCROLL_H  = isMobile ? 1200 : 2200;
     const rect      = spacer.getBoundingClientRect();
-    const scrolled  = clamp(-rect.top / SCROLL_H, 0, 1);
+    const rawScroll = clamp(-rect.top / SCROLL_H, 0, 1);
 
+    // Phase 1 : ouverture de l'arc (0 → 80%)
+    const p1 = ease(clamp(rawScroll / 0.8, 0, 1));
+    // Phase 2 : resserrement en cercle (80% → 100%)
+    const p2 = ease(clamp((rawScroll - 0.8) / 0.2, 0, 1));
+
+    // ── Arc (phase 1) ──
     const baseR     = Math.min(W, H * 1.5);
     const arcRadius = baseR * (isMobile ? 1.35 : 1.05);
     const apexY     = H * (isMobile ? 0.3 : 0.22);
     const centerY   = apexY + arcRadius;
+    const spread    = lerp(30, isMobile ? 110 : 160, p1);
+    const startAng  = -90 - spread / 2;
+    const step      = spread / (N - 1);
+    const arcAng    = startAng + i * step;
+    const arcRad    = arcAng * Math.PI / 180;
+    const ax        = Math.cos(arcRad) * arcRadius + W / 2;
+    const ay        = Math.sin(arcRad) * arcRadius + centerY;
 
-    // Arc s'ouvre de 30° à 150° selon le scroll
-    const spread   = lerp(30, isMobile ? 90 : 150, ease(scrolled));
-    const startAng = -90 - spread / 2;
-    const step     = spread / (N - 1);
-    const ang      = startAng + i * step;
-    const rad      = ang * Math.PI / 180;
+    // ── Cercle compact centré (phase 2) ──
+    const circR   = Math.min(W, H) * (isMobile ? 0.32 : 0.30);
+    const circAng = -90 + (i / N) * 360;
+    const circRad = circAng * Math.PI / 180;
+    const cx      = Math.cos(circRad) * circR + W / 2;
+    const cy      = Math.sin(circRad) * circR + H / 2;
 
-    return {
-      x: Math.cos(rad) * arcRadius + W / 2,
-      y: Math.sin(rad) * arcRadius + centerY,
-      r: ang + 90,
-      s: isMobile ? 1.3 : 1.6,
-      o: 1,
-    };
+    // Interpoler arc → cercle
+    const x    = lerp(ax, cx, p2);
+    const y    = lerp(ay, cy, p2);
+    const ang  = lerp(arcAng + 90, circAng + 90, p2);
+    const scl  = lerp(isMobile ? 1.3 : 1.6, isMobile ? 0.9 : 1.0, p2);
+
+    return { x, y, r: ang, s: scl, o: 1 };
   }
 
   // ── Render loop ──
