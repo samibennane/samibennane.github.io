@@ -479,6 +479,190 @@
 
     
 
+
+    /* ══════════════════════════════════════════════════
+       PROJECTS — Carousel rotatif (ImageCarouselHero)
+       Images des projets en cercle, rotation continue,
+       clic pour voir les détails.
+    ══════════════════════════════════════════════════ */
+    .projects-carousel-wrap {
+      position: relative;
+      width: 100%;
+      height: 520px;
+      margin: 60px 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1200px;
+    }
+
+    .proj-orbit {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      transform-style: preserve-3d;
+    }
+
+    .proj-card {
+      position: absolute;
+      width: 140px;
+      height: 175px;
+      top: 50%; left: 50%;
+      margin: -87px 0 0 -70px;
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transform-style: preserve-3d;
+      transition: transform 0.15s ease, box-shadow 0.3s;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      will-change: transform;
+    }
+
+    .proj-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s var(--ease-expo), filter 0.3s;
+      filter: grayscale(20%);
+    }
+
+    .proj-card:hover img {
+      transform: scale(1.08);
+      filter: grayscale(0%);
+    }
+
+    /* Overlay gold au hover */
+    .proj-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        transparent 40%,
+        rgba(10,10,10,0.85) 100%
+      );
+      opacity: 0.7;
+      transition: opacity 0.3s;
+    }
+    .proj-card:hover::after { opacity: 0.4; }
+
+    /* Shine effect */
+    .proj-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(201,169,110,0.18) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 2;
+    }
+    .proj-card:hover::before { opacity: 1; }
+
+    /* Label projet sur la card */
+    .proj-card-label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 10px 12px 12px;
+      z-index: 3;
+      pointer-events: none;
+    }
+    .proj-card-name {
+      font-family: var(--serif);
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: var(--white);
+      line-height: 1.2;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .proj-card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px;
+      margin-top: 5px;
+    }
+    .proj-card-tag {
+      font-size: 0.5rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(201,169,110,0.4);
+      padding: 1px 5px;
+      border-radius: 2px;
+    }
+
+    /* Panneau détail (droite) */
+    .proj-detail-panel {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 340px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s var(--ease-expo), transform 0.4s var(--ease-expo);
+      transform: translateY(-50%) translateX(20px);
+    }
+    .proj-detail-panel.visible {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(-50%) translateX(0);
+    }
+    .proj-detail-title {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+    .proj-detail-desc {
+      font-size: 0.85rem;
+      color: var(--grey);
+      line-height: 1.7;
+      font-weight: 300;
+      margin-bottom: 16px;
+    }
+    .proj-detail-tags {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px;
+    }
+    .proj-detail-tag {
+      font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--gold); border: 1px solid rgba(201,169,110,0.3);
+      padding: 3px 9px;
+    }
+    .proj-detail-links { display: flex; gap: 10px; flex-wrap: wrap; }
+    .proj-detail-link {
+      font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--gold); border: 1px solid var(--gold-dim);
+      padding: 6px 14px; display: inline-flex; align-items: center; gap: 5px;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .proj-detail-link:hover { background: var(--gold-dim); border-color: var(--gold); }
+    .proj-detail-link.sec { color: var(--grey); border-color: var(--border); }
+    .proj-detail-link.sec:hover { color: var(--white); }
+
+    /* Nav dots en bas */
+    .proj-nav {
+      display: flex; gap: 8px; justify-content: center; margin-top: 24px;
+    }
+    .proj-nav-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--grey-mid); cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+      border: none; padding: 0;
+    }
+    .proj-nav-dot.active { background: var(--gold); transform: scale(1.4); }
+
+    @media (max-width: 900px) {
+      .projects-carousel-wrap { height: 380px; flex-direction: column; }
+      .proj-orbit { width: 280px; height: 280px; }
+      .proj-card { width: 100px; height: 126px; margin: -63px 0 0 -50px; }
+      .proj-detail-panel { position: relative; right: auto; top: auto; transform: none; width: 100%; margin-top: 16px; }
+      .proj-detail-panel.visible { transform: none; }
+    }
   </style>
 </head>
 <body>
@@ -746,75 +930,35 @@
 <!-- PROJECTS -->
 <section id="portfolio" class="section">
   <div class="section-label" data-num="07">Work</div>
-  <div class="projects-intro">
-    <h2 class="section-title reveal-fade">Selected<br><em>Projects.</em></h2>
-    <div class="reveal-fade" style="transition-delay:0.1s">
-      <p>A curated selection of academic and personal projects demonstrating technical expertise and a passion for solving complex challenges.</p>
-      <a href="https://github.com/samibennane" target="_blank" class="gh-link" style="margin-top:24px;">View source on GitHub <i class="ph ph-arrow-right"></i></a>
+  <h2 class="section-title reveal-fade">Selected<br><em>Projects.</em></h2>
+
+  <div class="projects-carousel-wrap reveal-fade" style="transition-delay:0.15s" id="projCarouselWrap">
+
+    <!-- Orbite des cards -->
+    <div class="proj-orbit" id="projOrbit">
+      <!-- Cards injectées par JS -->
     </div>
+
+    <!-- Panneau détail -->
+    <div class="proj-detail-panel" id="projDetail">
+      <h3 class="proj-detail-title" id="projDetailTitle"></h3>
+      <p class="proj-detail-desc" id="projDetailDesc"></p>
+      <div class="proj-detail-tags" id="projDetailTags"></div>
+      <div class="proj-detail-links" id="projDetailLinks"></div>
+    </div>
+
   </div>
-  <div class="project-list reveal-fade" style="transition-delay:0.15s">
-    <div class="project-row">
-      <div class="pr-num">01</div>
-      <div class="pr-main">
-        <h3 class="pr-title">RNN vs CNN for Image Classification</h3>
-        <div class="pr-tags"><span class="pr-tag">Deep Learning</span><span class="pr-tag">Python</span><span class="pr-tag">Computer Vision</span></div>
-        <p class="pr-desc">Comparative study evaluating RNNs versus CNNs on image data, accuracy, training behavior, and computational efficiency.</p>
-        <div class="pr-links">
-          <a href="assets/docs/README.txt" target="_blank" class="pr-link">Readme <i class="ph ph-arrow-up-right"></i></a>
-          <a href="assets/docs/RNN vs CNN.ipynb" target="_blank" class="pr-link sec">Notebook</a>
-        </div>
-      </div>
-      <div class="pr-img-wrap"><img src="assets/images/rnnvscnn.png" alt="RNN vs CNN"></div>
-    </div>
-    <div class="project-row">
-      <div class="pr-num">02</div>
-      <div class="pr-main">
-        <h3 class="pr-title">Ligue 1 Match Prediction</h3>
-        <div class="pr-tags"><span class="pr-tag">Python</span><span class="pr-tag">Pandas</span><span class="pr-tag">Mathematics</span></div>
-        <p class="pr-desc">ML project predicting football outcomes using mathematical foundations rather than just libraries.</p>
-        <div class="pr-links">
-          <a href="assets/docs/french_league_predictions_sami_bennane.pdf" target="_blank" class="pr-link">Report <i class="ph ph-arrow-up-right"></i></a>
-          <a href="assets/docs/ligue1.py" target="_blank" class="pr-link sec">Python</a>
-          <a href="assets/docs/l1c.csv" target="_blank" class="pr-link sec">Dataset</a>
-        </div>
-      </div>
-      <div class="pr-img-wrap"><img src="assets/images/ligue1.png" alt="Ligue 1"></div>
-    </div>
-    <div class="project-row">
-      <div class="pr-num">03</div>
-      <div class="pr-main">
-        <h3 class="pr-title">Acoustic Transduction</h3>
-        <div class="pr-tags"><span class="pr-tag">Analog</span><span class="pr-tag">Signal Processing</span><span class="pr-tag">Bode</span></div>
-        <p class="pr-desc">Analog signal chain design for sound capture &amp; FFT validation. Bode analysis and frequency response characterisation.</p>
-        <div class="pr-links"><a href="assets/docs/pcp.pdf" target="_blank" class="pr-link">View Project <i class="ph ph-arrow-up-right"></i></a></div>
-      </div>
-      <div class="pr-img-wrap"><img src="assets/images/pcp.png" alt="Acoustic Transduction"></div>
-    </div>
-    <div class="project-row">
-      <div class="pr-num">04</div>
-      <div class="pr-main">
-        <h3 class="pr-title">Ascon-128 Cryptography</h3>
-        <div class="pr-tags"><span class="pr-tag">SystemVerilog</span><span class="pr-tag">ModelSim</span><span class="pr-tag">Crypto</span></div>
-        <p class="pr-desc">Hardware implementation of lightweight encryption (AEAD128) on FPGA using SystemVerilog.</p>
-        <div class="pr-links"><a href="assets/docs/sami_bennane_rapport_pcsn.pdf" target="_blank" class="pr-link">View Report <i class="ph ph-arrow-up-right"></i></a></div>
-      </div>
-      <div class="pr-img-wrap"><img src="assets/images/ascon.png" alt="Ascon-128"></div>
-    </div>
-    <div class="project-row">
-      <div class="pr-num">05</div>
-      <div class="pr-main">
-        <h3 class="pr-title">Autonomous STM32 Robot</h3>
-        <div class="pr-tags"><span class="pr-tag">C</span><span class="pr-tag">STM32</span><span class="pr-tag">HAL</span><span class="pr-tag">PID</span></div>
-        <p class="pr-desc">Autonomous mobile robot with obstacle detection (IR), PID speed control, and state machine architecture.</p>
-        <div class="pr-links">
-          <a href="assets/docs/robot.pdf" target="_blank" class="pr-link">Report <i class="ph ph-arrow-up-right"></i></a>
-          <a href="assets/docs/robot.c" target="_blank" class="pr-link sec">C Code</a>
-        </div>
-      </div>
-      <div class="pr-img-wrap"><img src="assets/images/robot.png" alt="STM32 Robot"></div>
-    </div>
+
+  <!-- Dots navigation -->
+  <div class="proj-nav" id="projNav"></div>
+
+  <!-- Lien GitHub -->
+  <div style="text-align:center;margin-top:32px;" class="reveal-fade" style="transition-delay:0.2s">
+    <a href="https://github.com/samibennane" target="_blank" class="gh-link">
+      View source on GitHub <i class="ph ph-arrow-right"></i>
+    </a>
   </div>
+
 </section>
 
 <!-- QUOTE DIVIDER -->
@@ -1173,6 +1317,185 @@ window.addEventListener('scroll',()=>{
 </div>
 
 <script>
+
+/* ═══════════════════════════════════════════════════
+   PROJECTS CAROUSEL — Rotation continue + clic détail
+   Inspiré de ImageCarouselHero (ai-image-generator-hero)
+   Adapté vanilla JS, images des projets réels.
+════════════════════════════════════════════════════ */
+(function(){
+  const orbit      = document.getElementById('projOrbit');
+  const detailPanel= document.getElementById('projDetail');
+  const detailTitle= document.getElementById('projDetailTitle');
+  const detailDesc = document.getElementById('projDetailDesc');
+  const detailTags = document.getElementById('projDetailTags');
+  const detailLinks= document.getElementById('projDetailLinks');
+  const nav        = document.getElementById('projNav');
+  const wrap       = document.getElementById('projCarouselWrap');
+  if (!orbit) return;
+
+  // ── Données des projets ──
+  const PROJECTS = [
+    {
+      name: 'RNN vs CNN for Image Classification',
+      img:  'assets/images/rnnvscnn.png',
+      desc: 'Comparative study evaluating RNNs versus CNNs on image data, accuracy, training behavior, and computational efficiency.',
+      tags: ['Deep Learning', 'Python', 'Computer Vision'],
+      links: [
+        { label: 'Readme', url: 'assets/docs/README.txt', primary: true },
+        { label: 'Notebook', url: 'assets/docs/RNN vs CNN.ipynb', primary: false },
+      ],
+      rotation: -12,
+    },
+    {
+      name: 'Ligue 1 Match Prediction',
+      img:  'assets/images/ligue1.png',
+      desc: 'ML project predicting football outcomes using mathematical foundations rather than just libraries.',
+      tags: ['Python', 'Pandas', 'Mathematics'],
+      links: [
+        { label: 'Report', url: 'assets/docs/french_league_predictions_sami_bennane.pdf', primary: true },
+        { label: 'Python', url: 'assets/docs/ligue1.py', primary: false },
+      ],
+      rotation: 8,
+    },
+    {
+      name: 'Acoustic Transduction',
+      img:  'assets/images/pcp.png',
+      desc: 'Analog signal chain design for sound capture & FFT validation. Bode analysis and frequency response characterisation.',
+      tags: ['Analog', 'Signal Processing', 'Bode'],
+      links: [
+        { label: 'View Project', url: 'assets/docs/pcp.pdf', primary: true },
+      ],
+      rotation: -5,
+    },
+    {
+      name: 'Ascon-128 Cryptography',
+      img:  'assets/images/ascon.png',
+      desc: 'Hardware implementation of lightweight encryption (AEAD128) on FPGA using SystemVerilog.',
+      tags: ['SystemVerilog', 'ModelSim', 'Crypto'],
+      links: [
+        { label: 'View Report', url: 'assets/docs/sami_bennane_rapport_pcsn.pdf', primary: true },
+      ],
+      rotation: 15,
+    },
+    {
+      name: 'Autonomous STM32 Robot',
+      img:  'assets/images/robot.png',
+      desc: 'Autonomous mobile robot with obstacle detection (IR), PID speed control, and state machine architecture.',
+      tags: ['C', 'STM32', 'HAL', 'PID'],
+      links: [
+        { label: 'Report', url: 'assets/docs/robot.pdf', primary: true },
+        { label: 'C Code', url: 'assets/docs/robot.c', primary: false },
+      ],
+      rotation: -8,
+    },
+  ];
+
+  const N = PROJECTS.length;
+  let angles = PROJECTS.map((_, i) => (i / N) * 360); // angles initiaux
+  let animId = null;
+  let activeIdx = -1;
+  let paused = false;
+  let mouseX = 0.5, mouseY = 0.5;
+
+  // ── Créer les cards ──
+  const cards = PROJECTS.map((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'proj-card';
+    card.innerHTML = `
+      <img src="${p.img}" alt="${p.name}" loading="lazy">
+      <div class="proj-card-label">
+        <div class="proj-card-name">${p.name}</div>
+        <div class="proj-card-tags">${p.tags.slice(0,2).map(t=>`<span class="proj-card-tag">${t}</span>`).join('')}</div>
+      </div>`;
+    card.addEventListener('click', () => selectProject(i));
+    orbit.appendChild(card);
+    return card;
+  });
+
+  // ── Créer les dots ──
+  const dots = PROJECTS.map((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'proj-nav-dot';
+    dot.addEventListener('click', () => selectProject(i));
+    nav.appendChild(dot);
+    return dot;
+  });
+
+  // ── Sélectionner un projet ──
+  function selectProject(idx) {
+    activeIdx = idx === activeIdx ? -1 : idx;
+    const p = PROJECTS[activeIdx] || null;
+
+    // Mettre à jour le panneau
+    if (p) {
+      detailTitle.textContent = p.name;
+      detailDesc.textContent  = p.desc;
+      detailTags.innerHTML    = p.tags.map(t => `<span class="proj-detail-tag">${t}</span>`).join('');
+      detailLinks.innerHTML   = p.links.map(l =>
+        `<a href="${l.url}" target="_blank" class="proj-detail-link${l.primary ? '' : ' sec'}">${l.label} <i class="ph ph-arrow-up-right"></i></a>`
+      ).join('');
+      detailPanel.classList.add('visible');
+    } else {
+      detailPanel.classList.remove('visible');
+    }
+
+    // Dots
+    dots.forEach((d, i) => d.classList.toggle('active', i === activeIdx));
+    cards.forEach((c, i) => {
+      c.style.zIndex = i === activeIdx ? '10' : '1';
+      c.style.boxShadow = i === activeIdx
+        ? '0 0 0 2px var(--gold), 0 12px 40px rgba(201,169,110,0.3)'
+        : '0 8px 32px rgba(0,0,0,0.5)';
+    });
+  }
+
+  // ── Mouse parallax ──
+  if (wrap) {
+    wrap.addEventListener('mousemove', e => {
+      const r = wrap.getBoundingClientRect();
+      mouseX = (e.clientX - r.left) / r.width;
+      mouseY = (e.clientY - r.top)  / r.height;
+    });
+    wrap.addEventListener('mouseleave', () => { mouseX = 0.5; mouseY = 0.5; });
+    wrap.addEventListener('mouseenter', () => { paused = true; });
+    wrap.addEventListener('mouseleave', () => { paused = false; });
+  }
+
+  // ── Render loop ──
+  const RADIUS = 170;
+  const SPEED  = 0.25; // degrés par frame
+
+  function render() {
+    // Avancer la rotation si pas en pause
+    if (!paused) {
+      angles = angles.map(a => (a + SPEED) % 360);
+    }
+
+    // Parallax 3D depuis la souris
+    const rotX = (mouseY - 0.5) * 18;
+    const rotY = (mouseX - 0.5) * 18;
+
+    cards.forEach((card, i) => {
+      const rad = angles[i] * Math.PI / 180;
+      const x   = Math.cos(rad) * RADIUS;
+      const y   = Math.sin(rad) * RADIUS;
+      const p   = PROJECTS[i];
+
+      card.style.transform = `
+        translate(${x}px, ${y}px)
+        rotateX(${rotX}deg)
+        rotateY(${rotY}deg)
+        rotateZ(${p.rotation}deg)
+      `;
+    });
+
+    animId = requestAnimationFrame(render);
+  }
+
+  render();
+})();
+
 (function(){
   const API_URL="https://portfolio-bot-qq75.onrender.com/ask";
   const WELCOME="Hi! I'm Sami's AI assistant. Ask me anything about his background, projects, or skills.";
