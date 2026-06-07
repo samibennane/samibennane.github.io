@@ -111,37 +111,86 @@
     /* MAIN */
     main { margin-left: 72px; }
 
-    /* HERO */
+    /* HERO — Centré avec photo au milieu du nom */
     .hero {
       height: 100vh; position: relative;
-      display: grid; grid-template-columns: 1fr 1fr;
-      align-items: center; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
     }
-    .hero-left {
-      padding: 0 60px 0 80px;
-      display: flex; flex-direction: column; gap: 0; z-index: 2;
+    .hero-center-wrapper {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%; padding: 0 16px;
+      display: flex; flex-direction: column; align-items: center;
     }
-    .hero-eyebrow {
-      font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase;
-      color: var(--gold); font-weight: 400;
-      display: flex; align-items: center; gap: 12px; margin-bottom: 28px;
+    .hero-text-container {
+      position: relative; text-align: center;
+      display: flex; flex-direction: column; align-items: center;
+      gap: clamp(40px, 8vw, 100px);
     }
-    .hero-eyebrow::before { content: ''; width: 40px; height: 1px; background: var(--gold); }
-    .hero-name {
-      font-family: var(--serif); font-size: clamp(3.5rem, 6vw, 5.5rem);
-      font-weight: 400; line-height: 1.05; letter-spacing: -0.01em;
-      color: var(--white); margin-bottom: 10px;
+    .blur-word {
+      font-family: 'Playfair Display', Georgia, serif;
+      color: var(--gold); font-weight: 700;
+      font-size: clamp(80px, 14vw, 180px);
+      line-height: 0.85; letter-spacing: -0.03em;
+      text-transform: uppercase; white-space: nowrap;
+      filter: blur(10px); opacity: 0; transform: translateY(-20px);
+      transition: filter 0.9s ease-out, opacity 0.9s ease-out, transform 0.9s ease-out;
     }
-    .hero-name em { font-style: italic; color: var(--gold); display: block; }
-    .hero-role {
-      font-size: 0.85rem; letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--grey); font-weight: 300; margin-bottom: 40px;
+    .blur-word.in-view { filter: blur(0px); opacity: 1; transform: translateY(0); }
+    .hero-profile-pic {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10; border-radius: 9999px; overflow: hidden;
+      box-shadow: 0 0 80px 40px rgba(10,10,10,0.98);
+      width: clamp(65px, 12vw, 120px);
+      height: clamp(110px, 20vw, 200px);
+      transition: transform 0.4s var(--ease-expo);
     }
-    .hero-desc {
-      font-size: 1rem; color: var(--grey); line-height: 1.8;
-      max-width: 420px; font-weight: 300; margin-bottom: 48px;
+    .hero-profile-pic:hover { transform: translate(-50%, -50%) scale(1.08); }
+    .hero-profile-pic img {
+      width: 100%; height: 100%; object-fit: cover;
+      object-position: 50% 15%;
+      filter: grayscale(10%) contrast(1.05);
     }
-    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+    .hero-tagline-wrapper {
+      position: absolute; bottom: 10vh; left: 50%;
+      transform: translateX(-50%); width: 100%; padding: 0 24px;
+      text-align: center; display: flex; flex-direction: column;
+      align-items: center; gap: 20px;
+    }
+    .blur-tagline {
+      font-size: clamp(14px, 2vw, 18px); color: var(--grey);
+      filter: blur(8px); opacity: 0; transform: translateY(-10px);
+      transition: filter 0.8s ease-out 0.3s, opacity 0.8s ease-out 0.3s, transform 0.8s ease-out 0.3s;
+      letter-spacing: 0.05em;
+    }
+    .blur-tagline.in-view { filter: blur(0px); opacity: 1; transform: translateY(0); }
+    .hero-resume-btn {
+      padding: 10px 24px; background: var(--gold-dim); color: var(--gold);
+      border: 1px solid rgba(201,169,110,0.3); font-family: var(--sans);
+      font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; border-radius: 4px;
+      display: inline-flex; align-items: center; gap: 8px;
+      opacity: 0; transform: translateY(10px);
+      transition: all 0.4s var(--ease-expo) 0.5s;
+    }
+    .hero-resume-btn.in-view { opacity: 1; transform: translateY(0); }
+    .hero-resume-btn:hover { background: var(--gold); color: var(--bg); transform: translateY(-2px); }
+    .hero-scroll-indicator {
+      position: absolute; bottom: 3vh; left: 50%; transform: translateX(-50%);
+      color: var(--grey-mid); font-size: 22px;
+      animation: bounce 2.4s infinite; opacity: 0; transition: opacity 0.8s 0.7s;
+    }
+    .hero-scroll-indicator.in-view { opacity: 1; }
+    @keyframes bounce {
+      0%,20%,50%,80%,100% { transform: translateY(0) translateX(-50%); }
+      40% { transform: translateY(-8px) translateX(-50%); }
+      60% { transform: translateY(-4px) translateX(-50%); }
+    }
+    /* Ancien hero (masqué) */
+    .hero-left, .hero-right, .hero-scroll-hint { display: none; }
     .btn-gold {
       padding: 13px 30px; background: var(--gold); color: var(--bg);
       font-family: var(--sans); font-size: 0.75rem; font-weight: 500;
@@ -651,25 +700,28 @@
 
 <!-- HERO -->
 <section id="home" class="hero">
-  <canvas id="hero-canvas" style="position:absolute;inset:0;pointer-events:none;z-index:1;opacity:0.25;"></canvas>
-  <div class="hero-left" style="position:relative;z-index:2;">
-    <div class="hero-eyebrow reveal-fade">Engineering Student · Paris</div>
-    <h1 class="hero-name reveal-fade" style="transition-delay:0.1s">Sami<br><em>Bennane</em></h1>
-    <p class="hero-role reveal-fade" style="transition-delay:0.2s">AI · Embedded Systems · Innovation</p>
-    <p class="hero-desc reveal-fade" style="transition-delay:0.3s">
-      Building the bridge between hardware precision and strategic intelligence, at Mines Saint-Étienne, one of France's most selective engineering schools.
-    </p>
-    <div class="hero-btns reveal-fade" style="transition-delay:0.4s">
-      <a href="assets/docs/resume_en.pdf" download="Sami_Bennane_Resume_EN.pdf" class="btn-gold">Resume (EN) <i class="ph ph-download-simple"></i></a>
-      <a href="assets/docs/resume_fr.pdf" download="Sami_Bennane_CV_FR.pdf" class="btn-outline">CV (FR) <i class="ph ph-download-simple"></i></a>
+  <canvas id="hero-canvas" style="position:absolute;inset:0;pointer-events:none;z-index:1;opacity:0.2;"></canvas>
+
+  <div class="hero-center-wrapper">
+    <div class="hero-text-container">
+      <div class="blur-word">SAMI</div>
+      <div class="blur-word" style="transition-delay:0.15s">BENNANE</div>
+      <div class="hero-profile-pic">
+        <img src="assets/images/photo_fei.png" alt="Sami Bennane">
+      </div>
     </div>
   </div>
-  <div class="hero-right" style="z-index:2;">
-    <div class="hero-img-wrap reveal-right">
-      <img src="assets/images/photo_fei.png" alt="Sami Bennane">
-    </div>
+
+  <div class="hero-tagline-wrapper">
+    <p class="blur-tagline">AI · Embedded Systems · Innovation</p>
+    <a href="assets/docs/resume_en.pdf" download="Sami_Bennane_Resume_EN.pdf" class="hero-resume-btn">
+      Resume (EN) <i class="ph ph-download-simple"></i>
+    </a>
   </div>
-  <div class="hero-scroll-hint"><div class="scroll-line"></div><span>Scroll</span></div>
+
+  <div class="hero-scroll-indicator">
+    <i class="ph ph-caret-down"></i>
+  </div>
 </section>
 
 <!-- ABOUT — mots-clés géants uniquement -->
@@ -1071,11 +1123,9 @@ document.getElementById("year").textContent = new Date().getFullYear();
 })();
 
 function revealHero(){
-  document.querySelectorAll('.hero .reveal-fade,.hero .reveal-right').forEach((el,i)=>{
-    setTimeout(()=>{
-      el.style.transition='opacity 0.9s cubic-bezier(0.16,1,0.3,1),transform 0.9s cubic-bezier(0.16,1,0.3,1)';
-      el.style.opacity='1';el.style.transform='none';
-    },i*120);
+  const els = document.querySelectorAll('.blur-word, .blur-tagline, .hero-resume-btn, .hero-scroll-indicator');
+  els.forEach((el, i) => {
+    setTimeout(() => el.classList.add('in-view'), i * 220 + 80);
   });
 }
 
@@ -1148,36 +1198,46 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 })();
 
 /* ═══════════════════════════════════════════════════
-   ABOUT KEYWORDS — IntersectionObserver
-   Le mot au centre de la fenêtre s'illumine en or.
-   Inspiré du pattern WordHeroPage (scroll-hero-section).
+   ABOUT KEYWORDS — Scroll-driven lent
+   Chaque mot occupe 300px de scroll dans la section.
 ════════════════════════════════════════════════════ */
 (function(){
-  const items=document.querySelectorAll('.kw-item');
-  if(!items.length)return;
+  const section = document.getElementById('about');
+  const items   = [...document.querySelectorAll('.kw-item')];
+  if (!section || !items.length) return;
 
-  const io=new IntersectionObserver(entries=>{
-    entries.forEach(entry=>{
-      if(entry.isIntersecting){
-        // Désactiver tous
-        items.forEach(i=>i.classList.remove('active'));
-        // Activer celui-ci
-        entry.target.classList.add('active');
-      }
-    });
-  },{
-    rootMargin:'-35% 0px -35% 0px',
-    threshold:0
-  });
+  const PX_PER_WORD = 300;
+  const N = items.length;
 
-  items.forEach(item=>io.observe(item));
+  // Spacer pour créer du scroll dans la section
+  const spacer = document.createElement('div');
+  spacer.style.cssText = 'height:' + (N * PX_PER_WORD) + 'px;pointer-events:none;';
+  section.appendChild(spacer);
 
-  // Fallback : activer le premier au load
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',()=>items[0].classList.add('active'));
-  } else {
-    items[0].classList.add('active');
+  // Sticky sur la liste de mots
+  const kwList = document.getElementById('kwList');
+  if (kwList) {
+    kwList.style.position = 'sticky';
+    kwList.style.top      = '120px';
   }
+
+  let activeIdx = 0;
+  items[0].classList.add('active');
+
+  function onScroll() {
+    const rect     = section.getBoundingClientRect();
+    const scrolled = -rect.top;
+    if (scrolled < 0) return;
+    const idx = Math.min(Math.floor(scrolled / PX_PER_WORD), N - 1);
+    if (idx !== activeIdx) {
+      items[activeIdx].classList.remove('active');
+      items[idx].classList.add('active');
+      activeIdx = idx;
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 })();
 
 /* HERO CANVAS */
@@ -1406,56 +1466,32 @@ window.addEventListener('scroll',()=>{
   const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
   const ease  = t => 1 - Math.pow(1 - t, 3);
 
-  // ── Position calculator : arc → cercle ──
-  // Phase 1 (spreadProgress 0→0.6) : arc du bas s'ouvre
-  // Phase 2 (spreadProgress 0.6→1) : arc se referme en cercle complet
+  // ── Position calculator : scatter → arc (phase unique) ──
   function arcTarget(i, spreadProgress, W, H) {
-    const isMobile   = W < 768;
-    const circRadius = Math.min(W, H) * (isMobile ? 0.36 : 0.34);
+    const isMobile  = W < 768;
+    const SCROLL_H  = isMobile ? 1200 : 2200;
+    const rect      = spacer.getBoundingClientRect();
+    const scrolled  = clamp(-rect.top / SCROLL_H, 0, 1);
 
-    // Scroll global dans la zone (0→1)
-    const SCROLL_H = isMobile ? 1200 : 2200;
-    const rect     = spacer.getBoundingClientRect();
-    const scrolled = clamp(-rect.top / SCROLL_H, 0, 1);
-
-    // Phase 1 (0→0.5) : arc en bas, s'ouvre de 30° à 160°
-    // Phase 2 (0.5→1) : passage arc → cercle complet
-    const phase1 = clamp(scrolled / 0.5, 0, 1);
-    const phase2 = clamp((scrolled - 0.5) / 0.5, 0, 1);
-    const p1     = ease(phase1);
-    const p2     = ease(phase2);
-
-    // ── Cercle cible : logos répartis uniformément sur 360° ──
-    // Démarre à -90° (haut) et tourne dans le sens horaire
-    const circleAng = -90 + (i / N) * 360;
-    const circleRad = circleAng * Math.PI / 180;
-    const cx        = Math.cos(circleRad) * circRadius + W / 2;
-    const cy        = Math.sin(circleRad) * circRadius + H / 2;
-
-    // ── Arc intermédiaire (phase 1) : arc bas ──
     const baseR     = Math.min(W, H * 1.5);
     const arcRadius = baseR * (isMobile ? 1.35 : 1.05);
     const apexY     = H * (isMobile ? 0.3 : 0.22);
     const centerY   = apexY + arcRadius;
-    const spread    = lerp(30, isMobile ? 90 : 160, p1);
-    const startAng  = -90 - spread / 2;
-    const step      = spread / (N - 1);
-    const arcAng    = startAng + i * step;
-    const arcRad    = arcAng * Math.PI / 180;
-    const ax        = Math.cos(arcRad) * arcRadius + W / 2;
-    const ay        = Math.sin(arcRad) * arcRadius + centerY;
 
-    // ── Interpoler arc → cercle (phase 2) ──
-    const x = lerp(ax, cx, p2);
-    const y = lerp(ay, cy, p2);
+    // Arc s'ouvre de 30° à 150° selon le scroll
+    const spread   = lerp(30, isMobile ? 90 : 150, ease(scrolled));
+    const startAng = -90 - spread / 2;
+    const step     = spread / (N - 1);
+    const ang      = startAng + i * step;
+    const rad      = ang * Math.PI / 180;
 
-    // Rotation : tangente au cercle
-    const finalR = lerp(arcAng + 90, circleAng + 90, p2);
-
-    // Scale : plus grand en cercle final
-    const finalS = lerp(isMobile ? 1.3 : 1.5, isMobile ? 1.1 : 1.3, p2);
-
-    return { x, y, r: finalR, s: finalS, o: 1 };
+    return {
+      x: Math.cos(rad) * arcRadius + W / 2,
+      y: Math.sin(rad) * arcRadius + centerY,
+      r: ang + 90,
+      s: isMobile ? 1.3 : 1.6,
+      o: 1,
+    };
   }
 
   // ── Render loop ──
@@ -1479,7 +1515,7 @@ window.addEventListener('scroll',()=>{
     const catIdx    = Math.floor(rawScroll * 3);
 
     // Hint : disparaît une fois scrollé
-    hint.style.opacity = rawScroll < 0.05 ? '1' : '0';
+    hint.style.opacity = rawScroll < 0.05 ? '1' : rawScroll > 0.9 ? '0' : '0.3';
 
     cards.forEach((card, i) => {
       const sc = scatter[i];
@@ -1496,7 +1532,7 @@ window.addEventListener('scroll',()=>{
       card.style.transform = `translate(-50%, -50%) rotate(${r}deg) scale(${s})`;
       card.style.opacity = o;
 
-      // Highlight la carte du milieu de l'arc
+      // Highlight le logo du milieu de l'arc
       const mid = Math.floor(N / 2);
       card.classList.toggle('arc-highlight', Math.abs(i - mid) <= 1 && p > 0.7);
     });
