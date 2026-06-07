@@ -13,11 +13,37 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --paper:#f4f3ee; --paper-2:#eae8e0; --card:#fcfbf8;
-      --ink:#14130f; --ink-2:#2c2a24; --muted:#6c6a60; --faint:#9c9a8f;
-      --line:rgba(20,19,15,0.12); --line-2:rgba(20,19,15,0.20);
-      --cobalt:#2741ff; --cobalt-2:#1c30c2; --cobalt-br:#5e74ff;
-      --ink-bg:#100f0d; --ink-surface:#181714;
+      /* ── Cupertino Intelligence Palette ──────────────────────────────
+         Surfaces : gris Apple #F5F5F7 / blanc pur / verre
+         Typo     : Space Gray #1D1D1F / hiérarchie grisée
+         Accent   : Neural Indigo #4F46E5 — électrique, IA/Deep Tech
+         Dark     : macOS Dark Mode #161617 / #1C1C1E
+      ─────────────────────────────────────────────────────────────────*/
+
+      /* Surfaces & fonds (Apple "aluminium satiné") */
+      --paper:   #F5F5F7;   /* fond principal — gris pomme signature      */
+      --paper-2: #E8E8ED;   /* fond alternatif — légèrement plus profond   */
+      --card:    #FFFFFF;   /* cartes — blanc pur "verre"                  */
+
+      /* Typographie (Space Gray premium) */
+      --ink:     #1D1D1F;   /* texte principal — Space Gray Apple          */
+      --ink-2:   #3A3A3C;   /* titres secondaires — gris graphite          */
+      --muted:   #6E6E73;   /* corps — gris silicium Apple                 */
+      --faint:   #AEAEB2;   /* labels, numéros — gris très doux            */
+
+      /* Lignes & séparateurs (ultra-subtils à la Apple) */
+      --line:    rgba(0,0,0,0.07);   /* diviseurs fins                    */
+      --line-2:  rgba(0,0,0,0.13);   /* bordures légèrement marquées      */
+
+      /* Accent Neural Indigo (IA / Deep Tech électrique) */
+      --cobalt:   #4F46E5;  /* indigo principal — neural / electric        */
+      --cobalt-2: #3730A3;  /* hover sombre — profondeur                   */
+      --cobalt-br:#818CF8;  /* version lumineuse sur fond sombre           */
+
+      /* Sections sombres (macOS Dark Mode) */
+      --ink-bg:      #161617;  /* fond des sections dark — quasi-noir macOS  */
+      --ink-surface: #1C1C1E;  /* surface sombre — macOS "systemGray6"       */
+
       --disp:'Space Grotesk',system-ui,sans-serif;
       --sans:'Hanken Grotesk',system-ui,sans-serif;
       --mono:'JetBrains Mono',ui-monospace,monospace;
@@ -41,7 +67,7 @@
 
     /* NAV */
     .nav { position:fixed; top:0; left:0; right:0; z-index:1000; height:var(--nav-h); display:flex; align-items:center; transition:background .4s var(--ease),border-color .4s; border-bottom:1px solid transparent; }
-    .nav.solid { background:rgba(244,243,238,0.82); backdrop-filter:blur(14px) saturate(1.2); border-bottom-color:var(--line); }
+    .nav.solid { background:rgba(245,245,247,0.85); backdrop-filter:blur(20px) saturate(1.8); border-bottom-color:var(--line); }
     .nav .wrap { display:flex; align-items:center; justify-content:space-between; width:100%; }
     .brand { display:flex; align-items:center; gap:12px; font-family:var(--disp); font-weight:600; font-size:1.02rem; }
     .brand .dot { width:9px; height:9px; background:var(--cobalt); border-radius:50%; flex-shrink:0; }
@@ -611,14 +637,136 @@
   </div>
 </section>
 
-<!-- QUOTE -->
-<div class="quote-band">
-  <div class="wrap">
-    <span class="mark rv">"</span>
-    <p class="quote-text rv" style="transition-delay:.08s">Engineering goes beyond execution — it requires understanding the world technology shapes. <em>Technical mastery must meet strategic insight.</em></p>
-    <div class="quote-by rv" style="transition-delay:.16s">— Sami Bennane</div>
+<!-- ═══ SCROLL ZOOM IMAGE + CITATION SUPERPOSÉE ═══
+     micro.png s'agrandit au scroll (clip-path polygon, comme SmoothScrollHero).
+     La citation apparaît par-dessus une fois l'image en plein écran.
+-->
+<div id="micro-scroll-scene">
+  <!-- Zone de scroll : hauteur = scroll amount + 100vh -->
+  <div id="micro-scroll-spacer">
+    <!-- Image sticky qui zoome -->
+    <div id="micro-sticky">
+      <div id="micro-img-wrap">
+        <div class="img-ph" data-ph="Mines Saint-Étienne" id="micro-img-ph"></div>
+        <img src="assets/images/micro.png" alt="Mines Saint-Étienne" id="micro-img">
+      </div>
+      <!-- Citation superposée, apparaît quand image est plein écran -->
+      <div id="micro-quote">
+        <div id="micro-quote-inner">
+          <span id="micro-mark">"</span>
+          <p id="micro-quote-text">Engineering goes beyond execution, it requires understanding the world technology shapes. <em>Technical mastery must meet strategic insight.</em></p>
+          <div id="micro-quote-by">— Sami Bennane</div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+
+<style>
+  #micro-scroll-scene {
+    /* Pas de padding, pas de background : la section prend la couleur de ce qui suit */
+  }
+  #micro-scroll-spacer {
+    /* scroll amount + viewport : permet au sticky de jouer sur cette hauteur */
+    height: calc(1800px + 100vh);
+    position: relative;
+  }
+  #micro-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    background: var(--ink-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #micro-img-wrap {
+    position: absolute;
+    inset: 0;
+    /* clip-path animé via JS : commence petit au centre, finit plein écran */
+    clip-path: polygon(25% 15%, 75% 15%, 75% 85%, 25% 85%);
+    will-change: clip-path;
+    transition: clip-path 0ms linear; /* piloté par rAF, pas de CSS transition */
+  }
+  #micro-img-ph {
+    position: absolute;
+    inset: 0;
+    background: #111;
+  }
+  #micro-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 40%;
+    display: block;
+    /* légère compression initiale (zoom out → zoom in via backgroundSize JS) */
+    transform-origin: center center;
+    transform: scale(1.6);
+    will-change: transform;
+  }
+  /* Citation par-dessus */
+  #micro-quote {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0ms linear; /* géré par JS */
+    background: linear-gradient(
+      to top,
+      rgba(22,22,23,0.72) 0%,
+      rgba(22,22,23,0.18) 60%,
+      transparent 100%
+    );
+  }
+  #micro-quote-inner {
+    max-width: 820px;
+    padding: 0 clamp(24px, 6vw, 80px);
+    text-align: center;
+    transform: translateY(24px);
+    transition: transform 0ms linear; /* géré par JS */
+  }
+  #micro-mark {
+    display: block;
+    font-family: var(--disp);
+    font-weight: 700;
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    color: var(--cobalt-br);
+    line-height: 0.6;
+    margin-bottom: 20px;
+    opacity: 0.85;
+  }
+  #micro-quote-text {
+    font-family: var(--disp);
+    font-weight: 500;
+    font-size: clamp(1.3rem, 2.8vw, 2.4rem);
+    line-height: 1.3;
+    letter-spacing: -0.025em;
+    color: rgba(255,255,255,0.94);
+  }
+  #micro-quote-text em {
+    font-style: normal;
+    color: var(--cobalt-br);
+  }
+  #micro-quote-by {
+    margin-top: 28px;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+  }
+  /* Responsive : réduire scroll amount sur mobile */
+  @media (max-width: 760px) {
+    #micro-scroll-spacer { height: calc(1000px + 100vh); }
+    #micro-img { transform: scale(1.5); }
+  }
+</style>
 
 <!-- ESSAYS -->
 <section id="essays" class="sec">
@@ -632,19 +780,6 @@
     </div>
   </div>
 </section>
-
-<!-- IMAGE FEATURE -->
-<section class="sec sec--alt">
-  <div class="wrap imgfeat">
-    <div class="imgfeat-inner rv">
-      <div class="img-ph" data-ph="Detail Shot" style="position:absolute;inset:0;"></div>
-      <img src="assets/images/micro.png" alt="Detail shot" style="position:relative;z-index:1;">
-      <div class="imgfeat-cap">Mines Saint-Étienne</div>
-    </div>
-  </div>
-</section>
-
-<!-- CHATGPT EXPLAINER -->
 <section id="explainer" class="sec sec--ink">
   <div class="wrap">
     <div class="sec-head"><span class="idx">09</span><span class="kicker">IA &amp; Pédagogie</span></div>
@@ -707,8 +842,8 @@
 <!-- CHAT WIDGET -->
 <style>
   #chat-widget{position:fixed;bottom:28px;right:28px;z-index:9998;display:flex;flex-direction:column;align-items:flex-end;gap:12px;font-family:var(--sans);}
-  #chat-toggle{width:56px;height:56px;border-radius:50%;background:var(--cobalt);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 30px rgba(39,65,255,0.32);transition:box-shadow .3s,transform .3s var(--ease);position:relative;}
-  #chat-toggle:hover{box-shadow:0 12px 40px rgba(39,65,255,0.45);transform:translateY(-2px);}
+  #chat-toggle{width:56px;height:56px;border-radius:50%;background:var(--cobalt);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 30px rgba(79,70,229,0.28);transition:box-shadow .3s,transform .3s var(--ease);position:relative;}
+  #chat-toggle:hover{box-shadow:0 12px 40px rgba(79,70,229,0.4);transform:translateY(-2px);}
   #chat-toggle .sb-avatar{font-family:var(--disp);font-size:1rem;font-weight:600;color:#fff;letter-spacing:0.02em;}
   #chat-toggle .notif-dot{position:absolute;top:3px;right:3px;width:11px;height:11px;border-radius:50%;background:#fff;border:2px solid var(--cobalt);animation:pulseDot 2s ease-in-out infinite;}
   @keyframes pulseDot{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.3);opacity:0.5;}}
@@ -736,7 +871,7 @@
   @keyframes typingDot{0%,100%{opacity:0.4;transform:translateY(0)}50%{opacity:1;transform:translateY(-4px)}}
   .suggestions{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;}
   .suggestion-btn{font-family:var(--sans);font-size:0.74rem;color:var(--cobalt);border:1px solid var(--line-2);background:transparent;padding:5px 11px;border-radius:14px;cursor:pointer;transition:background .2s,border-color .2s;}
-  .suggestion-btn:hover{background:rgba(39,65,255,0.07);border-color:var(--cobalt);}
+  .suggestion-btn:hover{background:rgba(79,70,229,0.07);border-color:var(--cobalt);}
   .chat-input-area{padding:13px 14px;border-top:1px solid var(--line);display:flex;gap:9px;align-items:flex-end;}
   #chat-input{flex:1;background:var(--paper);border:1px solid var(--line);color:var(--ink);font-family:var(--sans);font-size:0.88rem;padding:10px 13px;resize:none;outline:none;line-height:1.45;max-height:80px;border-radius:6px;transition:border-color .2s;}
   #chat-input::placeholder{color:var(--faint);} #chat-input:focus{border-color:var(--cobalt);}
@@ -785,13 +920,66 @@ function animateCount(el){const target=parseFloat(el.dataset.count);const dec=pa
 
 if(!IS_MOBILE&&!REDUCED)document.querySelectorAll('.magnetic').forEach(btn=>{btn.addEventListener('mousemove',e=>{const r=btn.getBoundingClientRect();btn.style.transform=`translate(${(e.clientX-r.left-r.width/2)*0.25}px,${(e.clientY-r.top-r.height/2)*0.35}px)`;});btn.addEventListener('mouseleave',()=>btn.style.transform='');});
 
-if(!IS_MOBILE)(function(){const canvas=document.getElementById('hero-canvas');if(!canvas)return;const ctx=canvas.getContext('2d');let W,H,parts=[],mouse={x:-999,y:-999};const COUNT=78,LINK=150;function resize(){W=canvas.width=canvas.parentElement.offsetWidth;H=canvas.height=canvas.parentElement.offsetHeight;}class P{constructor(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.4;this.vy=(Math.random()-.5)*.4;this.r=Math.random()*1.5+.5;}update(){const dx=this.x-mouse.x,dy=this.y-mouse.y,d2=dx*dx+dy*dy;if(d2<15000){const d=Math.sqrt(d2)||1;this.vx+=dx/d*.22;this.vy+=dy/d*.22;}this.vx*=.98;this.vy*=.98;this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>W)this.vx*=-1;if(this.y<0||this.y>H)this.vy*=-1;this.x=Math.max(0,Math.min(W,this.x));this.y=Math.max(0,Math.min(H,this.y));}}function init(){parts=[];for(let i=0;i<COUNT;i++)parts.push(new P());}function draw(){ctx.clearRect(0,0,W,H);parts.forEach(p=>p.update());for(let i=0;i<parts.length;i++){const a=parts[i];ctx.beginPath();ctx.arc(a.x,a.y,a.r,0,Math.PI*2);ctx.fillStyle='rgba(39,65,255,0.55)';ctx.fill();for(let j=i+1;j<parts.length;j++){const b=parts[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);if(d<LINK){ctx.beginPath();ctx.strokeStyle=`rgba(39,65,255,${(1-d/LINK)*0.16})`;ctx.lineWidth=.6;ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}}}requestAnimationFrame(draw);}const hero=document.getElementById('home');hero.addEventListener('mousemove',e=>{const r=canvas.getBoundingClientRect();mouse.x=e.clientX-r.left;mouse.y=e.clientY-r.top;});hero.addEventListener('mouseleave',()=>{mouse.x=-999;mouse.y=-999;});window.addEventListener('resize',()=>{resize();init();});resize();init();draw();})();
+if(!IS_MOBILE)(function(){const canvas=document.getElementById('hero-canvas');if(!canvas)return;const ctx=canvas.getContext('2d');let W,H,parts=[],mouse={x:-999,y:-999};const COUNT=78,LINK=150;function resize(){W=canvas.width=canvas.parentElement.offsetWidth;H=canvas.height=canvas.parentElement.offsetHeight;}class P{constructor(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.4;this.vy=(Math.random()-.5)*.4;this.r=Math.random()*1.5+.5;}update(){const dx=this.x-mouse.x,dy=this.y-mouse.y,d2=dx*dx+dy*dy;if(d2<15000){const d=Math.sqrt(d2)||1;this.vx+=dx/d*.22;this.vy+=dy/d*.22;}this.vx*=.98;this.vy*=.98;this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>W)this.vx*=-1;if(this.y<0||this.y>H)this.vy*=-1;this.x=Math.max(0,Math.min(W,this.x));this.y=Math.max(0,Math.min(H,this.y));}}function init(){parts=[];for(let i=0;i<COUNT;i++)parts.push(new P());}function draw(){ctx.clearRect(0,0,W,H);parts.forEach(p=>p.update());for(let i=0;i<parts.length;i++){const a=parts[i];ctx.beginPath();ctx.arc(a.x,a.y,a.r,0,Math.PI*2);ctx.fillStyle='rgba(79,70,229,0.5)';ctx.fill();for(let j=i+1;j<parts.length;j++){const b=parts[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);if(d<LINK){ctx.beginPath();ctx.strokeStyle=`rgba(79,70,229,${(1-d/LINK)*0.14})`;ctx.lineWidth=.6;ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}}}requestAnimationFrame(draw);}const hero=document.getElementById('home');hero.addEventListener('mousemove',e=>{const r=canvas.getBoundingClientRect();mouse.x=e.clientX-r.left;mouse.y=e.clientY-r.top;});hero.addEventListener('mouseleave',()=>{mouse.x=-999;mouse.y=-999;});window.addEventListener('resize',()=>{resize();init();});resize();init();draw();})();
 
-if(!IS_MOBILE)(function(){const canvas=document.getElementById('nexus-canvas');if(!canvas)return;const ctx=canvas.getContext('2d');let W,H,cx,cy,t=0,pts=[];function resize(){W=canvas.width=canvas.parentElement.offsetWidth;H=canvas.height=canvas.parentElement.offsetHeight;cx=W/2;cy=H/2;}class Orb{constructor(r,sp,off,tilt){this.r=r;this.sp=sp;this.a=off;this.tilt=tilt;this.size=Math.random()*2+1.2;}update(){this.a+=this.sp;const rx=this.r*(1+.07*Math.sin(t*.6)),ry=this.r*.6*(1+.07*Math.cos(t*.6));const ca=Math.cos(this.tilt),sa=Math.sin(this.tilt),x=rx*Math.cos(this.a),y=ry*Math.sin(this.a);this.x=cx+x*ca-y*sa;this.y=cy+x*sa+y*ca;this.depth=(Math.sin(this.a)+1)/2;}draw(){ctx.beginPath();ctx.globalAlpha=.35+this.depth*.6;ctx.fillStyle='#2741ff';ctx.arc(this.x,this.y,this.size*(.6+this.depth*.6),0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;}}function init(){pts=[];for(let i=0;i<11;i++)pts.push(new Orb(W*.30,.009,i*Math.PI/5.5,.1));for(let i=0;i<8;i++)pts.push(new Orb(W*.19,-.013,i*Math.PI/4+1,-.5));for(let i=0;i<7;i++)pts.push(new Orb(W*.40,.005,i*Math.PI/3.5+2,.6));}function core(){const r=20+4*Math.sin(t*1.5),g=ctx.createRadialGradient(cx,cy,0,cx,cy,r);g.addColorStop(0,'rgba(39,65,255,0.6)');g.addColorStop(.5,'rgba(39,65,255,0.12)');g.addColorStop(1,'transparent');ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();}function orbits(){[[W*.30,.1],[W*.19,-.5],[W*.40,.6]].forEach(([r,tilt])=>{const rx=r*(1+.07*Math.sin(t*.6)),ry=r*.6*(1+.07*Math.cos(t*.6));ctx.save();ctx.translate(cx,cy);ctx.rotate(tilt);ctx.beginPath();ctx.ellipse(0,0,rx,ry,0,0,Math.PI*2);ctx.strokeStyle='rgba(39,65,255,0.1)';ctx.lineWidth=1;ctx.stroke();ctx.restore();});}function animate(){ctx.clearRect(0,0,W,H);t+=.01;orbits();core();pts.sort((a,b)=>a.depth-b.depth);pts.forEach(p=>{p.update();p.draw();});requestAnimationFrame(animate);}window.addEventListener('resize',()=>{resize();init();});resize();init();animate();})();
+if(!IS_MOBILE)(function(){const canvas=document.getElementById('nexus-canvas');if(!canvas)return;const ctx=canvas.getContext('2d');let W,H,cx,cy,t=0,pts=[];function resize(){W=canvas.width=canvas.parentElement.offsetWidth;H=canvas.height=canvas.parentElement.offsetHeight;cx=W/2;cy=H/2;}class Orb{constructor(r,sp,off,tilt){this.r=r;this.sp=sp;this.a=off;this.tilt=tilt;this.size=Math.random()*2+1.2;}update(){this.a+=this.sp;const rx=this.r*(1+.07*Math.sin(t*.6)),ry=this.r*.6*(1+.07*Math.cos(t*.6));const ca=Math.cos(this.tilt),sa=Math.sin(this.tilt),x=rx*Math.cos(this.a),y=ry*Math.sin(this.a);this.x=cx+x*ca-y*sa;this.y=cy+x*sa+y*ca;this.depth=(Math.sin(this.a)+1)/2;}draw(){ctx.beginPath();ctx.globalAlpha=.35+this.depth*.6;ctx.fillStyle='#4F46E5';ctx.arc(this.x,this.y,this.size*(.6+this.depth*.6),0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;}}function init(){pts=[];for(let i=0;i<11;i++)pts.push(new Orb(W*.30,.009,i*Math.PI/5.5,.1));for(let i=0;i<8;i++)pts.push(new Orb(W*.19,-.013,i*Math.PI/4+1,-.5));for(let i=0;i<7;i++)pts.push(new Orb(W*.40,.005,i*Math.PI/3.5+2,.6));}function core(){const r=20+4*Math.sin(t*1.5),g=ctx.createRadialGradient(cx,cy,0,cx,cy,r);g.addColorStop(0,'rgba(79,70,229,0.6)');g.addColorStop(.5,'rgba(79,70,229,0.12)');g.addColorStop(1,'transparent');ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();}function orbits(){[[W*.30,.1],[W*.19,-.5],[W*.40,.6]].forEach(([r,tilt])=>{const rx=r*(1+.07*Math.sin(t*.6)),ry=r*.6*(1+.07*Math.cos(t*.6));ctx.save();ctx.translate(cx,cy);ctx.rotate(tilt);ctx.beginPath();ctx.ellipse(0,0,rx,ry,0,0,Math.PI*2);ctx.strokeStyle='rgba(79,70,229,0.1)';ctx.lineWidth=1;ctx.stroke();ctx.restore();});}function animate(){ctx.clearRect(0,0,W,H);t+=.01;orbits();core();pts.sort((a,b)=>a.depth-b.depth);pts.forEach(p=>{p.update();p.draw();});requestAnimationFrame(animate);}window.addEventListener('resize',()=>{resize();init();});resize();init();animate();})();
 
 (function(){const c=document.getElementById('mini-transformer-canvas');if(!c)return;const ctx=c.getContext('2d');const W=c.width,H=c.height;let t=0;const layers=[{label:'Input tokens',color:'rgba(107,189,138,',y:220},{label:'Embedding + PosEnc',color:'rgba(94,116,255,',y:188},{label:'Self-Attention  (Q·K·V)',color:'rgba(91,155,213,',y:142},{label:'Feed-Forward Network',color:'rgba(217,107,143,',y:96},{label:'Linear + Softmax',color:'rgba(170,140,255,',y:50},{label:'Output token',color:'rgba(107,189,138,',y:14}];function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();}function draw(){ctx.clearRect(0,0,W,H);t+=.016;layers.forEach(l=>{const bW=W-40,bH=26,bX=20,bY=l.y,alpha=.14+.09*Math.sin(t*1.2+(l.y/H)*4);ctx.fillStyle=l.color+alpha+')';rr(bX,bY,bW,bH,3);ctx.fill();ctx.strokeStyle=l.color+'0.5)';ctx.lineWidth=1;rr(bX,bY,bW,bH,3);ctx.stroke();ctx.fillStyle='rgba(245,243,238,.72)';ctx.font='11px "JetBrains Mono",monospace';ctx.textAlign='center';ctx.fillText(l.label,W/2,bY+17);});const py=H-40-(((t*.35)%1)*(H-60)),pa=Math.sin(((t*.35)%1)*Math.PI);ctx.beginPath();ctx.arc(W/2,py,4,0,Math.PI*2);ctx.fillStyle=`rgba(94,116,255,${pa})`;ctx.fill();ctx.beginPath();ctx.arc(W/2,py,10,0,Math.PI*2);ctx.fillStyle=`rgba(94,116,255,${pa*.18})`;ctx.fill();requestAnimationFrame(draw);}draw();})();
 
-(function(){const API_URL="https://portfolio-bot-qq75.onrender.com/ask";const WELCOME="Hi! I'm Sami's AI assistant. Ask me anything about his background, projects, or skills.";const SUGGESTIONS=["What are his main skills?","Tell me about his projects","Where is he studying?","Is he open to internships?"];let isOpen=false,isLoading=false,welcomeShown=false;const panel=document.getElementById("chat-panel"),toggle=document.getElementById("chat-toggle"),closeBtn=document.getElementById("chat-close-btn");const messages=document.getElementById("chat-messages"),input=document.getElementById("chat-input"),sendBtn=document.getElementById("chat-send"),notifDot=document.getElementById("notif-dot");toggle.addEventListener("click",()=>{isOpen=!isOpen;panel.classList.toggle("open",isOpen);if(isOpen){notifDot.style.display="none";if(!welcomeShown){welcomeShown=true;addBot(WELCOME,SUGGESTIONS);}setTimeout(()=>input.focus(),400);}});closeBtn.addEventListener("click",()=>{isOpen=false;panel.classList.remove("open");});function addBot(text,sugg=[]){const w=document.createElement("div");w.className="msg bot";w.innerHTML='<div class="msg-sender">Sami\u2019s Bot</div>';const b=document.createElement("div");b.className="msg-bubble";b.textContent=text;w.appendChild(b);if(sugg.length){const s=document.createElement("div");s.className="suggestions";sugg.forEach(q=>{const btn=document.createElement("button");btn.className="suggestion-btn";btn.textContent=q;btn.addEventListener("click",()=>{if(isLoading)return;send(q);s.remove();});s.appendChild(btn);});w.appendChild(s);}messages.appendChild(w);scroll();}function addUser(text){const w=document.createElement("div");w.className="msg user";w.innerHTML='<div class="msg-sender">You</div>';const b=document.createElement("div");b.className="msg-bubble";b.textContent=text;w.appendChild(b);messages.appendChild(w);scroll();}function typing(){const el=document.createElement("div");el.className="typing-indicator";el.id="typing";el.innerHTML="<span></span><span></span><span></span>";messages.appendChild(el);scroll();}function rmTyping(){const el=document.getElementById("typing");if(el)el.remove();}function scroll(){messages.scrollTop=messages.scrollHeight;}async function send(text){const q=text||input.value.trim();if(!q||isLoading)return;input.value="";input.style.height="auto";isLoading=true;sendBtn.disabled=true;addUser(q);typing();try{const res=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({question:q})});rmTyping();if(!res.ok)throw new Error(res.status);const data=await res.json();addBot(data.answer||"I couldn't find an answer to that.");}catch(err){rmTyping();addBot("Sorry, I'm having trouble connecting right now. Please try again later or contact Sami directly at sami.bennane@gmail.com");console.error("Chat error:",err);}finally{isLoading=false;sendBtn.disabled=false;input.focus();}}sendBtn.addEventListener("click",()=>send());input.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();send();}});input.addEventListener("input",()=>{input.style.height="auto";input.style.height=Math.min(input.scrollHeight,80)+"px";});setTimeout(()=>{if(!isOpen)notifDot.style.display="block";},3000);})();
+/* ═════════════ MICRO SCROLL ZOOM + CITATION ═════════════
+   Inspiré de SmoothScrollHero (Framer Motion) — vanilla JS.
+   clip-path polygon se referme de l'extérieur vers plein écran,
+   l'image dé-zoome (scale 1.6→1.0) simultanément.
+   La citation fade-in quand l'image est à ~90% de son expansion max.
+*/
+(function(){
+  const spacer  = document.getElementById('micro-scroll-spacer');
+  const imgWrap = document.getElementById('micro-img-wrap');
+  const img     = document.getElementById('micro-img');
+  const quote   = document.getElementById('micro-quote');
+  const qInner  = document.getElementById('micro-quote-inner');
+  if (!spacer || !imgWrap) return;
+
+  const SCROLL_H = window.innerWidth <= 760 ? 1000 : 1800; // montant de scroll en px
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+
+  function update() {
+    const rect = spacer.getBoundingClientRect();
+    // progress : 0 = scène en bas viewport, 1 = scène terminée
+    const scrolled = -rect.top; // pixels scrollés dans la scène
+    const raw = clamp(scrolled / SCROLL_H, 0, 1);
+    const p   = easeOut(raw);
+
+    // ── clip-path : polygon(x% y%, (100-x)% y%, (100-x)% (100-y)%, x% (100-y)%)
+    const xStart = 25, yStart = 15;
+    const xEnd   = 0,  yEnd   = 0;
+    const x = lerp(xStart, xEnd, p);
+    const y = lerp(yStart, yEnd, p);
+    const cx = 100 - x;
+    const cy = 100 - y;
+    imgWrap.style.clipPath = `polygon(${x}% ${y}%, ${cx}% ${y}%, ${cx}% ${cy}%, ${x}% ${cy}%)`;
+
+    // ── zoom de l'image : 1.6 → 1.0
+    const scale = lerp(1.6, 1.0, p);
+    img.style.transform = `scale(${scale})`;
+
+    // ── citation : apparaît progressivement à partir de p > 0.85
+    const qProgress = clamp((p - 0.85) / 0.15, 0, 1);
+    quote.style.opacity = qProgress;
+    // légère montée en Y
+    const translateY = lerp(28, 0, qProgress);
+    qInner.style.transform = `translateY(${translateY}px)`;
+
+    requestAnimationFrame(update);
+  }
+
+  requestAnimationFrame(update);
+})();
+
+"https://portfolio-bot-qq75.onrender.com/ask";const WELCOME="Hi! I'm Sami's AI assistant. Ask me anything about his background, projects, or skills.";const SUGGESTIONS=["What are his main skills?","Tell me about his projects","Where is he studying?","Is he open to internships?"];let isOpen=false,isLoading=false,welcomeShown=false;const panel=document.getElementById("chat-panel"),toggle=document.getElementById("chat-toggle"),closeBtn=document.getElementById("chat-close-btn");const messages=document.getElementById("chat-messages"),input=document.getElementById("chat-input"),sendBtn=document.getElementById("chat-send"),notifDot=document.getElementById("notif-dot");toggle.addEventListener("click",()=>{isOpen=!isOpen;panel.classList.toggle("open",isOpen);if(isOpen){notifDot.style.display="none";if(!welcomeShown){welcomeShown=true;addBot(WELCOME,SUGGESTIONS);}setTimeout(()=>input.focus(),400);}});closeBtn.addEventListener("click",()=>{isOpen=false;panel.classList.remove("open");});function addBot(text,sugg=[]){const w=document.createElement("div");w.className="msg bot";w.innerHTML='<div class="msg-sender">Sami\u2019s Bot</div>';const b=document.createElement("div");b.className="msg-bubble";b.textContent=text;w.appendChild(b);if(sugg.length){const s=document.createElement("div");s.className="suggestions";sugg.forEach(q=>{const btn=document.createElement("button");btn.className="suggestion-btn";btn.textContent=q;btn.addEventListener("click",()=>{if(isLoading)return;send(q);s.remove();});s.appendChild(btn);});w.appendChild(s);}messages.appendChild(w);scroll();}function addUser(text){const w=document.createElement("div");w.className="msg user";w.innerHTML='<div class="msg-sender">You</div>';const b=document.createElement("div");b.className="msg-bubble";b.textContent=text;w.appendChild(b);messages.appendChild(w);scroll();}function typing(){const el=document.createElement("div");el.className="typing-indicator";el.id="typing";el.innerHTML="<span></span><span></span><span></span>";messages.appendChild(el);scroll();}function rmTyping(){const el=document.getElementById("typing");if(el)el.remove();}function scroll(){messages.scrollTop=messages.scrollHeight;}async function send(text){const q=text||input.value.trim();if(!q||isLoading)return;input.value="";input.style.height="auto";isLoading=true;sendBtn.disabled=true;addUser(q);typing();try{const res=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({question:q})});rmTyping();if(!res.ok)throw new Error(res.status);const data=await res.json();addBot(data.answer||"I couldn't find an answer to that.");}catch(err){rmTyping();addBot("Sorry, I'm having trouble connecting right now. Please try again later or contact Sami directly at sami.bennane@gmail.com");console.error("Chat error:",err);}finally{isLoading=false;sendBtn.disabled=false;input.focus();}}sendBtn.addEventListener("click",()=>send());input.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();send();}});input.addEventListener("input",()=>{input.style.height="auto";input.style.height=Math.min(input.scrollHeight,80)+"px";});setTimeout(()=>{if(!isOpen)notifDot.style.display="block";},3000);})();
 </script>
 
 </body>
