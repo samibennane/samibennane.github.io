@@ -333,7 +333,7 @@
     .edu-right { display: flex; flex-direction: column; gap: 30px; }
     .school-img-card { overflow: hidden; border: 1px solid var(--border); position: relative; }
     .school-img-card img {
-      width: 100%; height: 460px; object-fit: cover; object-position: 50% 20%;
+      width: 100%; height: 380px; object-fit: cover; object-position: 50% 25%;
       filter: grayscale(40%); transition: filter 0.6s, transform 0.6s;
     }
     .school-img-card:hover img { filter: grayscale(0%); transform: scale(1.04); }
@@ -663,68 +663,6 @@
       .proj-detail-panel { position: relative; right: auto; top: auto; transform: none; width: 100%; margin-top: 16px; }
       .proj-detail-panel.visible { transform: none; }
     }
-
-    /* ══════════════════════════════════════════════════
-       THINKING — Parallax scrolling background
-       Inspiré de ParallaxPage (parallax-scrolling-effect)
-       Photo qui se zoom/blur au scroll, essays par-dessus.
-    ══════════════════════════════════════════════════ */
-    .thinking-section {
-      position: relative;
-      background: var(--bg);
-      overflow: hidden;
-    }
-
-    .thinking-bg {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      width: 100%;
-      padding-top: 50%;
-      background-image: url('assets/images/micro.png');
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-size: 250%;
-      box-shadow: 0 -60px 40px -20px #0a0a0a inset;
-      z-index: 0;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.6s;
-    }
-    .thinking-bg.visible { opacity: 1; }
-
-    .thinking-content {
-      position: relative;
-      z-index: 10;
-      padding: 140px 80px;
-      background: linear-gradient(
-        to bottom,
-        transparent 0%,
-        rgba(10,10,10,0.55) 20%,
-        rgba(10,10,10,0.82) 55%,
-        rgba(10,10,10,0.97) 80%,
-        #0a0a0a 100%
-      );
-    }
-
-    .thinking-quote {
-      max-width: 900px;
-      margin-bottom: 100px;
-    }
-
-    /* Essays cards : fond semi-transparent sur fond sombre */
-    .thinking-section .essay-card {
-      background: rgba(17,17,17,0.85);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--border);
-    }
-    .thinking-section .essay-card:hover {
-      background: rgba(10,10,10,0.92);
-    }
-
-    @media (max-width: 900px) {
-      .thinking-content { padding: 80px 24px; }
-      .thinking-quote { margin-bottom: 60px; }
-    }
   </style>
 </head>
 <body>
@@ -1049,43 +987,29 @@
 
 </section>
 
-<!-- THINKING — Parallax bg + essays + citation -->
-<section id="essays" class="thinking-section">
+<!-- QUOTE DIVIDER -->
+<div class="quote-divider reveal-fade">
+  <p class="quote-text">
+    "Engineering goes beyond execution, it requires understanding the world that technology shapes. <em>Technical mastery must meet strategic insight.</em>"
+  </p>
+</div>
 
-  <!-- Image de fond fixe avec effet parallax au scroll -->
-  <div id="thinking-bg" class="thinking-bg"></div>
-
-  <!-- Contenu par-dessus -->
-  <div class="thinking-content">
-
-    <!-- Citation -->
-    <div class="thinking-quote reveal-fade">
-      <p class="quote-text">
-        "Engineering goes beyond execution, it requires understanding the world that technology shapes. <em>Technical mastery must meet strategic insight.</em>"
-      </p>
-    </div>
-
-    <!-- Essays -->
-    <div class="thinking-label reveal-fade">
-      <div class="section-label" data-num="08" style="margin-bottom:40px;">Thinking</div>
-      <h2 class="section-title" style="margin-bottom:48px;">Strategic Analysis<br>&amp; <em>Essays.</em></h2>
-    </div>
-
-    <div class="essays-grid reveal-fade" style="transition-delay:0.15s">
-      <a href="assets/docs/french_sov.pdf" target="_blank" class="essay-card">
-        <div class="essay-icon"><i class="ph ph-globe"></i></div>
-        <h3 class="essay-title">French Sovereignty in the AI Era</h3>
-        <p class="essay-desc">An in-depth analysis of France's strategic autonomy in the face of US and Chinese AI hegemony. April 2025.</p>
-      </a>
-      <a href="assets/docs/smart_inventory.pdf" target="_blank" class="essay-card">
-        <div class="essay-icon"><i class="ph ph-warehouse"></i></div>
-        <h3 class="essay-title">IoT &amp; AI in Smart Inventory Management</h3>
-        <p class="essay-desc">Bibliographic research on IoT sensors and AI algorithms converging to create autonomous supply chains and digital twins.</p>
-      </a>
-    </div>
-
+<!-- ESSAYS -->
+<section id="essays" class="section">
+  <div class="section-label" data-num="08">Thinking</div>
+  <h2 class="section-title reveal-fade">Strategic Analysis<br>&amp; <em>Essays.</em></h2>
+  <div class="essays-grid reveal-fade" style="margin-top:60px;transition-delay:0.15s">
+    <a href="assets/docs/french_sov.pdf" target="_blank" class="essay-card">
+      <div class="essay-icon"><i class="ph ph-globe"></i></div>
+      <h3 class="essay-title">French Sovereignty in the AI Era</h3>
+      <p class="essay-desc">An in-depth analysis of France's strategic autonomy in the face of US and Chinese AI hegemony. April 2025.</p>
+    </a>
+    <a href="assets/docs/smart_inventory.pdf" target="_blank" class="essay-card">
+      <div class="essay-icon"><i class="ph ph-warehouse"></i></div>
+      <h3 class="essay-title">IoT &amp; AI in Smart Inventory Management</h3>
+      <p class="essay-desc">Bibliographic research on IoT sensors and AI algorithms converging to create autonomous supply chains and digital twins.</p>
+    </a>
   </div>
-
 </section>
 
 <!-- IMAGE FEATURE -->
@@ -1420,59 +1344,6 @@ window.addEventListener('scroll',()=>{
 
 <script>
 
-
-/* ═══════════════════════════════════════════════════
-   THINKING SECTION — Parallax background
-   Inspiré de ParallaxPage (parallax-scrolling-effect)
-   La photo micro.png zoom/blur au scroll dans la section.
-════════════════════════════════════════════════════ */
-(function(){
-  const bg      = document.getElementById('thinking-bg');
-  const section = document.getElementById('essays');
-  if (!bg || !section) return;
-
-  let initialSizePx = 0;
-  let featureWidth  = 0;
-
-  function setup() {
-    featureWidth   = bg.clientWidth;
-    // background-size initial = 250% → 2.5 × width
-    initialSizePx  = 2.5 * featureWidth;
-    bg.style.backgroundSize = initialSizePx + 'px';
-  }
-
-  function onScroll() {
-    const sRect    = section.getBoundingClientRect();
-    const inView   = sRect.top < window.innerHeight && sRect.bottom > 0;
-
-    // Afficher/masquer le fond selon la visibilité de la section
-    bg.classList.toggle('visible', inView);
-    if (!inView) return;
-
-    // Scroll relatif à la section (px depuis le top de la section)
-    const scrolled = Math.max(0, -sRect.top);
-
-    // Zoom out : réduit la taille au scroll
-    const newSize = initialSizePx - scrolled / 3;
-    if (newSize > featureWidth) {
-      bg.style.backgroundSize = newSize + 'px';
-    }
-
-    // Blur progressif
-    const blur = Math.min(scrolled / 120, 8);
-    bg.style.filter = `blur(${blur}px)`;
-
-    // Fade out léger
-    const fade = Math.max(0, 1 - scrolled / (section.offsetHeight * 0.9));
-    bg.style.opacity = fade;
-  }
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', () => { setup(); onScroll(); });
-  setup();
-  onScroll();
-})();
-
 /* ═══════════════════════════════════════════════════
    PROJECTS CAROUSEL — Rotation continue + clic détail
    Inspiré de ImageCarouselHero (ai-image-generator-hero)
@@ -1677,3 +1548,59 @@ window.addEventListener('scroll',()=>{
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
